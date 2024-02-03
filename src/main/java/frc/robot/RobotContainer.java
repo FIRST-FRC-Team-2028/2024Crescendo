@@ -3,11 +3,13 @@ package frc.robot;
 import java.util.List;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
+import com.revrobotics.SparkMaxLimitSwitch.Direction;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.sysid.SysIdRoutineLog;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -24,10 +26,12 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.OIConstants;
+//import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 //import frc.robot.commands.DriveGeneric;
 import frc.robot.commands.GetAprilTag;
@@ -43,6 +47,9 @@ public class RobotContainer {
     private AprilTagCamera camera;
     //private DriveGeneric driveGeneric;
     private Pigeon2 gyro;
+    private SysIdRoutine routine;
+    SendableChooser <Command> m_chooser;
+    
     
     private final Joystick driverJoytick = new Joystick(OIConstants.kDriverControllerPort);
   
@@ -63,16 +70,21 @@ public class RobotContainer {
                 camera = new AprilTagCamera();
         }
         gyro = new Pigeon2(0);
-        configureButtonBindings();
-    }
+        configureButtonBindings();       
 
-    private void configureButtonBindings() { 
+        m_chooser = new SendableChooser<>();
+        
+    }
+   //MEE 
+     private void configureButtonBindings() { 
         // driverJoytick Buttons
         new JoystickButton(driverJoytick, OIConstants.kDriverResetGyroButtonIdx).
           onTrue(new InstantCommand(() -> swerveSubsystem.resetGyro())); 
         new JoystickButton(driverJoytick, OIConstants.kDriverResetOdometryButtonIdx).
           onTrue(new InstantCommand(() -> 
           swerveSubsystem.resetOdometry(new Pose2d(0., 0., new Rotation2d(0.0)))));
+         /*  new JoystickButton(driverJoytick, 5).
+          whileTrue(routine.quasistatic(SysIdRoutine.Direction.kForward));
         // whenPressed(() -> swerveSubsystem.resetOdometry(new Pose2d(0., 0., new Rotation2d(0.0))));
         
                 // mechJoytick Buttons
@@ -82,10 +94,10 @@ public class RobotContainer {
                         //onTrue(new GetRobotPosition(camera));
                 //new JoystickButton(buttonBox1, OIConstants.kgetAprilTagButton).
                         //onTrue(new GetAprilTag(camera));
-        }
+        }*/
  
      }
-
+ 
 
  
      /**
@@ -99,19 +111,57 @@ public Command getAutonomousCommand() {
                   .setKinematics(DriveConstants.kDriveKinematics);
 
         // 2. Generate trajectory
-        double scale = -1.0;
+        double scale = -.4;
 
 
 
         Trajectory exampleTrajectory =
         TrajectoryGenerator.generateTrajectory(
             // Start at the origin facing the +X direction
-            new Pose2d(0, 0, Rotation2d.fromDegrees(90)),
+            new Pose2d(0, 0, Rotation2d.fromDegrees(0)),
             // Pass through these two interior waypoints, making an 's' curve path
             List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
             // End 3 meters straight ahead of where we started, facing forward
-            new Pose2d(3, 0, Rotation2d.fromDegrees(90)),
+            new Pose2d(3, 0, Rotation2d.fromDegrees(0)),
             trajectoryConfig);
+
+        Trajectory TwoMeterDrive =
+        TrajectoryGenerator.generateTrajectory(
+            // Start at the origin facing the +X direction
+            new Pose2d(0, 0, Rotation2d.fromDegrees(0)),
+            // Pass through these two interior waypoints, making an 's' curve path
+                List.of(//new Translation2d(1, 0),
+                        new Translation2d(1, 0),
+                        new Translation2d(1, 1),
+                        new Translation2d(1, 0)
+                         ),
+            // End 3 meters straight ahead of where we started, facing forward
+            new Pose2d(0, 0, Rotation2d.fromDegrees(90)),
+            trajectoryConfig);
+
+        Trajectory LeftHalfMeter =
+        TrajectoryGenerator.generateTrajectory(
+            // Start at the origin facing the +X direction
+            new Pose2d(0, 0, Rotation2d.fromDegrees(0)),
+            // Pass through these two interior waypoints, making an 's' curve path
+                List.of(new Translation2d(0, -0.25)
+                ),
+            // End 3 meters straight ahead of where we started, facing forward
+            new Pose2d(0, -0.5, Rotation2d.fromDegrees(0)),
+            trajectoryConfig);
+
+
+            Trajectory trajectory_test1 = TrajectoryGenerator.generateTrajectory(
+                new Pose2d(0, 0, new Rotation2d(0)),
+                List.of(
+                        new Translation2d(0, 1),
+                        new Translation2d(1, 1),
+                        new Translation2d(1, 0)//,
+                        //new Translation2d(0, 0),
+                        //new Translation2d(0.5, 0.5)
+                ),
+                new Pose2d(0, 0, Rotation2d.fromDegrees(90)),
+                trajectoryConfig);
 
 
 
@@ -135,7 +185,7 @@ public Command getAutonomousCommand() {
                         new Translation2d(  -1 * scale,   0 * scale),
                         new Translation2d(  -1 * scale,   1 * scale),
                         new Translation2d(   0 * scale,   1 * scale)),
-                new Pose2d(0, 0, Rotation2d.fromDegrees(180)),  //360)),
+                new Pose2d(0, 0, Rotation2d.fromDegrees(0)),  //360)),
                 trajectoryConfig);
 
 
@@ -159,15 +209,15 @@ public Command getAutonomousCommand() {
            //     swerveSubsystem);
 
                 final SwerveControllerCommand swerveControllerCommand =
-                new SwerveControllerCommand(
-                    exampleTrajectory,
-                    swerveSubsystem::getPose,
-                    Constants.DriveConstants.kDriveKinematics,
-                    xController,
-                    yController,
-                    thetaController,
-                     swerveSubsystem::setModuleStates,
-                     swerveSubsystem);
+                new SwerveControllerCommand( TwoMeterDrive,
+                        swerveSubsystem::getPose,
+                        Constants.DriveConstants.kDriveKinematics,
+                        xController,
+                        yController,
+                        thetaController,
+                  //      swerveSubsystem::desiredRotation,
+                        swerveSubsystem::setModuleStates,
+                        swerveSubsystem);
 
 
 
@@ -178,6 +228,7 @@ public Command getAutonomousCommand() {
                 swerveControllerCommand,
                 new InstantCommand(() -> swerveSubsystem.stopModules()));
     }
+    
  
          public Drivetrain getSwerveSS() {
             return swerveSubsystem;

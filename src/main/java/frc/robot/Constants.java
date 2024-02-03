@@ -4,6 +4,8 @@ import com.revrobotics.AbsoluteEncoder;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -22,12 +24,15 @@ import edu.wpi.first.wpilibj.TimedRobot;
 
 public final class Constants {
   public static final boolean PHOTONVISION_AVAILABLE = false;
+  public static final boolean ARM_AVAILABLE = false;
+  public static final boolean HANDLER_AVAILABLE = false;
+  public static final boolean CLIMB_AVAILABLE = false;
+  public static final boolean PIXY_AVAILABLE = false;
 
 
-    public static final class ModuleConstants {
+  public static final class ModuleConstants {
       public static final int kDriveMotorCurrentLimit = 80;
       public static final int kTurningMotorCurrentLimit = 80;
-      public static final double kPTurning = 0.5;
       public static final double kWheelDiameterMeters = Units.inchesToMeters(3.75);
       public static final double kDriveMotorGearRatio = 1 / 6.75;
       public static final double kTurningMotorGearRatio = 1 / 12.8;
@@ -43,6 +48,7 @@ public final class Constants {
     public static final double kDriveD = 0.0; // 2023 Competition Robot
     public static final double kDriveFF = 0.255; // 2023 Competition Robot
 
+    public static final double kPTurning = 0.5;
     public static final double kTurningP = 0.75; // 2023 Competition Robot
     public static final double kTurningI = 0.0; // 2023 Competition Robot
     public static final double kTurningD = 0.0; // 2023 Competition Robot
@@ -92,6 +98,8 @@ public final class Constants {
                 new Translation2d( kWheelBase / 2, -kTrackWidth / 2), // front right
                 new Translation2d(-kWheelBase / 2,  kTrackWidth / 2), // back left
                 new Translation2d(-kWheelBase / 2, -kTrackWidth / 2)); // back right
+
+
 
                   
 
@@ -194,18 +202,67 @@ public final class Constants {
 
     }
 
+    public static final class ArmConstants {
+      public static final double kElbowP = 0;
+      public static final double kElbowI = 0;
+      public static final double kElbowD = 0;
+      public static final double kWristP = 0;
+      public static final double kWristI = 0;
+      public static final double kWristD = 0;
+      public static final double kRetractPosition = 0;
+      public static final double kWristGround = 0;
+      public static final double kElbowGround = 0;
+      public static final double kWristSource = 0;
+      public static final double kElbowSource = 0;
+      public static final double kWristSpeaker = 0;
+      public static final double kElbowSpeaker = 0;
+      public static final double kWristAmp = 0;
+      public static final double kElbowAmp = 0;
+      public static final double elbowTolerance = 0;
+      public static final double wristTolerance = 0;
+
+      public static final float kElbowForwardLimit = 0;
+      public static final float kElbowReverseLimit = 0;
+      public static final float kWristForwardLimit = 0;
+      public static final float kWristReverseLimit = 0;
+      public static final int ABSENCODERPORT = 0;
+      public static final int RelMin = 0;
+      public static final int Ratio = 0;
+      public static final double AbsMin = 0;
+    }
+
+    public static final class IntakeConstants {
+      //public static final double kLowP = 0;
+      //public static final double kLowI = 0;
+      //public static final double kLowD = 0;
+      //public static final double kHighP = 0;
+      //public static final double kHighI = 0;
+      //public static final double kHighD = 0;
+      public static final double kLowInSpeed = 0;
+      public static final double kHighOutSpeed = 0;
+      public static final double kLowOutSpeed = 0;
+      public static final int SENSORPORT = 0;
+    }
+
     public static final class CANIDs {
+      public static final int elbow = 50;
+      public static final int elbow_follower = 3;
+      public static final int wrist = 51;
+
+      public static final int low_side = 52;
+      public static final int high_side = 53;
+      
     }
  
-    public static final class AutoConstants {
-        public static final double kMaxSpeedMetersPerSecond = DriveConstants.kPhysicalMaxSpeedMetersPerSecond/1 ;
-        public static final double kMaxAngularSpeedRadiansPerSecond = 
-                                DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond / 4;
-        public static final double kMaxAccelerationMetersPerSecondSquared = 4;
-        public static final double kMaxAngularAccelerationRadiansPerSecondSquared = Math.PI / 4;
-        public static final double kPXController = .0;   // 1.5;
-        public static final double kPYController = .0;    // 1.5;
-        public static final double kPThetaController = .0;  //.06; // 3;
+    public static final class AutoConstants {    /////////// *************************************
+        public static final double kMaxSpeedMetersPerSecond = 3.0;   // DriveConstants.kPhysicalMaxSpeedMetersPerSecond/4 ;
+        public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
+                             //   DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond / 10;
+        public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+        public static final double kMaxAngularAccelerationRadiansPerSecondSquared = Math.PI;  //   / 4;
+        public static final double kPXController = .1;   // 1.5;
+        public static final double kPYController = .1;    // 1.5;
+        public static final double kPThetaController = 1;  //.06; // 3;
 
         public static final TrapezoidProfile.Constraints kThetaControllerConstraints = //
                 new TrapezoidProfile.Constraints(

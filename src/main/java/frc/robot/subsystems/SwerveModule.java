@@ -16,6 +16,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.ModuleConstants;
 import frc.robot.Constants.RobotConstants;
@@ -55,8 +56,9 @@ public class SwerveModule {
 
     m_driveMotor.restoreFactoryDefaults();
     m_turningMotor.restoreFactoryDefaults();
+    
 
-    m_driveMotor.setIdleMode(IdleMode.kCoast);
+    m_driveMotor.setIdleMode(IdleMode.kBrake);
     m_turningMotor.setIdleMode(IdleMode.kBrake);
 
     m_driveMotor.setSmartCurrentLimit(ModuleConstants.kDriveMotorCurrentLimit);
@@ -113,6 +115,8 @@ public class SwerveModule {
     // m_turningMotor.burnFlash();
   }
 
+  
+
   /**
    * @return The current state of the module.
    */
@@ -145,6 +149,14 @@ public class SwerveModule {
         state.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity);
     m_turningPIDController.setReference(
         state.angle.getRotations(), CANSparkMax.ControlType.kPosition);
+  }
+
+  public void BreakMode() {
+    m_driveMotor.setIdleMode(IdleMode.kBrake);
+  }
+
+  public void CoastMode() {
+    m_driveMotor.setIdleMode(IdleMode.kCoast);
   }
 
   public void resetDriveEncoder() {
@@ -252,5 +264,15 @@ public class SwerveModule {
    */
   public String getName() {
     return moduleName;
+  }
+
+  /*public void voltageDrive(double sysSpeed) {
+    m_driveMotor.set(sysSpeed);
+  }*/
+  public double getVelocity() {
+    return m_driveEncoder.getVelocity();
+  }
+  public double getVoltage() {
+    return m_driveMotor.getBusVoltage();
   }
 }

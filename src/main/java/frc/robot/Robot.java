@@ -18,7 +18,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.net.PortForwarder;
 //import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.DataLogManager;
+//import edu.wpi.first.wpilibj.DataLogManager;   //MEE
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.PowerDistribution;
@@ -78,7 +78,7 @@ public class Robot extends TimedRobot {
         pigeon = m_robotContainer.getGyro();
         PortForwarder.add(1182, "photonvision.local",5800 );
 
-        DataLogManager.start();
+        //DataLogManager.start();   //MEE
     }
 
     /**

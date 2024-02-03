@@ -17,15 +17,22 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.units.Measure;
+import edu.wpi.first.units.Voltage;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.sysid.SysIdRoutineLog;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.RobotConstants;
 
+
 /** Constructs a swerve drive style drivetrain. */
 public class Drivetrain extends SubsystemBase {
+  boolean iShouldStop;
   static double kMaxSpeed = Constants.DriveConstants.kMaxTranslationalVelocity;
   static double kMaxAngularSpeed = Constants.DriveConstants.kMaxRotationalVelocity;
 
@@ -60,9 +67,10 @@ public class Drivetrain extends SubsystemBase {
 
   private final Pigeon2 m_gyro = new Pigeon2(1);
 
+
   private final SwerveDriveOdometry m_odometry =
       new SwerveDriveOdometry(
-          DriveConstants.kDriveKinematics,
+          DriveConstants.kDriveKinematics1,
           m_gyro.getRotation2d(),
           new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
@@ -134,7 +142,7 @@ public class Drivetrain extends SubsystemBase {
   }
 
   /** Reconfigures all swerve module steering angles using external alignment device */
- /*  public void zeroAbsTurningEncoderOffsets() {
+  /*  public void zeroAbsTurningEncoderOffsets() {
     for (SwerveModule module : modules) {
       module.zeroAbsTurningEncoderOffset();
     }
@@ -154,10 +162,30 @@ public class Drivetrain extends SubsystemBase {
       return Rotation2d.fromDegrees(getHeading().getDegrees());
   }
 
+    /**
+     * @return rotate 90 degrees
+     */
+    public Rotation2d desiredRotation() {
+      return Rotation2d.fromDegrees(270);
+    }
+
+    public void BreakMode() {
+      m_frontLeft.BreakMode();
+      m_frontRight.BreakMode();
+      m_backLeft.BreakMode();
+      m_backRight.BreakMode();
+    }
+
+    public void CoastMode() {
+      m_frontLeft.CoastMode();
+      m_frontRight.CoastMode();
+      m_backLeft.CoastMode();
+      m_backRight.CoastMode();
+    }
 
   public SwerveModuleState[] chassis2ModuleStates(ChassisSpeeds speeds){
     return DriveConstants.kDriveKinematics.toSwerveModuleStates(speeds);
-}
+  }
   public Pose2d getPose() {
     return m_odometry.getPoseMeters();
   }
@@ -201,15 +229,46 @@ public class Drivetrain extends SubsystemBase {
     m_frontRight.stop();
     m_backLeft.stop();
     m_backRight.stop();
-}
+  }
 
-public void setModuleStates(SwerveModuleState[] desiredStates) {
-  SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, DriveConstants.kPhysicalMaxSpeedMetersPerSecond);
-  m_frontLeft.setDesiredState(desiredStates[0]);
-  m_frontRight.setDesiredState(desiredStates[1]);
-  m_backLeft.setDesiredState(desiredStates[2]);
-  m_backRight.setDesiredState(desiredStates[3]);
-}
+  public void setModuleStates(SwerveModuleState[] desiredStates) {
+    SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, DriveConstants.kPhysicalMaxSpeedMetersPerSecond);
+    m_frontLeft.setDesiredState(desiredStates[0]);
+    m_frontRight.setDesiredState(desiredStates[1]);
+    m_backLeft.setDesiredState(desiredStates[2]);
+    m_backRight.setDesiredState(desiredStates[3]);
+  }
+
+    /**Drives in robot or field coordinate system.
+     * @xhowfast and 
+     * @yhowfast are the components of the vector
+     * in meters/sec,
+     * @turnSpeed is the rotation rate in radians/sec counterclockwise
+     */
+    public void driveit(double xhowfast, double yhowfast, double turnSpeed, boolean fieldoriented) {
+      // Remember that xspeed is backwards on robot
+      ChassisSpeeds chassisSpeeds;
+      if (fieldoriented){
+           chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
+              -xhowfast, yhowfast, turnSpeed, getRotation2d());
+      } 
+      else{
+          chassisSpeeds = new ChassisSpeeds(-xhowfast, yhowfast,
+                                       turnSpeed);
+      }
+      
+      SwerveModuleState[] moduleStates = chassis2ModuleStates(chassisSpeeds);
+      setModuleStates(moduleStates);
+  }
+
+  public boolean shouldistop() {
+    return iShouldStop;
+  }
+
+  public void makemefalse() {
+    iShouldStop = false;
+  } 
+
   
 
   /* public void configurePathPlanner() {
@@ -251,4 +310,28 @@ public void setModuleStates(SwerveModuleState[] desiredStates) {
         this // Reference to this subsystem to set requirements
         );
   } */
+
+  /*SysIdRoutine routine = new SysIdRoutine(
+    new SysIdRoutine.Config(),
+    new SysIdRoutine.Mechanism(this::voltageDrive, this::logMotors, this)
+    );
+  public String getName() {
+    return "MrGumbert";
+  }
+  public void voltageDrive(Measure<Voltage> sysSpeed) {
+    m_frontLeft.voltageDrive(sysSpeed.magnitude());
+    m_frontRight.voltageDrive(sysSpeed.magnitude());
+    m_backLeft.voltageDrive(sysSpeed.magnitude());
+    m_backRight.voltageDrive(sysSpeed.magnitude());
+  }
+  public double[] logMotors(SysIdRoutineLog kidGumbert) {
+    double[] MrsGumbert =
+    {m_frontLeft.getRelativeDrivePosition(), m_frontLeft.getVelocity(), m_frontLeft.getVoltage()};
+    return MrsGumbert;
+  }
+
+  public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+    return routine.quasistatic(direction);
+  }*/
+
 }
