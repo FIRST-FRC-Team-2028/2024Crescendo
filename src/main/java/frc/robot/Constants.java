@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
  *    Availablility of Subsystems
  *    ModuleConstants
  *    DriveConstants
+ *    ArmConstants
+ *    IntakeConstants
  *    CANIDs
  *    AutoConstants
  *    OIConstants
