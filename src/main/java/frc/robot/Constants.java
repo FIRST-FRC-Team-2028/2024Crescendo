@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
  *    Availablility of Subsystems
  *    ModuleConstants
  *    DriveConstants
+ *    ArmConstants
+ *    IntakeConstants
  *    CANIDs
  *    AutoConstants
  *    OIConstants
@@ -24,8 +26,9 @@ import edu.wpi.first.wpilibj.TimedRobot;
 
 public final class Constants {
   public static final boolean PHOTONVISION_AVAILABLE = false;
+  public static final boolean DRIVE_AVAILABLE = false;
   public static final boolean ARM_AVAILABLE = false;
-  public static final boolean HANDLER_AVAILABLE = false;
+  public static final boolean INTAKE_AVAILABLE = false;
   public static final boolean CLIMB_AVAILABLE = false;
   public static final boolean PIXY_AVAILABLE = false;
 

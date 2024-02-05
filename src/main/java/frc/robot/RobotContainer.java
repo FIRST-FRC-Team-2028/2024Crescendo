@@ -39,11 +39,15 @@ import frc.robot.commands.GetRobotPosition;
 import frc.robot.commands.SwerveJoystickCmd;
 //import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.AprilTagCamera;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Intake;
 
 public class RobotContainer {
 
-    private final Drivetrain swerveSubsystem;
+    private Arm armSubsystem;
+    private Intake intakeSubsystem;
+    private Drivetrain swerveSubsystem;
     private AprilTagCamera camera;
     //private DriveGeneric driveGeneric;
     private Pigeon2 gyro;
@@ -63,11 +67,20 @@ public class RobotContainer {
                 () -> driverJoytick.getRawAxis(OIConstants.kDriverRotAxis),
                 () -> !driverJoytick.getRawButton(OIConstants.kDriverFieldOrientedButtonIdx)));
         */
-        swerveSubsystem = new Drivetrain();
+        if (Constants.DRIVE_AVAILABLE){
+                swerveSubsystem = new Drivetrain();
+        }
+
         SmartDashboard.putData(swerveSubsystem);
         
         if (Constants.PHOTONVISION_AVAILABLE){
                 camera = new AprilTagCamera();
+        }
+        if (Constants.ARM_AVAILABLE){
+                armSubsystem = new Arm();
+        }
+        if (Constants.INTAKE_AVAILABLE){
+                intakeSubsystem = new Intake();
         }
         gyro = new Pigeon2(0);
         configureButtonBindings();       
