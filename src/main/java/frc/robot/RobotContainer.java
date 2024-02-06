@@ -69,33 +69,37 @@ public class RobotContainer {
         */
         if (Constants.DRIVE_AVAILABLE){
                 swerveSubsystem = new Drivetrain();
-        }
+                SmartDashboard.putData(swerveSubsystem);
+        } else swerveSubsystem = null;
 
-        SmartDashboard.putData(swerveSubsystem);
+
         
         if (Constants.PHOTONVISION_AVAILABLE){
                 camera = new AprilTagCamera();
         }
         if (Constants.ARM_AVAILABLE){
                 armSubsystem = new Arm();
-        }
+        } else armSubsystem = null;
         if (Constants.INTAKE_AVAILABLE){
                 intakeSubsystem = new Intake();
-        }
+        } else intakeSubsystem = null;
         gyro = new Pigeon2(0);
         configureButtonBindings();       
 
         m_chooser = new SendableChooser<>();
         
     }
-   //MEE 
+
+     //MEE 
      private void configureButtonBindings() { 
         // driverJoytick Buttons
+        if (swerveSubsystem!=null){
         new JoystickButton(driverJoytick, OIConstants.kDriverResetGyroButtonIdx).
           onTrue(new InstantCommand(() -> swerveSubsystem.resetGyro())); 
         new JoystickButton(driverJoytick, OIConstants.kDriverResetOdometryButtonIdx).
           onTrue(new InstantCommand(() -> 
           swerveSubsystem.resetOdometry(new Pose2d(0., 0., new Rotation2d(0.0)))));
+        }
          /*  new JoystickButton(driverJoytick, 5).
           whileTrue(routine.quasistatic(SysIdRoutine.Direction.kForward));
         // whenPressed(() -> swerveSubsystem.resetOdometry(new Pose2d(0., 0., new Rotation2d(0.0))));
@@ -114,10 +118,10 @@ public class RobotContainer {
 
  
      /**
- * @return
- */
-public Command getAutonomousCommand() {
-        // 1. Create trajectory settings
+     * @return
+     */
+     public Command getAutonomousCommand() {
+         // 1. Create trajectory settings
         TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
                 AutoConstants.kMaxSpeedMetersPerSecond,
                 AutoConstants.kMaxAccelerationMetersPerSecondSquared)
@@ -243,7 +247,7 @@ public Command getAutonomousCommand() {
     }
     
  
-         public Drivetrain getSwerveSS() {
+    public Drivetrain getSwerveSS() {
             return swerveSubsystem;
     }
 
