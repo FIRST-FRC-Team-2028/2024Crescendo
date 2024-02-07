@@ -21,6 +21,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.Drivetrain;
@@ -44,7 +46,7 @@ public class Robot extends TimedRobot {
     private SlewRateLimiter xLimiter, yLimiter, turningLimiter;
     private final Joystick driverJoytick = new Joystick(OIConstants.kDriverControllerPort);
     private Drivetrain swerveSubsystem;
-    private Pigeon2 pigeon;
+   // private Pigeon2 pigeon;
 
     private PowerDistribution PDH;
     //private AnalogInput pixyCam;
@@ -75,7 +77,7 @@ public class Robot extends TimedRobot {
        
         m_robotContainer = new RobotContainer();
         // System.out.println("PDP = " + PDP.getType());  // a quick death for Comp Bot
-        pigeon = m_robotContainer.getGyro();
+     //   pigeon = m_robotContainer.getGyro();
         PortForwarder.add(1182, "photonvision.local",5800 );
 
         //DataLogManager.start();   //MEE
@@ -181,9 +183,9 @@ public class Robot extends TimedRobot {
         //SmartDashboard.putNumber("BotA", pigeon.getAngle());
         SmartDashboard.putNumber("BatV", PDH.getVoltage());
 
-        SmartDashboard.putNumber("Pitch", pigeon.getPitch().getValue().doubleValue());
-        SmartDashboard.putNumber("Yaw", pigeon.getYaw().getValue().doubleValue());
-        SmartDashboard.putNumber("Angle", pigeon.getAngle());
+     //   SmartDashboard.putNumber("Pitch", pigeon.getPitch().getValue().doubleValue());
+      //  SmartDashboard.putNumber("Yaw", pigeon.getYaw().getValue().doubleValue());
+      //  SmartDashboard.putNumber("Angle", pigeon.getAngle());
 
         //SmartDashboard.putNumber()
 
@@ -280,10 +282,21 @@ public class Robot extends TimedRobot {
     @Override
 
     public void testPeriodic() {
+        if (new JoystickButton(driverJoytick, OIConstants.kElbowUpButton).getAsBoolean()) {
+            new InstantCommand(()-> m_robotContainer.getArm().elbowUpSlow());  
+        } else {
+            m_robotContainer.getArm().stopElbow();
+        }
+         
+        if (new JoystickButton(driverJoytick, OIConstants.kElbowDownButton).getAsBoolean() ) {
+            new InstantCommand(()-> m_robotContainer.getArm().elbowDownSlow());  
+        } else {
+            m_robotContainer.getArm().stopElbow();
+        }
       /*   swerveSubsystem = m_robotContainer.getSwerveSS();
         SmartDashboard.putNumber("FLabs", swerveSubsystem.getModules()[0].getAbsoluteEncoderRad());
         SmartDashboard.putNumber("FL Turn", swerveSubsystem.getModules()[0].getTurningPosition());
-        SmartDashboard.putNumber("FRabs", swerveSubsystem.getModules()[1].getAbsoluteEncoderRad());
+        SmartDashboard.putNumber("FRabs", swerveSubsystem.getModules()[1].getAbsoluteEncoderRa d());
         SmartDashboard.putNumber("FR Turn", swerveSubsystem.getModules()[1].getTurningPosition());
         SmartDashboard.putNumber("BRabs", swerveSubsystem.getModules()[2].getAbsoluteEncoderRad());
         SmartDashboard.putNumber("BR Turn", swerveSubsystem.getModules()[2].getTurningPosition());

@@ -6,13 +6,13 @@ package frc.robot.subsystems;
 
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkLowLevel;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkPIDController;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -33,26 +33,29 @@ public class Arm extends SubsystemBase {
   private final RelativeEncoder wrist_encoder;
   private final SparkPIDController elbow_PidController;
   private final SparkPIDController wrist_PidController;
-  private final AnalogInput elbowInit;
-
+  private final AnalogInput boreHole;
   double Target;
   double WristTarget;
   double kp;
   double wkp;
   boolean IamDone;
   
+  
   /** Creates a new Arm. */
   public Arm() {
     elbow = new CANSparkMax(Constants.CANIDs.elbow, MotorType.kBrushless);
     elbow_follower = new CANSparkMax(Constants.CANIDs.elbow_follower, MotorType.kBrushless);
     wrist = new CANSparkMax(Constants.CANIDs.wrist, MotorType.kBrushless);
+    boreHole = new AnalogInput(Constants.ArmConstants.kAbsoluteEncoder);
+    boreHole.setAverageBits(40);
 
     elbow.restoreFactoryDefaults();
     elbow_follower.restoreFactoryDefaults();
     wrist.restoreFactoryDefaults();
-    elbow_follower.follow(elbow, false);
+    //elbow_follower.follow(elbow, false);
 
     elbow.setIdleMode(IdleMode.kBrake);
+    elbow_follower.setIdleMode(IdleMode.kBrake);
     wrist.setIdleMode(IdleMode.kBrake);
 
     elbow_encoder = elbow.getEncoder();
@@ -74,8 +77,7 @@ public class Arm extends SubsystemBase {
     wrist.setSoftLimit(SoftLimitDirection.kForward, ArmConstants.kWristForwardLimit); //wrist forward limit
     wrist.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.kWristReverseLimit); //wrist reverse limit
 
-    elbowInit = new AnalogInput(Constants.ArmConstants.ABSENCODERPORT);
-    elbow_encoder.setPosition(abs2rel(elbowInit.getAverageValue()));
+    elbow_encoder.setPosition(abs2rel(boreHole.getAverageValue()));
 
   }
 
@@ -83,6 +85,21 @@ public class Arm extends SubsystemBase {
   double abs2rel(double absval){
     return Constants.ArmConstants.RelMin + Constants.ArmConstants.Ratio * (absval - Constants.ArmConstants.AbsMin);
   }
+  public void elbowUp() {
+   elbow.set(1);
+  }
+  public void elbowDown() {
+    elbow.set(-1);
+  }
+  public void elbowDownSlow() {
+    elbow.set(-.2);
+  }
+  public void elbowUpSlow() {
+    elbow.set(.2);
+  }
+/* For test:
+* stepping the motor 1 or 2 degrees in both directions
+* */
 
   @Override
   public void periodic() {

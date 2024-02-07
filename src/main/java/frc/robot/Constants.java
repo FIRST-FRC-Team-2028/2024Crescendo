@@ -8,7 +8,9 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.I2C.Port;
 
 /* Table of Contents:
  *    Availablility of Subsystems
@@ -19,6 +21,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
  *    CANIDs
  *    AutoConstants
  *    OIConstants
+ *    ColorConstants
  *    CamConstant
  *    RobotConstants
  *    FieldConstants
@@ -26,8 +29,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
 
 public final class Constants {
   public static final boolean PHOTONVISION_AVAILABLE = false;
-  public static final boolean DRIVE_AVAILABLE = true;
-  public static final boolean ARM_AVAILABLE = false;
+  public static final boolean DRIVE_AVAILABLE = false;
+  public static final boolean ARM_AVAILABLE = true;
   public static final boolean INTAKE_AVAILABLE = false;
   public static final boolean CLIMB_AVAILABLE = false;
   public static final boolean PIXY_AVAILABLE = false;
@@ -223,18 +226,18 @@ public final class Constants {
       public static final double kElbowAmp = 0;
       public static final double elbowTolerance = 0;
       public static final double wristTolerance = 0;
-
       public static final float kElbowForwardLimit = 0;
+      public static final int kAbsoluteEncoder = 0;
       public static final float kElbowReverseLimit = 0;
       public static final float kWristForwardLimit = 0;
       public static final float kWristReverseLimit = 0;
       public static final int ABSENCODERPORT = 0;
       public static final int RelMin = 0;
       public static final int Ratio = 0;
-      public static final double AbsMin = 0;
+      public static final double AbsMin = 215;
     }
 
-    public static final class IntakeConstants {
+    public static final class HandlerConstants {
       //public static final double kLowP = 0;
       //public static final double kLowI = 0;
       //public static final double kLowD = 0;
@@ -245,12 +248,13 @@ public final class Constants {
       public static final double kHighOutSpeed = 0;
       public static final double kLowOutSpeed = 0;
       public static final int SENSORPORT = 0;
+      
     }
 
     public static final class CANIDs {
       public static final int elbow = 50; // left
       public static final int elbow_follower = 51; // right
-      public static final int wrist = 51;
+      public static final int wrist = 99;
 
       public static final int low_side = 53;
       public static final int high_side = 54;
@@ -285,11 +289,16 @@ public final class Constants {
         public static final int kDriverXAxis                  = 1;
         public static final int kDriverRotAxis                = 4;
         public static final int fineControlAxis               = 2;
-        public static final int kDriverResetGyroButtonIdx     = 1; // driverJoytick button A
-        public static final int kDriverResetOdometryButtonIdx = 3; // driverJoytick button X
+        public static final int kDriverResetGyroButtonIdx     = 1; // driverJoystick button A
+        public static final int kDriverResetOdometryButtonIdx = 3; // driverJoystick button X
         public static final int BALANCE_AUGMENTER             = 4; //  driver stick Y button
         public static final int DriveGenericTester            = 4; //  driver stick Y button
-        public static final int kDriverFieldOrientedButtonIdx = 5; // driverJoytick button left-bumper
+        public static final int kDriverFieldOrientedButtonIdx = 5; // driverJoystick button left-bumper
+        public static final int kElbowUpButton                = 3; // driverJoystick button right-bumper
+        public static final int kElbowDownButton              = 2; // driverJoystick back button
+        public static final int kStopElbowButton              = 1; // driverJoystick start button
+        
+        //need to start putting stuff on the button board TODO
         
         public static final double kDeadband = 0.05;
     }

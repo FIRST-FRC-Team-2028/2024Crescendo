@@ -54,7 +54,7 @@ public class RobotContainer {
     private SysIdRoutine routine;
     SendableChooser <Command> m_chooser;
     
-    
+  
     private final Joystick driverJoytick = new Joystick(OIConstants.kDriverControllerPort);
   
     
@@ -89,6 +89,9 @@ public class RobotContainer {
         m_chooser = new SendableChooser<>();
         
     }
+     public final Arm getArm() {
+        return armSubsystem;
+        }
 
      //MEE 
      private void configureButtonBindings() { 
@@ -112,7 +115,12 @@ public class RobotContainer {
                 //new JoystickButton(buttonBox1, OIConstants.kgetAprilTagButton).
                         //onTrue(new GetAprilTag(camera));
         }*/
- 
+        new JoystickButton(driverJoytick, OIConstants.kElbowUpButton).
+                whileTrue(new InstantCommand(()-> armSubsystem.elbowUp()));
+        new JoystickButton(driverJoytick, OIConstants.kElbowDownButton).
+                whileTrue(new InstantCommand(()-> armSubsystem.elbowDown()));
+        new JoystickButton(driverJoytick, OIConstants.kStopElbowButton).
+                whileTrue(new InstantCommand(()-> armSubsystem.stopElbow()));
      }
  
 
@@ -251,9 +259,9 @@ public class RobotContainer {
             return swerveSubsystem;
     }
 
-    public Pigeon2 getGyro() {
+ /* EMM   public Pigeon2 getGyro() {
         return gyro;
-    }
+    }*/
 
     public AprilTagCamera getPhotonVisionSS() {
         if (Constants.PHOTONVISION_AVAILABLE) {
