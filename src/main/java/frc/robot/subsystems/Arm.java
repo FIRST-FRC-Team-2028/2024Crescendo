@@ -15,6 +15,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.ArmConstants;
@@ -77,7 +78,10 @@ public class Arm extends SubsystemBase {
     wrist.setSoftLimit(SoftLimitDirection.kForward, ArmConstants.kWristForwardLimit); //wrist forward limit
     wrist.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.kWristReverseLimit); //wrist reverse limit
 
-    elbow_encoder.setPosition(abs2rel(boreHole.getAverageValue()));
+    elbow.enableSoftLimit(SoftLimitDirection.kForward,IamDone);
+    elbow.enableSoftLimit(SoftLimitDirection.kReverse, IamDone);
+
+    //elbow_encoder.setPosition(abs2rel(boreHole.getAverageValue()));
 
   }
 
@@ -87,7 +91,9 @@ public class Arm extends SubsystemBase {
   }
   public void elbowUp() {
    elbow.set(1);
-  }
+
+SmartDashboard.putNumber("Encoder test", elbow_encoder.getPosition());
+System.out.println("Insdie elbowup"); }
   public void elbowDown() {
     elbow.set(-1);
   }
@@ -97,12 +103,18 @@ public class Arm extends SubsystemBase {
   public void elbowUpSlow() {
     elbow.set(.2);
   }
+  
 /* For test:
 * stepping the motor 1 or 2 degrees in both directions
 * */
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("RelVal", elbow_encoder.getPosition());
+    SmartDashboard.putNumber("AbsVal", boreHole.getAverageValue());
+
+
+    System.out.println("TEST");
     // This method will be called once per scheduler run
   }
 
