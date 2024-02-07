@@ -6,14 +6,18 @@ package frc.robot.commands;
 
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Intake;
+import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.subsystems.Handler;
 
 public class InHandler extends Command {
-  Intake intake;
-  /** Acquire a note */
-  public InHandler(Intake Intake) {
+  Handler intake;
+  /** Acquire a note
+   * run an intake motor in the intake direction
+   * stop motor when note is acquired 
+   */
+  public InHandler(Handler Intake) {
     intake = Intake;
-    // Use addRequirements() here to declare subsystem dependencies. TODO
+    addRequirements(Intake); // here to declare subsystem dependencies. TODO
   }
 
   // Called when the command is initially scheduled.
@@ -23,9 +27,14 @@ public class InHandler extends Command {
  //   intake.iHaveIt();                                           COLOR SENSOR STUFF
  // } else intake.iDontHaveIt();                                  COLOR SENSOR STUFF
   
-  if (!intake.doIHaveIt()); {
-      intake.low_in();
+  
+   if (intake.sense()) {
+        intake.stop();
     }
+    else {
+     intake.low_in();
+    }
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.

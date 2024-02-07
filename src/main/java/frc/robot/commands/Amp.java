@@ -7,14 +7,14 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Handler;
 
 public class Amp extends Command {
-  Intake intake;
+  Handler intake;
   Timer timer;
 
   /** Put the note in the Amp */
-  public Amp(Intake Intake) {
+  public Amp(Handler Intake) {
     intake = Intake;
 
 
