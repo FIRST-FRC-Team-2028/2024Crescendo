@@ -23,11 +23,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 /** Intake consists of:
- *     motor to drive intake rollers and belts,
+ *     motor to drive intake rollers and belts, low_side
  *     motor to drive shooter rollers,
  *     sensor to determine when note has been acquired.
  */
-public class Intake extends SubsystemBase {
+public class Handler extends SubsystemBase {
   private final TalonSRX low_side;
   private final TalonSRX high_side;
   private final AnalogInput sensor;
@@ -39,7 +39,7 @@ public class Intake extends SubsystemBase {
   //private final SparkPIDController low_PidController;
   //private final SparkPIDController high_PidController;
   /** Creates a new Intake. */
-  public Intake() {
+  public Handler() {
     low_side = new TalonSRX(Constants.CANIDs.low_side);
     high_side = new TalonSRX(Constants.CANIDs.high_side);
 
@@ -79,6 +79,11 @@ public class Intake extends SubsystemBase {
 
   public boolean doIHaveIt() {
     return doIHaveIt;
+  }
+ 
+  /**Returns true if we sense one */
+  public boolean sense() {
+    return false;
   }
 
   public void iHaveIt() {

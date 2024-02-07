@@ -6,17 +6,17 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Handler;
 
 public class Speaker extends Command {
-  Intake intake;
+  Handler intake;
   Timer timer;
 
   /* Shoot into the Speaker:
    *   Presuming the robot is positioned and named9
    */
   /** Shoot note into Speaker */
-  public Speaker(Intake Intake) {
+  public Speaker(Handler Intake) {
     intake = Intake;
     addRequirements(intake);   // here to declare subsystem dependencies. TODO
   }
