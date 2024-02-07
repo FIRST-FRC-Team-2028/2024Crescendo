@@ -54,7 +54,7 @@ public class RobotContainer {
     private SysIdRoutine routine;
     SendableChooser <Command> m_chooser;
     
-    private final Arm m_Arm= new Arm();
+  
     private final Joystick driverJoytick = new Joystick(OIConstants.kDriverControllerPort);
   
     
@@ -90,7 +90,7 @@ public class RobotContainer {
         
     }
      public final Arm getArm() {
-        return m_Arm;
+        return armSubsystem;
         }
 
      //MEE 
@@ -116,11 +116,11 @@ public class RobotContainer {
                         //onTrue(new GetAprilTag(camera));
         }*/
         new JoystickButton(driverJoytick, OIConstants.kElbowUpButton).
-                whileTrue(new InstantCommand(()-> m_Arm.elbowUp()));
+                whileTrue(new InstantCommand(()-> armSubsystem.elbowUp()));
         new JoystickButton(driverJoytick, OIConstants.kElbowDownButton).
-                whileTrue(new InstantCommand(()-> m_Arm.elbowDown()));
+                whileTrue(new InstantCommand(()-> armSubsystem.elbowDown()));
         new JoystickButton(driverJoytick, OIConstants.kStopElbowButton).
-                whileTrue(new InstantCommand(()-> m_Arm.stopElbow()));
+                whileTrue(new InstantCommand(()-> armSubsystem.stopElbow()));
      }
  
 
