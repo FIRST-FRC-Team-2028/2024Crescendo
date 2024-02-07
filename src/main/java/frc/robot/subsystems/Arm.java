@@ -78,9 +78,8 @@ public class Arm extends SubsystemBase {
     wrist.setSoftLimit(SoftLimitDirection.kForward, ArmConstants.kWristForwardLimit); //wrist forward limit
     wrist.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.kWristReverseLimit); //wrist reverse limit
 
-    elbow.enableSoftLimit(SoftLimitDirection.kForward,IamDone);
-    elbow.enableSoftLimit(SoftLimitDirection.kReverse, IamDone);
-
+    elbow.enableSoftLimit(SoftLimitDirection.kForward, true);
+       elbow.enableSoftLimit(SoftLimitDirection.kReverse, true);
     //elbow_encoder.setPosition(abs2rel(boreHole.getAverageValue()));
 
   }
