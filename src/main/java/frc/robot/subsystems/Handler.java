@@ -62,7 +62,13 @@ public class Handler extends SubsystemBase {
     //high_PidController.setP(Constants.IntakeConstants.kHighP);
     //high_PidController.setI(Constants.IntakeConstants.kHighI);
     //high_PidController.setD(Constants.IntakeConstants.kHighD);
-    sensor = new AnalogInput(Constants.IntakeConstants.SENSORPORT);
+    sensor = new AnalogInput(Constants.HandlerConstants.SENSORPORT);
+  }
+
+  /** return true if sensor sees a note */
+  public boolean useSensor() {
+    // return sensor.get();  TODO
+    return false;
   }
 
   @Override
@@ -91,15 +97,15 @@ public class Handler extends SubsystemBase {
 
 
   public void high_out() {
-    high_side.set(TalonSRXControlMode.PercentOutput, Constants.IntakeConstants.kHighOutSpeed);
+    high_side.set(TalonSRXControlMode.PercentOutput, Constants.HandlerConstants.kHighOutSpeed);
   }
 
   public void low_in() {
-    low_side.set(TalonSRXControlMode.PercentOutput, Constants.IntakeConstants.kLowInSpeed);
+    low_side.set(TalonSRXControlMode.PercentOutput, Constants.HandlerConstants.kLowInSpeed);
   }
 
   public void low_out() {
-    low_side.set(TalonSRXControlMode.PercentOutput, Constants.IntakeConstants.kLowOutSpeed);
+    low_side.set(TalonSRXControlMode.PercentOutput, Constants.HandlerConstants.kLowOutSpeed);
   }
 
   public void stop() {

@@ -12,10 +12,13 @@ public class Speaker extends Command {
   Handler intake;
   Timer timer;
 
+  /* Shoot into the Speaker:
+   *   Presuming the robot is positioned and named9
+   */
   /** Shoot note into Speaker */
   public Speaker(Handler Intake) {
     intake = Intake;
-    // Use addRequirements() here to declare subsystem dependencies. TODO
+    addRequirements(intake);   // here to declare subsystem dependencies. TODO
   }
 
   // Called when the command is initially scheduled.
@@ -47,7 +50,5 @@ public class Speaker extends Command {
   @Override
   public boolean isFinished() {
     return timer.hasElapsed(1);
-   
-    
   }
 }

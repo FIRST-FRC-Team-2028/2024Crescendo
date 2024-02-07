@@ -39,18 +39,22 @@ import frc.robot.commands.GetRobotPosition;
 import frc.robot.commands.SwerveJoystickCmd;
 //import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.AprilTagCamera;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Intake;
 
 public class RobotContainer {
 
-    private final Drivetrain swerveSubsystem;
+    private Arm armSubsystem;
+    private Intake intakeSubsystem;
+    private Drivetrain swerveSubsystem;
     private AprilTagCamera camera;
     //private DriveGeneric driveGeneric;
     private Pigeon2 gyro;
     private SysIdRoutine routine;
     SendableChooser <Command> m_chooser;
     
-    
+  
     private final Joystick driverJoytick = new Joystick(OIConstants.kDriverControllerPort);
   
     
@@ -63,26 +67,42 @@ public class RobotContainer {
                 () -> driverJoytick.getRawAxis(OIConstants.kDriverRotAxis),
                 () -> !driverJoytick.getRawButton(OIConstants.kDriverFieldOrientedButtonIdx)));
         */
-        swerveSubsystem = new Drivetrain();
-        SmartDashboard.putData(swerveSubsystem);
+        if (Constants.DRIVE_AVAILABLE){
+                swerveSubsystem = new Drivetrain();
+                SmartDashboard.putData(swerveSubsystem);
+        } else swerveSubsystem = null;
+
+
         
         if (Constants.PHOTONVISION_AVAILABLE){
                 camera = new AprilTagCamera();
         }
+        if (Constants.ARM_AVAILABLE){
+                armSubsystem = new Arm();
+        } else armSubsystem = null;
+        if (Constants.INTAKE_AVAILABLE){
+                intakeSubsystem = new Intake();
+        } else intakeSubsystem = null;
         gyro = new Pigeon2(0);
         configureButtonBindings();       
 
         m_chooser = new SendableChooser<>();
         
     }
-   //MEE 
+     public final Arm getArm() {
+        return armSubsystem;
+        }
+
+     //MEE 
      private void configureButtonBindings() { 
         // driverJoytick Buttons
+        if (swerveSubsystem!=null){
         new JoystickButton(driverJoytick, OIConstants.kDriverResetGyroButtonIdx).
           onTrue(new InstantCommand(() -> swerveSubsystem.resetGyro())); 
         new JoystickButton(driverJoytick, OIConstants.kDriverResetOdometryButtonIdx).
           onTrue(new InstantCommand(() -> 
           swerveSubsystem.resetOdometry(new Pose2d(0., 0., new Rotation2d(0.0)))));
+        }
          /*  new JoystickButton(driverJoytick, 5).
           whileTrue(routine.quasistatic(SysIdRoutine.Direction.kForward));
         // whenPressed(() -> swerveSubsystem.resetOdometry(new Pose2d(0., 0., new Rotation2d(0.0))));
@@ -95,16 +115,21 @@ public class RobotContainer {
                 //new JoystickButton(buttonBox1, OIConstants.kgetAprilTagButton).
                         //onTrue(new GetAprilTag(camera));
         }*/
- 
+        new JoystickButton(driverJoytick, OIConstants.kElbowUpButton).
+                whileTrue(new InstantCommand(()-> armSubsystem.elbowUp()));
+        new JoystickButton(driverJoytick, OIConstants.kElbowDownButton).
+                whileTrue(new InstantCommand(()-> armSubsystem.elbowDown()));
+        new JoystickButton(driverJoytick, OIConstants.kStopElbowButton).
+                whileTrue(new InstantCommand(()-> armSubsystem.stopElbow()));
      }
  
 
  
      /**
- * @return
- */
-public Command getAutonomousCommand() {
-        // 1. Create trajectory settings
+     * @return
+     */
+     public Command getAutonomousCommand() {
+         // 1. Create trajectory settings
         TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
                 AutoConstants.kMaxSpeedMetersPerSecond,
                 AutoConstants.kMaxAccelerationMetersPerSecondSquared)
@@ -230,13 +255,13 @@ public Command getAutonomousCommand() {
     }
     
  
-         public Drivetrain getSwerveSS() {
+    public Drivetrain getSwerveSS() {
             return swerveSubsystem;
     }
 
-    public Pigeon2 getGyro() {
+ /* EMM   public Pigeon2 getGyro() {
         return gyro;
-    }
+    }*/
 
     public AprilTagCamera getPhotonVisionSS() {
         if (Constants.PHOTONVISION_AVAILABLE) {
