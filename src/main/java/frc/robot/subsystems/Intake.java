@@ -65,6 +65,12 @@ public class Intake extends SubsystemBase {
     sensor = new AnalogInput(Constants.HandlerConstants.SENSORPORT);
   }
 
+  /** return true if sensor sees a note */
+  public boolean useSensor() {
+    // return sensor.get();  TODO
+    return false;
+  }
+
   @Override
   public void periodic() {
 

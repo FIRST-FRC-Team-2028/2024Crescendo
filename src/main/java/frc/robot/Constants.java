@@ -29,8 +29,9 @@ import edu.wpi.first.wpilibj.I2C.Port;
 
 public final class Constants {
   public static final boolean PHOTONVISION_AVAILABLE = false;
+  public static final boolean DRIVE_AVAILABLE = true;
   public static final boolean ARM_AVAILABLE = false;
-  public static final boolean HANDLER_AVAILABLE = false;
+  public static final boolean INTAKE_AVAILABLE = false;
   public static final boolean CLIMB_AVAILABLE = false;
   public static final boolean PIXY_AVAILABLE = false;
 
@@ -251,12 +252,12 @@ public final class Constants {
     }
 
     public static final class CANIDs {
-      public static final int elbow = 50;
-      public static final int elbow_follower = 51;
+      public static final int elbow = 50; // left
+      public static final int elbow_follower = 51; // right
       public static final int wrist = 99;
 
-      public static final int low_side = 52;
-      public static final int high_side = 53;
+      public static final int low_side = 53;
+      public static final int high_side = 54;
       
     }
  

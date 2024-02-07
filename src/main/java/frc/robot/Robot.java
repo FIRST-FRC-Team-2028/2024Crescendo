@@ -11,6 +11,11 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.Drivetrain;
 //import frc.robot.subsystems.SwerveSubsystem;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.CvSink;
+import edu.wpi.first.cscore.CvSource;
+import edu.wpi.first.cscore.MjpegServer;
+import edu.wpi.first.cscore.UsbCamera;
+
 import com.ctre.phoenix6.hardware.Pigeon2;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
@@ -19,6 +24,7 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.net.PortForwarder;
+import edu.wpi.first.util.PixelFormat;
 //import edu.wpi.first.wpilibj.AnalogInput;
 //import edu.wpi.first.wpilibj.DataLogManager;   //MEE
 import edu.wpi.first.wpilibj.Joystick;
@@ -61,6 +67,18 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotInit() {
+        UsbCamera usbCamera = new UsbCamera("USB Camera 0", 0);
+        MjpegServer mjpegServer1 = new MjpegServer("serve_USB Camera 0", 1181);
+        mjpegServer1.setSource(usbCamera);
+
+        // Creates the CvSink and connects it to the UsbCamera
+        CvSink cvSink = new CvSink("opencv_USB Camera 0");
+        cvSink.setSource(usbCamera);
+
+        // Creates the CvSource and MjpegServer [2] and connects them
+        CvSource outputStream = new CvSource("Blur", PixelFormat.kMJPEG, 640, 480, 30);
+        MjpegServer mjpegServer2 = new MjpegServer("serve_Blur", 1182);
+        mjpegServer2.setSource(outputStream);
         // Instantiate our RobotContainer.
         //      o build subsystems based on what is available,
         //      o perform all our button bindings,
@@ -174,6 +192,7 @@ public class Robot extends TimedRobot {
         //SmartDashboard.putNumber()
 
         // CRG use SwerveSubsystem drive methods similar to the SwerveJoysickCmd  {
+        if (Constants.DRIVE_AVAILABLE){
         // 1. Get real-time joystick inputs
         double xSpeed = -driverJoytick.getRawAxis(OIConstants.kDriverXAxis); // Negative values go forward
         double ySpeed = -driverJoytick.getRawAxis(OIConstants.kDriverYAxis);
@@ -252,7 +271,7 @@ public class Robot extends TimedRobot {
         //}
     
         //swerveSubsystem.reportStatesToSmartDashbd(moduleStates);
-
+    }
     }
 
     @Override
