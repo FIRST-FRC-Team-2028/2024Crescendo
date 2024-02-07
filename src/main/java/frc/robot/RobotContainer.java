@@ -46,7 +46,7 @@ import frc.robot.subsystems.Handler;
 public class RobotContainer {
 
     private Arm armSubsystem;
-    private Handler intakeSubsystem;
+    private Handler handlerSubsystem;
     private Drivetrain swerveSubsystem;
     private AprilTagCamera camera;
     //private DriveGeneric driveGeneric;
@@ -81,8 +81,8 @@ public class RobotContainer {
                 armSubsystem = new Arm();
         } else armSubsystem = null;
         if (Constants.INTAKE_AVAILABLE){
-                intakeSubsystem = new Handler();
-        } else intakeSubsystem = null;
+                handlerSubsystem = new Handler();
+        } else handlerSubsystem = null;
         gyro = new Pigeon2(0);
         configureButtonBindings();       
 
