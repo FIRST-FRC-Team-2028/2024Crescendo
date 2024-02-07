@@ -35,7 +35,6 @@ public class Speaker extends Command {
     if (timer.hasElapsed(.25)) {
       intake.low_in();
     }
-
   }
 
   // Called once the command ends or is interrupted.
