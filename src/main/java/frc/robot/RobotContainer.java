@@ -97,10 +97,10 @@ public class RobotContainer {
      private void configureButtonBindings() { 
         // driverJoytick Buttons
         if (swerveSubsystem!=null){
-        new JoystickButton(driverJoytick, OIConstants.kDriverResetGyroButtonIdx).
-          onTrue(new InstantCommand(() -> swerveSubsystem.resetGyro())); 
-        new JoystickButton(driverJoytick, OIConstants.kDriverResetOdometryButtonIdx).
-          onTrue(new InstantCommand(() -> 
+                new JoystickButton(driverJoytick, OIConstants.kDriverResetGyroButtonIdx).
+                        onTrue(new InstantCommand(() -> swerveSubsystem.resetGyro())); 
+                new JoystickButton(driverJoytick, OIConstants.kDriverResetOdometryButtonIdx).
+                        onTrue(new InstantCommand(() -> 
           swerveSubsystem.resetOdometry(new Pose2d(0., 0., new Rotation2d(0.0)))));
         }
          /*  new JoystickButton(driverJoytick, 5).
@@ -115,12 +115,14 @@ public class RobotContainer {
                 //new JoystickButton(buttonBox1, OIConstants.kgetAprilTagButton).
                         //onTrue(new GetAprilTag(camera));
         }*/
-        new JoystickButton(driverJoytick, OIConstants.kElbowUpButton).
-                whileTrue(new InstantCommand(()-> armSubsystem.elbowUp()));
-        new JoystickButton(driverJoytick, OIConstants.kElbowDownButton).
-                whileTrue(new InstantCommand(()-> armSubsystem.elbowDown()));
-        new JoystickButton(driverJoytick, OIConstants.kStopElbowButton).
-                whileTrue(new InstantCommand(()-> armSubsystem.stopElbow()));
+        if (armSubsystem!=null){
+                new JoystickButton(driverJoytick, OIConstants.kElbowUpButton).
+                        whileTrue(new InstantCommand(()-> armSubsystem.elbowUp()));
+                new JoystickButton(driverJoytick, OIConstants.kElbowDownButton).
+                        whileTrue(new InstantCommand(()-> armSubsystem.elbowDown()));
+                new JoystickButton(driverJoytick, OIConstants.kStopElbowButton).
+                        whileTrue(new InstantCommand(()-> armSubsystem.stopElbow()));
+        }
      }
  
 
