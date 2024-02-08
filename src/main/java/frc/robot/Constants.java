@@ -226,15 +226,15 @@ public final class Constants {
       public static final double kElbowAmp = 0;
       public static final double elbowTolerance = 0;
       public static final double wristTolerance = 0;
-      public static final float kElbowForwardLimit = 0;
-      public static final int kAbsoluteEncoder = 0;
-      public static final float kElbowReverseLimit = 0;
+      public static final float kElbowForwardLimit = 8;
+      public static final float kElbowReverseLimit = -70;
       public static final float kWristForwardLimit = 0;
       public static final float kWristReverseLimit = 0;
       public static final int ABSENCODERPORT = 0;
       public static final int RelMin = 0;
       public static final int Ratio = 0;
-      public static final double AbsMin = 215;
+      public static final double AbsMin = 0;
+        public static final int kAbsoluteEncoder = 0;
     }
 
     public static final class HandlerConstants {

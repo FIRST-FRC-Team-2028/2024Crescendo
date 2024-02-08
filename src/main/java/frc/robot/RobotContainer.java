@@ -41,12 +41,12 @@ import frc.robot.commands.SwerveJoystickCmd;
 import frc.robot.subsystems.AprilTagCamera;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Handler;
 
 public class RobotContainer {
 
     private Arm armSubsystem;
-    private Intake intakeSubsystem;
+    private Handler handlerSubsystem;
     private Drivetrain swerveSubsystem;
     private AprilTagCamera camera;
     //private DriveGeneric driveGeneric;
@@ -81,8 +81,8 @@ public class RobotContainer {
                 armSubsystem = new Arm();
         } else armSubsystem = null;
         if (Constants.INTAKE_AVAILABLE){
-                intakeSubsystem = new Intake();
-        } else intakeSubsystem = null;
+                handlerSubsystem = new Handler();
+        } else handlerSubsystem = null;
         gyro = new Pigeon2(0);
         configureButtonBindings();       
 
