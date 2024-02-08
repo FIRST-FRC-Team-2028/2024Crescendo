@@ -73,14 +73,29 @@ public class Arm extends SubsystemBase {
     wrist_PidController.setI(Constants.ArmConstants.kWristI);
     wrist_PidController.setD(Constants.ArmConstants.kWristD);
 
-    elbow.setSoftLimit(SoftLimitDirection.kForward, ArmConstants.kElbowForwardLimit); //elbow forward limit
-    elbow.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.kElbowReverseLimit); //elbow reverse limit
+    final double abs_pos_floor= 680;
+    final double abs_pos_upright= 1280;
+    final double abs_delta = abs_pos_upright - abs_pos_floor;
+
+    final double rel_delta = 70;  //  from floor to upright (0 at floor)
+
+  elbow_encoder.setPosition(     (boreHole.getAverageValue()-abs_pos_floor)*rel_delta/abs_delta    );
+
+
+   elbow.setSoftLimit(SoftLimitDirection.kForward, 70); //elbow forward limit
+   elbow.setSoftLimit(SoftLimitDirection.kReverse, 0); //elbow reverse limit
+
+
+  //  elbow.setSoftLimit(SoftLimitDirection.kForward, ArmConstants.kElbowForwardLimit); //elbow forward limit
+  //  elbow.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.kElbowReverseLimit); //elbow reverse limit
     wrist.setSoftLimit(SoftLimitDirection.kForward, ArmConstants.kWristForwardLimit); //wrist forward limit
     wrist.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.kWristReverseLimit); //wrist reverse limit
 
     elbow.enableSoftLimit(SoftLimitDirection.kForward, true);
        elbow.enableSoftLimit(SoftLimitDirection.kReverse, true);
-    //elbow_encoder.setPosition(abs2rel(boreHole.getAverageValue()));
+
+  
+  
 
   }
 
