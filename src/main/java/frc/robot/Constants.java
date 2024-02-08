@@ -28,12 +28,12 @@ import edu.wpi.first.wpilibj.I2C.Port;
  */
 
 public final class Constants {
-  public static final boolean PHOTONVISION_AVAILABLE = false;
-  public static final boolean DRIVE_AVAILABLE = false;
-  public static final boolean ARM_AVAILABLE = true;
+  public static final boolean PHOTONVISION_AVAILABLE = true;
+  public static final boolean DRIVE_AVAILABLE = true;
+  public static final boolean ARM_AVAILABLE = false;
   public static final boolean INTAKE_AVAILABLE = false;
   public static final boolean CLIMB_AVAILABLE = false;
-  public static final boolean PIXY_AVAILABLE = false;
+  public static final boolean APRIL_AVAILABLE = false;
 
 
   public static final class ModuleConstants {
