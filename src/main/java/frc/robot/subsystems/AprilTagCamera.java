@@ -23,6 +23,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.util.PixelFormat;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.CamConstant;
 
 public class AprilTagCamera extends SubsystemBase {
@@ -33,8 +34,8 @@ public class AprilTagCamera extends SubsystemBase {
    * Using the data we recive from the april tags we can determine the position of our robot relative to the tag
   */
   public AprilTagCamera() {
-    //camera = new PhotonCamera("Microsoft_LifeCam_HD-3000");
-    // Creates UsbCamera and MjpegServer [1] and connects them
+    camera = new PhotonCamera("Microsoft_LifeCam_HD-3000");
+     //Creates UsbCamera and MjpegServer [1] and connects them
 
   }
 
@@ -47,6 +48,7 @@ public class AprilTagCamera extends SubsystemBase {
    *   publish result to Network Table
    */                                                                                       
   public int getAprTag() {
+
     if(result != null) {
       target = result.getBestTarget();
       if(target == null){
@@ -57,7 +59,9 @@ public class AprilTagCamera extends SubsystemBase {
       return id;
     }
     return 999;
+
   }
+
 
   /** determines the location on the field of the robot
    * from its orientation relative to a visible April Tag.
@@ -78,7 +82,7 @@ public class AprilTagCamera extends SubsystemBase {
       * 3. Get the x and y offset of the camera relative to the tag
       * 4. the camera position is  the april tag + the offset 
       * 5. The robot position is the camera position + the offset of the camera relative to the robot
-      */                                                                                                                      
+      */                                                                                                              
       double camx = campos.getX();
       double camy = campos.getY();
       //double ang = campos.getRotation().getY();
@@ -116,7 +120,7 @@ public class AprilTagCamera extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    /* Look for an april tag */                                                                            
+    /* Look for an april tag */                                                                           
     result = camera.getLatestResult();
     boolean hasTargets = result.hasTargets();
     //SmartDashboard.putBoolean("hasTarget", hasTargets); 
