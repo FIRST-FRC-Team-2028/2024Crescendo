@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.can.MotControllerJNI;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 //import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ColorSensorV3;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.IdleMode;
@@ -30,7 +31,7 @@ import frc.robot.Constants;
 public class Handler extends SubsystemBase {
   private final TalonSRX low_side;
   private final TalonSRX high_side;
-  private final AnalogInput sensor;
+  private final ColorSensorV3 sensor;
   boolean doIHaveIt;
 
   //private final RelativeEncoder low_encoder;
@@ -62,7 +63,7 @@ public class Handler extends SubsystemBase {
     //high_PidController.setP(Constants.IntakeConstants.kHighP);
     //high_PidController.setI(Constants.IntakeConstants.kHighI);
     //high_PidController.setD(Constants.IntakeConstants.kHighD);
-    sensor = new AnalogInput(Constants.HandlerConstants.SENSORPORT);
+    sensor = new ColorSensorV3(Constants.ColorConstants.sensorPort);
   }
 
   /** return true if sensor sees a note */

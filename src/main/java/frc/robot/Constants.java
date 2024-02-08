@@ -10,18 +10,17 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.I2C.Port;
 
 /* Table of Contents:
  *    Availablility of Subsystems
  *    ModuleConstants
  *    DriveConstants
  *    ArmConstants
- *    IntakeConstants
+ *    HandlerConstants
+ *    ColorConstants
  *    CANIDs
  *    AutoConstants
  *    OIConstants
- *    ColorConstants
  *    CamConstant
  *    RobotConstants
  *    FieldConstants
@@ -120,23 +119,28 @@ public final class Constants {
 //     | D13 S23      D14 S24 |        | D17 S27      D18 S28 |
 //     | E33          E34     |        | E37          E38     |
 //     +----------------------+        +----------------------+
-//
+//     
+        //Front Left
         public static final int kFrontLeftDriveMotorPort        = 10;    // Module 1
         public static final int kFrontLeftTurningMotorPort      = 11;
         public static final int kFrontLeftAbsoluteEncoderPort   = 12;
-
+        
+        //Front Right
         public static final int kFrontRightDriveMotorPort       = 20;    // Module 2
         public static final int kFrontRightTurningMotorPort     = 21;
         public static final int kFrontRightAbsoluteEncoderPort  = 22;
 
+        //Back Right
         public static final int kBackRightDriveMotorPort        = 30;    // Module 3
         public static final int kBackRightTurningMotorPort      = 31;
         public static final int kBackRightAbsoluteEncoderPort   = 32;
 
+        //Back Left
         public static final int kBackLeftDriveMotorPort         = 40;    // Module 4
         public static final int kBackLeftTurningMotorPort       = 41;
         public static final int kBackLeftAbsoluteEncoderPort    = 42;
 
+        //Encoder Inversions
         public static final boolean kFrontLeftTurningEncoderReversed  = true;
         public static final boolean kBackLeftTurningEncoderReversed   = true;
         public static final boolean kFrontRightTurningEncoderReversed = true;
@@ -151,7 +155,8 @@ public final class Constants {
         public static final boolean kBackLeftDriveAbsoluteEncoderReversed   = true;
         public static final boolean kFrontRightDriveAbsoluteEncoderReversed = true;
         public static final boolean kBackRightDriveAbsoluteEncoderReversed  = true;
-
+        
+        // Speed Limits
         public static final double kPhysicalMaxSpeedMetersPerSecond = 1.5;
         public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = 2 * 2 * Math.PI;
 
@@ -209,33 +214,44 @@ public final class Constants {
     }
 
     public static final class ArmConstants {
-      public static final double kElbowP = 0;
-      public static final double kElbowI = 0;
-      public static final double kElbowD = 0;
-      public static final double kWristP = 0;
-      public static final double kWristI = 0;
-      public static final double kWristD = 0;
+
       public static final double kRetractPosition = 0;
-      public static final double kWristGround = 0;
-      public static final double kElbowGround = 0;
-      public static final double kWristSource = 0;
-      public static final double kElbowSource = 0;
-      public static final double kWristSpeaker = 0;
-      public static final double kElbowSpeaker = 0;
-      public static final double kWristAmp = 0;
-      public static final double kElbowAmp = 0;
+      
+      //Elbow PID
+        public static final double kElbowP = 0;
+        public static final double kElbowI = 0;
+        public static final double kElbowD = 0;
+      //Wrist PID
+        public static final double kWristP = 0;
+        public static final double kWristI = 0;
+        public static final double kWristD = 0;
+      //Elbow Positions
+        public static final double kElbowGround = 0;
+        public static final double kElbowSource = 0;
+        public static final double kElbowSpeaker = 0;
+        public static final double kElbowAmp = 0;
+      //Wrist Positions
+        public static final double kWristSource = 0;
+        public static final double kWristGround = 0;
+        public static final double kWristSpeaker = 0;
+        public static final double kWristAmp = 0;
+
+      //Tolerances
       public static final double elbowTolerance = 0;
       public static final double wristTolerance = 0;
-      public static final float kElbowForwardLimit = 8;
-      public static final float kElbowReverseLimit = -70;
-      public static final float kWristForwardLimit = 0;
-      public static final float kWristReverseLimit = 0;
-      public static final int ABSENCODERPORT = 0;
-      public static final int RelMin = 0;
-      public static final int Ratio = 0;
-      public static final double AbsMin = 0;
+      //Soft limits
+        public static final float kElbowForwardLimit = 8;
+       public static final float kElbowReverseLimit = -70;
+        public static final float kWristForwardLimit = 0;
+        public static final float kWristReverseLimit = 0;
+      //Encoders
+        public static final int ABSENCODERPORT = 0;
         public static final int kAbsoluteEncoder = 0;
-    }
+        public static final int RelMin = 0;
+        public static final int Ratio = 0;
+        public static final double AbsMin = 0;
+    
+      }
 
     public static final class HandlerConstants {
       //public static final double kLowP = 0;
@@ -247,15 +263,21 @@ public final class Constants {
       public static final double kLowInSpeed = 0;
       public static final double kHighOutSpeed = 0;
       public static final double kLowOutSpeed = 0;
-      public static final int SENSORPORT = 0;
       
     }
 
-    public static final class CANIDs {
-      public static final int elbow = 50; // left
-      public static final int elbow_follower = 51; // right
-      public static final int wrist = 99;
+    public static final class ColorConstants {
+      public static final I2C.Port sensorPort = I2C.Port.kOnboard;
+    }
 
+    public static final class CANIDs {
+
+      // Arm
+        public static final int elbow = 50; // left
+        public static final int elbow_follower = 51; // right
+        public static final int wrist = 99;
+      
+        //Handler
       public static final int low_side = 53;
       public static final int high_side = 54;
       
