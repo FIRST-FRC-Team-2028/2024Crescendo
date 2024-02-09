@@ -53,17 +53,21 @@ public class Arm extends SubsystemBase {
     elbow.restoreFactoryDefaults();
     elbow_follower.restoreFactoryDefaults();
     wrist.restoreFactoryDefaults();
-    //elbow_follower.follow(elbow, false);
+    elbow_follower.follow(elbow, true);
 
     elbow.setIdleMode(IdleMode.kBrake);
     elbow_follower.setIdleMode(IdleMode.kBrake);
     wrist.setIdleMode(IdleMode.kBrake);
 
+    
     elbow_encoder = elbow.getEncoder();
     wrist_encoder = wrist.getEncoder();
 
     elbow_PidController = elbow.getPIDController();
     wrist_PidController = wrist.getPIDController();
+
+    elbow_encoder.setPositionConversionFactor(90./70.);
+
 
     elbow_PidController.setP(Constants.ArmConstants.kElbowP);
     elbow_PidController.setI(Constants.ArmConstants.kElbowI);
@@ -101,13 +105,13 @@ public class Arm extends SubsystemBase {
     return Constants.ArmConstants.RelMin + Constants.ArmConstants.Ratio * (absval - Constants.ArmConstants.AbsMin);
   }
   public void elbowUp() {
-   elbow.set(1);
+   elbow.set(.5);
 
     SmartDashboard.putNumber("Encoder test", elbow_encoder.getPosition());
     System.out.println("Insdie elbowup"); 
   }
   public void elbowDown() {
-    elbow.set(-1);
+    elbow.set(-.5);
   }
   public void elbowDownSlow() {
     elbow.set(-.2);

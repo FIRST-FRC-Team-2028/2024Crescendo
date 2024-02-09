@@ -31,8 +31,9 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.ElbowDown;
 //import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-
+import frc.robot.commands.ElbowUp;
 //import frc.robot.commands.DriveGeneric;
 import frc.robot.commands.GetAprilTag;
 import frc.robot.commands.GetRobotPosition;
@@ -121,11 +122,9 @@ public class RobotContainer {
                         //onTrue(new GetAprilTag(camera));
         }*/
         new JoystickButton(driverJoytick, OIConstants.kElbowUpButton).
-                whileTrue(new InstantCommand(()-> armSubsystem.elbowUp()));
+                whileTrue(new ElbowUp(armSubsystem));
         new JoystickButton(driverJoytick, OIConstants.kElbowDownButton).
-                whileTrue(new InstantCommand(()-> armSubsystem.elbowDown()));
-        new JoystickButton(driverJoytick, OIConstants.kStopElbowButton).
-                whileTrue(new InstantCommand(()-> armSubsystem.stopElbow()));
+                whileTrue(new ElbowDown(armSubsystem));
      }
  
 
@@ -162,7 +161,7 @@ public class RobotContainer {
             // Pass through these two interior waypoints, making an 's' curve path
                         List.of(//new Translation2d(1, 0),
                                 new Translation2d(1, 0),
-                                new Translation2d(1, 1)
+                                new Translation2d(2, 0)
             //          ,  new Translation2d(1, 0)
                          ),
             // End 3 meters straight ahead of where we started, facing forward

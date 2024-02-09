@@ -28,8 +28,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
 
 public final class Constants {
   public static final boolean PHOTONVISION_AVAILABLE = false;
-  public static final boolean DRIVE_AVAILABLE = true;
-  public static final boolean ARM_AVAILABLE = false;
+  public static final boolean DRIVE_AVAILABLE = false;
+  public static final boolean ARM_AVAILABLE = true;
   public static final boolean INTAKE_AVAILABLE = false;
   public static final boolean CLIMB_AVAILABLE = false;
   public static final boolean APRIL_AVAILABLE = false;
@@ -290,8 +290,8 @@ public final class Constants {
                              //   DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond / 10;
       public static final double kMaxAccelerationMetersPerSecondSquared = 3;
       public static final double kMaxAngularAccelerationRadiansPerSecondSquared = Math.PI;  //   / 4;
-      public static final double kPXController = .1;   // 1.5;
-      public static final double kPYController = .1;    // 1.5;
+      public static final double kPXController = .5;   // 1.5;
+      public static final double kPYController = .5;    // 1.5;
       public static final double kPThetaController = 1;  //.06; // 3;
 
       public static final TrapezoidProfile.Constraints kThetaControllerConstraints = //
