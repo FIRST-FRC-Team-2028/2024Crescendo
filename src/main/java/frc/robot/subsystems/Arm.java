@@ -40,6 +40,7 @@ public class Arm extends SubsystemBase {
   double kp;
   double wkp;
   boolean IamDone;
+  double elbow_Current;
   
   
   /** Creates a new Arm. */
@@ -67,7 +68,7 @@ public class Arm extends SubsystemBase {
     wrist_PidController = wrist.getPIDController();
 
     elbow_encoder.setPositionConversionFactor(90./70.);
-
+    
 
     elbow_PidController.setP(Constants.ArmConstants.kElbowP);
     elbow_PidController.setI(Constants.ArmConstants.kElbowI);
@@ -119,6 +120,9 @@ public class Arm extends SubsystemBase {
   public void elbowUpSlow() {
     elbow.set(.2);
   }
+  public double getElbowCurrent() {
+    return elbow.getOutputCurrent();
+  }
   
 /* For test:
 * stepping the motor 1 or 2 degrees in both directions
@@ -126,8 +130,10 @@ public class Arm extends SubsystemBase {
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("Current", getElbowCurrent());
     SmartDashboard.putNumber("RelVal", elbow_encoder.getPosition());
     SmartDashboard.putNumber("AbsVal", boreHole.getAverageValue());
+    SmartDashboard.putBoolean("Elbow Warning", getElbowCurrent()>Constants.ArmConstants.ElbowCurrentLimit);
 
 
     System.out.println("TEST");
