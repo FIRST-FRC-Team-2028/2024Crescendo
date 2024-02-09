@@ -27,8 +27,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
  */
 
 public final class Constants {
-  public static final boolean PHOTONVISION_AVAILABLE = true;
-  public static final boolean DRIVE_AVAILABLE = true;
+  public static final boolean PHOTONVISION_AVAILABLE = false;
+  public static final boolean DRIVE_AVAILABLE = false;
   public static final boolean ARM_AVAILABLE = false;
   public static final boolean INTAKE_AVAILABLE = false;
   public static final boolean CLIMB_AVAILABLE = false;
@@ -250,6 +250,8 @@ public final class Constants {
         public static final int RelMin = 0;
         public static final int Ratio = 0;
         public static final double AbsMin = 0;
+
+        public static final double ElbowCurrentLimit = 5.;
     
     }
 
