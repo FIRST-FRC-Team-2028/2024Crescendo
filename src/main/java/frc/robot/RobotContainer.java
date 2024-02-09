@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.sysid.SysIdRoutineLog;
+import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -34,21 +35,24 @@ import frc.robot.Constants.OIConstants;
 //import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 //import frc.robot.commands.DriveGeneric;
-import frc.robot.commands.GetAprilTag;
 import frc.robot.commands.GetRobotPosition;
 import frc.robot.commands.SwerveJoystickCmd;
 //import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.AprilTagCamera;
+import frc.robot.subsystems.AprilCamera;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.ColorSensor;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Handler;
 
 public class RobotContainer {
 
+    private AprilCamera april;
     private Arm armSubsystem;
     private Handler handlerSubsystem;
     private Drivetrain swerveSubsystem;
     private AprilTagCamera camera;
+    private ColorSensor colorSensor;
     //private DriveGeneric driveGeneric;
     private Pigeon2 gyro;
     private SysIdRoutine routine;
@@ -67,13 +71,11 @@ public class RobotContainer {
                 () -> driverJoytick.getRawAxis(OIConstants.kDriverRotAxis),
                 () -> !driverJoytick.getRawButton(OIConstants.kDriverFieldOrientedButtonIdx)));
         */
+        
         if (Constants.DRIVE_AVAILABLE){
                 swerveSubsystem = new Drivetrain();
                 SmartDashboard.putData(swerveSubsystem);
         } else swerveSubsystem = null;
-
-
-        
         if (Constants.PHOTONVISION_AVAILABLE){
                 camera = new AprilTagCamera();
         }
@@ -83,6 +85,12 @@ public class RobotContainer {
         if (Constants.INTAKE_AVAILABLE){
                 handlerSubsystem = new Handler();
         } else handlerSubsystem = null;
+        if (Constants.APRIL_AVAILABLE) {
+                april = new AprilCamera();
+        } else april = null;
+        if (Constants.COLOR_AVAILABLE) {
+                colorSensor = new ColorSensor();
+        } else colorSensor = null;
         gyro = new Pigeon2(0);
         configureButtonBindings();       
 
@@ -95,6 +103,7 @@ public class RobotContainer {
 
      //MEE 
      private void configureButtonBindings() { 
+
         // driverJoytick Buttons
         if (swerveSubsystem!=null){
                 new JoystickButton(driverJoytick, OIConstants.kDriverResetGyroButtonIdx).
@@ -123,8 +132,12 @@ public class RobotContainer {
                 new JoystickButton(driverJoytick, OIConstants.kStopElbowButton).
                         whileTrue(new InstantCommand(()-> armSubsystem.stopElbow()));
         }
+
      }
  
+     public void teleopPeriodic() {
+
+     }
 
  
      /**

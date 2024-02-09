@@ -27,12 +27,13 @@ import edu.wpi.first.wpilibj.TimedRobot;
  */
 
 public final class Constants {
+  public static final boolean COLOR_AVAILABLE = false;
   public static final boolean PHOTONVISION_AVAILABLE = true;
-  public static final boolean DRIVE_AVAILABLE = true;
+  public static final boolean DRIVE_AVAILABLE = false;
   public static final boolean ARM_AVAILABLE = false;
   public static final boolean INTAKE_AVAILABLE = false;
   public static final boolean CLIMB_AVAILABLE = false;
-  public static final boolean APRIL_AVAILABLE = false;
+  public static final boolean APRIL_AVAILABLE = true;
 
 
   public static final class ModuleConstants {
@@ -319,6 +320,7 @@ public final class Constants {
         public static final int kElbowUpButton                = 3; // driverJoystick button right-bumper
         public static final int kElbowDownButton              = 2; // driverJoystick back button
         public static final int kStopElbowButton              = 1; // driverJoystick start button
+        public static final int kPrintApril                   = 5; // driverJoystick button left-bumper
         
         //need to start putting stuff on the button board TODO
         
