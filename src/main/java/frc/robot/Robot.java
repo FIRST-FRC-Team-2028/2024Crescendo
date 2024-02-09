@@ -26,7 +26,10 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.Drivetrain;
+import edu.wpi.first.wpilibj.I2C;           // Maddox: Color sensor
+import edu.wpi.first.wpilibj.util.Color;    // Maddox: Color sensor
 
+import com.revrobotics.ColorSensorV3;       // Maddox: Color sensor
 
 //import com.ctre.phoenix.sensors.Pigeon2_Faults;
 
@@ -58,6 +61,11 @@ public class Robot extends TimedRobot {
      * for any
      * initialization code.
      */
+
+     private final I2C.Port i2cPort = I2C.Port.kOnboard;                        // Maddox: Color sensor
+     private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);    // Maddox: Color sensor
+
+
     @Override
     public void robotInit() {
 
@@ -103,6 +111,23 @@ public class Robot extends TimedRobot {
         // and running subsystem periodic() methods. This must be called from the
         // robot's periodic
         // block in order for anything in the Command-based framework to work.
+
+
+        // Maddox: Color sensor
+
+        Color detectedColor = m_colorSensor.getColor();
+
+        double IR = m_colorSensor.getIR();
+
+        SmartDashboard.putNumber("Red", detectedColor.red);
+        SmartDashboard.putNumber("Green", detectedColor.green);
+        SmartDashboard.putNumber("Blue", detectedColor.blue);
+        SmartDashboard.putNumber("IR", IR);
+
+        int proximity = m_colorSensor.getProximity();
+
+        SmartDashboard.putNumber("Proximity", proximity);
+
         CommandScheduler.getInstance().run();
     }
 
