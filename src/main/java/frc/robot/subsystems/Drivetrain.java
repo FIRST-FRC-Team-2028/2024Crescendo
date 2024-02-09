@@ -5,7 +5,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
 
-// auto impors
+// auto imports
 //import com.pathplanner.lib.auto.AutoBuilder;
 //import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 //import com.pathplanner.lib.util.PIDConstants;
@@ -158,30 +158,30 @@ public class Drivetrain extends SubsystemBase {
     /** return a Rotation2d representing the heading of the robot
      * described in radians clockwise from forward
      */
-    public Rotation2d getRotation2d() {
-      return Rotation2d.fromDegrees(getHeading().getDegrees());
+  public Rotation2d getRotation2d() {
+    return Rotation2d.fromDegrees(getHeading().getDegrees());
   }
 
     /**
      * @return rotate 90 degrees
      */
-    public Rotation2d desiredRotation() {
-      return Rotation2d.fromDegrees(270);
-    }
+  public Rotation2d desiredRotation() {
+    return Rotation2d.fromDegrees(270);
+  }
 
-    public void BreakMode() {
-      m_frontLeft.BreakMode();
-      m_frontRight.BreakMode();
-      m_backLeft.BreakMode();
-      m_backRight.BreakMode();
-    }
+  public void BreakMode() {
+    m_frontLeft.BreakMode();
+    m_frontRight.BreakMode();
+    m_backLeft.BreakMode();
+    m_backRight.BreakMode();
+  }
 
-    public void CoastMode() {
-      m_frontLeft.CoastMode();
-      m_frontRight.CoastMode();
-      m_backLeft.CoastMode();
-      m_backRight.CoastMode();
-    }
+  public void CoastMode() {
+    m_frontLeft.CoastMode();
+    m_frontRight.CoastMode();
+    m_backLeft.CoastMode();
+    m_backRight.CoastMode();
+  }
 
   public SwerveModuleState[] chassis2ModuleStates(ChassisSpeeds speeds){
     return DriveConstants.kDriveKinematics.toSwerveModuleStates(speeds);
@@ -249,12 +249,11 @@ public class Drivetrain extends SubsystemBase {
       // Remember that xspeed is backwards on robot
       ChassisSpeeds chassisSpeeds;
       if (fieldoriented){
-           chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
-              -xhowfast, yhowfast, turnSpeed, getRotation2d());
+        chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
+          -xhowfast, yhowfast, turnSpeed, getRotation2d());
       } 
       else{
-          chassisSpeeds = new ChassisSpeeds(-xhowfast, yhowfast,
-                                       turnSpeed);
+          chassisSpeeds = new ChassisSpeeds(-xhowfast, yhowfast, turnSpeed);
       }
       
       SwerveModuleState[] moduleStates = chassis2ModuleStates(chassisSpeeds);

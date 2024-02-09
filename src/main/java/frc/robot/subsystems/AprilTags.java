@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class AprilTags extends SubsystemBase {
-    private PhotonCamera camera;
+  private PhotonCamera camera;
   private PhotonPipelineResult result;
   /** Creates a new AprilTags. */
   public AprilTags() {
