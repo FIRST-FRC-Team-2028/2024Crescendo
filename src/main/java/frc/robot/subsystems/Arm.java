@@ -40,6 +40,7 @@ public class Arm extends SubsystemBase {
   double kp;
   double wkp;
   boolean IamDone;
+  double elbow_Current;
   
   
   /** Creates a new Arm. */
@@ -53,17 +54,21 @@ public class Arm extends SubsystemBase {
     elbow.restoreFactoryDefaults();
     elbow_follower.restoreFactoryDefaults();
     wrist.restoreFactoryDefaults();
-    //elbow_follower.follow(elbow, false);
+    elbow_follower.follow(elbow, true);
 
     elbow.setIdleMode(IdleMode.kBrake);
     elbow_follower.setIdleMode(IdleMode.kBrake);
     wrist.setIdleMode(IdleMode.kBrake);
 
+    
     elbow_encoder = elbow.getEncoder();
     wrist_encoder = wrist.getEncoder();
 
     elbow_PidController = elbow.getPIDController();
     wrist_PidController = wrist.getPIDController();
+
+    elbow_encoder.setPositionConversionFactor(90./70.);
+    
 
     elbow_PidController.setP(Constants.ArmConstants.kElbowP);
     elbow_PidController.setI(Constants.ArmConstants.kElbowI);
@@ -79,11 +84,11 @@ public class Arm extends SubsystemBase {
 
     final double rel_delta = 70;  //  from floor to upright (0 at floor)
 
-  elbow_encoder.setPosition(     (boreHole.getAverageValue()-abs_pos_floor)*rel_delta/abs_delta    );
+    elbow_encoder.setPosition(     (boreHole.getAverageValue()-abs_pos_floor)*rel_delta/abs_delta    );
 
 
-   elbow.setSoftLimit(SoftLimitDirection.kForward, 70); //elbow forward limit
-   elbow.setSoftLimit(SoftLimitDirection.kReverse, 0); //elbow reverse limit
+    elbow.setSoftLimit(SoftLimitDirection.kForward, 70); //elbow forward limit
+    elbow.setSoftLimit(SoftLimitDirection.kReverse, 0); //elbow reverse limit
 
 
   //  elbow.setSoftLimit(SoftLimitDirection.kForward, ArmConstants.kElbowForwardLimit); //elbow forward limit
@@ -92,10 +97,7 @@ public class Arm extends SubsystemBase {
     wrist.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.kWristReverseLimit); //wrist reverse limit
 
     elbow.enableSoftLimit(SoftLimitDirection.kForward, true);
-       elbow.enableSoftLimit(SoftLimitDirection.kReverse, true);
-
-  
-  
+    elbow.enableSoftLimit(SoftLimitDirection.kReverse, true);
 
   }
 
@@ -104,18 +106,22 @@ public class Arm extends SubsystemBase {
     return Constants.ArmConstants.RelMin + Constants.ArmConstants.Ratio * (absval - Constants.ArmConstants.AbsMin);
   }
   public void elbowUp() {
-   elbow.set(1);
+   elbow.set(.5);
 
-SmartDashboard.putNumber("Encoder test", elbow_encoder.getPosition());
-System.out.println("Insdie elbowup"); }
+    SmartDashboard.putNumber("Encoder test", elbow_encoder.getPosition());
+    System.out.println("Insdie elbowup"); 
+  }
   public void elbowDown() {
-    elbow.set(-1);
+    elbow.set(-.5);
   }
   public void elbowDownSlow() {
     elbow.set(-.2);
   }
   public void elbowUpSlow() {
     elbow.set(.2);
+  }
+  public double getElbowCurrent() {
+    return elbow.getOutputCurrent();
   }
   
 /* For test:
@@ -124,8 +130,10 @@ System.out.println("Insdie elbowup"); }
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("Current", getElbowCurrent());
     SmartDashboard.putNumber("RelVal", elbow_encoder.getPosition());
     SmartDashboard.putNumber("AbsVal", boreHole.getAverageValue());
+    SmartDashboard.putBoolean("Elbow Warning", getElbowCurrent()>Constants.ArmConstants.ElbowCurrentLimit);
 
 
     System.out.println("TEST");

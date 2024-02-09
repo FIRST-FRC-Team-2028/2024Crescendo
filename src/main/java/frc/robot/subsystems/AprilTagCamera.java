@@ -99,7 +99,8 @@ public class AprilTagCamera extends SubsystemBase {
      
       return new Pose2d(Units.metersToInches(robotx),
                         Units.metersToInches(roboty), new Rotation2d(0.)); // TODO: Presumes we are facing the tag head on
-    }catch(NullPointerException e){
+    }
+    catch(NullPointerException e){
       return new Pose2d(-999.,-999., new Rotation2d(-999.));
     }
   }

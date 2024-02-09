@@ -79,7 +79,7 @@ public class Robot extends TimedRobot {
         //systemChooser = new AnalogInput(Constants.SYSTEMCHOOSER);
         //choice = systemChooser.getValue() == Constants.COMPBOT;
         //if (choice) {
-            PDH = new PowerDistribution(1, ModuleType.kRev);
+        PDH = new PowerDistribution(1, ModuleType.kRev);
         //} else {
         //    PDH = new PowerDistribution(1, ModuleType.kCTRE);
         //}
@@ -188,10 +188,9 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         
 
-        if (driverJoytick.getRawButton(3))
-            {
+        if (driverJoytick.getRawButton(3)) {
                 System.out.println("Button Pressed");
-            }
+        }
 
         //SmartDashboard.putNumber("BotA", pigeon.getAngle());
         SmartDashboard.putNumber("BatV", PDH.getVoltage());
@@ -282,7 +281,7 @@ public class Robot extends TimedRobot {
         //}
     
         //swerveSubsystem.reportStatesToSmartDashbd(moduleStates);
-    }
+        }
     }
 
     @Override
@@ -297,13 +296,15 @@ public class Robot extends TimedRobot {
     public void testPeriodic() {
         if (new JoystickButton(driverJoytick, OIConstants.kElbowUpButton).getAsBoolean()) {
             new InstantCommand(()-> m_robotContainer.getArm().elbowUpSlow());  
-        } else {
+        } 
+        else {
             m_robotContainer.getArm().stopElbow();
         }
          
         if (new JoystickButton(driverJoytick, OIConstants.kElbowDownButton).getAsBoolean() ) {
             new InstantCommand(()-> m_robotContainer.getArm().elbowDownSlow());  
-        } else {
+        }
+        else {
             m_robotContainer.getArm().stopElbow();
         }
       /*   swerveSubsystem = m_robotContainer.getSwerveSS();
