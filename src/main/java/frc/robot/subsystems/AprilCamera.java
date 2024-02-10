@@ -67,14 +67,14 @@ public class AprilCamera extends SubsystemBase {
 
   @Override
   public void periodic() {
-    showYaw();
-    photonPoseEstimator.update();
-    var result = camera.getLatestResult();
-    hasTargets = result.hasTargets();
-    targets = result.getTargets();
-    target = result.getBestTarget();
-    robotPose = PhotonUtils.estimateFieldToRobotAprilTag(target.getBestCameraToTarget(),
-              aprilTagFieldLayout.getTagPose(target.getFiducialId()).get(), robotToCam);
+   // showYaw();
+   // photonPoseEstimator.update();
+   // var result = camera.getLatestResult();
+   // hasTargets = result.hasTargets();
+   // targets = result.getTargets();
+   // target = result.getBestTarget();
+   // robotPose = PhotonUtils.estimateFieldToRobotAprilTag(target.getBestCameraToTarget(),
+   //           aprilTagFieldLayout.getTagPose(target.getFiducialId()).get(), robotToCam);
     //SmartDashboard.put("April Tag X", result.getTargets());
     // This method will be called once per scheduler run
   }
