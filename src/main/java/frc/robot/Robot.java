@@ -26,7 +26,10 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.Drivetrain;
+import edu.wpi.first.wpilibj.I2C;           // Maddox: Color sensor
+import edu.wpi.first.wpilibj.util.Color;    // Maddox: Color sensor
 
+import com.revrobotics.ColorSensorV3;       // Maddox: Color sensor
 
 //import com.ctre.phoenix.sensors.Pigeon2_Faults;
 
@@ -58,6 +61,12 @@ public class Robot extends TimedRobot {
      * for any
      * initialization code.
      */
+   
+ 
+    
+
+
+
     @Override
     public void robotInit() {
 
@@ -70,7 +79,7 @@ public class Robot extends TimedRobot {
         //systemChooser = new AnalogInput(Constants.SYSTEMCHOOSER);
         //choice = systemChooser.getValue() == Constants.COMPBOT;
         //if (choice) {
-            PDH = new PowerDistribution(1, ModuleType.kRev);
+        PDH = new PowerDistribution(1, ModuleType.kRev);
         //} else {
         //    PDH = new PowerDistribution(1, ModuleType.kCTRE);
         //}
@@ -103,7 +112,11 @@ public class Robot extends TimedRobot {
         // and running subsystem periodic() methods. This must be called from the
         // robot's periodic
         // block in order for anything in the Command-based framework to work.
-        CommandScheduler.getInstance().run();
+
+
+        // Maddox: Color sensor
+
+
     }
 
     /** This function is called once each time the robot enters Disabled mode. */
@@ -137,10 +150,10 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        UsbCamera usbCamera = new UsbCamera("Front Cam", 0);
-        MjpegServer mjpegServer1 = new MjpegServer("Front Server", 1181);
-        mjpegServer1.setSource(usbCamera);
-        CameraServer.startAutomaticCapture();
+        //UsbCamera usbCamera = new UsbCamera("Front Cam", 0);
+        //MjpegServer mjpegServer1 = new MjpegServer("Front Server", 1181);
+        //mjpegServer1.setSource(usbCamera);
+        //CameraServer.startAutomaticCapture();
 
          // Creates the CvSink and connects it to the UsbCamera
         //CvSink cvSink = new CvSink("opencv_USB Camera 0");
@@ -175,10 +188,9 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         
 
-        if (driverJoytick.getRawButton(3))
-            {
+        if (driverJoytick.getRawButton(3)) {
                 System.out.println("Button Pressed");
-            }
+        }
 
         //SmartDashboard.putNumber("BotA", pigeon.getAngle());
         SmartDashboard.putNumber("BatV", PDH.getVoltage());
@@ -269,7 +281,7 @@ public class Robot extends TimedRobot {
         //}
     
         //swerveSubsystem.reportStatesToSmartDashbd(moduleStates);
-    }
+        }
     }
 
     @Override
@@ -284,13 +296,15 @@ public class Robot extends TimedRobot {
     public void testPeriodic() {
         if (new JoystickButton(driverJoytick, OIConstants.kElbowUpButton).getAsBoolean()) {
             new InstantCommand(()-> m_robotContainer.getArm().elbowUpSlow());  
-        } else {
+        } 
+        else {
             m_robotContainer.getArm().stopElbow();
         }
          
         if (new JoystickButton(driverJoytick, OIConstants.kElbowDownButton).getAsBoolean() ) {
             new InstantCommand(()-> m_robotContainer.getArm().elbowDownSlow());  
-        } else {
+        }
+        else {
             m_robotContainer.getArm().stopElbow();
         }
       /*   swerveSubsystem = m_robotContainer.getSwerveSS();

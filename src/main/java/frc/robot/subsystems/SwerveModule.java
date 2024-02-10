@@ -173,7 +173,7 @@ public class SwerveModule {
   public void stop() {
     m_driveMotor.set(0);
     m_turningMotor.set(0);
-}
+  }
 
   /**
    * @return The relative turning angle of the module
@@ -245,10 +245,8 @@ public class SwerveModule {
    */
   public void setAbsTurningEncoderOffset(double offset) {
     m_turningAbsEncoderConfig.MagnetSensor.MagnetOffset = offset;
-    m_turningAbsEncoderConfig.MagnetSensor.AbsoluteSensorRange =
-        AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
-    m_turningAbsEncoderConfig.MagnetSensor.SensorDirection =
-        SensorDirectionValue.CounterClockwise_Positive;
+    m_turningAbsEncoderConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
+    m_turningAbsEncoderConfig.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
     m_turningAbsEncoder.getConfigurator().apply(m_turningAbsEncoderConfig);
   }
 

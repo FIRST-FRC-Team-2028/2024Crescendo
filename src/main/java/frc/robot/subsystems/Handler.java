@@ -12,25 +12,30 @@ import com.ctre.phoenix.motorcontrol.can.MotControllerJNI;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 //import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ColorSensorV3;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj2.command.Command;
 //import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 
-/** Intake consists of:
+/** Handler consists of:
  *     motor to drive intake rollers and belts, low_side
- *     motor to drive shooter rollers,
+ *     motor to drive shooter rollers, (high_side)
  *     sensor to determine when note has been acquired.
  */
 public class Handler extends SubsystemBase {
   private final TalonSRX low_side;
   private final TalonSRX high_side;
-  private final AnalogInput sensor;
+  private final ColorSensorV3 sensor;
   boolean doIHaveIt;
 
   //private final RelativeEncoder low_encoder;
@@ -38,7 +43,7 @@ public class Handler extends SubsystemBase {
 
   //private final SparkPIDController low_PidController;
   //private final SparkPIDController high_PidController;
-  /** Creates a new Intake. */
+  /** Creates a new HandlerIntake. */
   public Handler() {
     low_side = new TalonSRX(Constants.CANIDs.low_side);
     high_side = new TalonSRX(Constants.CANIDs.high_side);
@@ -62,12 +67,23 @@ public class Handler extends SubsystemBase {
     //high_PidController.setP(Constants.IntakeConstants.kHighP);
     //high_PidController.setI(Constants.IntakeConstants.kHighI);
     //high_PidController.setD(Constants.IntakeConstants.kHighD);
-    sensor = new AnalogInput(Constants.HandlerConstants.SENSORPORT);
+    sensor = new ColorSensorV3(Constants.ColorConstants.sensorPort);
   }
+  
+  static final double closeHue = 0.05;  // How close to the Hue data [0-1.] is good enough
 
   /** return true if sensor sees a note */
   public boolean useSensor() {
     // return sensor.get();  TODO
+    Color notesensor = sensor.getColor();
+    SmartDashboard.putString("Sensor", notesensor.toHexString());
+    float[] george={0.f,0.f,0.f};
+    george = java.awt.Color.RGBtoHSB((int)(notesensor.red  *255), 
+                                            (int)(notesensor.green*255), 
+                                            (int)(notesensor.blue *255), george);
+                                            double diffHue = Math.abs(george[0] - Constants.ColorConstants.NoteHue);
+    if ( diffHue < closeHue)return true;
+                                        
     return false;
   }
 
@@ -111,6 +127,19 @@ public class Handler extends SubsystemBase {
   public void stop() {
     high_side.set(TalonSRXControlMode.PercentOutput, 0);
     low_side.set(TalonSRXControlMode.PercentOutput, 0);
+  }
+
+  /**ShootIt command
+   * runs the low side to get the note to the high_side rollers
+   * runs the high_side rollers to shoot
+   * turns off all 
+   */
+  public Command shootIt() {
+    return runOnce( () -> { high_out(); })
+          .andThen( () -> { low_in(); })
+          .andThen(new WaitCommand(.5))
+          .andThen( () -> { stop(); })
+      ;
   }
 }
  
