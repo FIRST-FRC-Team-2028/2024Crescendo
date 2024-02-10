@@ -87,7 +87,7 @@ public class Robot extends TimedRobot {
         m_robotContainer = new RobotContainer();
         // System.out.println("PDP = " + PDP.getType());  // a quick death for Comp Bot
      //   pigeon = m_robotContainer.getGyro();
-        PortForwarder.add(1182, "photonvision.local",5800 );
+        //PortForwarder.add(1182, "photonvision.local",5800 );
 
         //DataLogManager.start();   //MEE
     }
@@ -112,7 +112,7 @@ public class Robot extends TimedRobot {
         // and running subsystem periodic() methods. This must be called from the
         // robot's periodic
         // block in order for anything in the Command-based framework to work.
-
+        CommandScheduler.getInstance().run();
 
         // Maddox: Color sensor
 
