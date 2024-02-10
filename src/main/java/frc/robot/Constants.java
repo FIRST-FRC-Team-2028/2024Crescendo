@@ -29,11 +29,10 @@ import edu.wpi.first.wpilibj.TimedRobot;
 public final class Constants {
   public static final boolean PHOTONVISION_AVAILABLE = false;
   public static final boolean DRIVE_AVAILABLE = false;
-  public static final boolean ARM_AVAILABLE = true;
+  public static final boolean ARM_AVAILABLE = false;
   public static final boolean INTAKE_AVAILABLE = false;
   public static final boolean CLIMB_AVAILABLE = false;
   public static final boolean APRIL_AVAILABLE = false;
-  public static final boolean COLOR_AVAILABLE = false;
 
 
   public static final class ModuleConstants {
@@ -252,7 +251,7 @@ public final class Constants {
         public static final int Ratio = 0;
         public static final double AbsMin = 0;
 
-        public static final double ElbowCurrentLimit = 5.;    //Constraint on current
+        public static final double ElbowCurrentLimit = 5.;
     
     }
 
@@ -311,18 +310,18 @@ public final class Constants {
         //public static final int kButtonBoxPort_1       = 2; // buttonBox Port 1
         //public static final int kDriverControllerPort4 = 3; // ti launchpad
 
-      public static final int kDriverYAxis                  = 0;
-      public static final int kDriverXAxis                  = 1;
-      public static final int kDriverRotAxis                = 4;
-      public static final int fineControlAxis               = 2;
-      public static final int kDriverResetGyroButtonIdx     = 1; // driverJoystick button A
-      public static final int kDriverResetOdometryButtonIdx = 3; // driverJoystick button X
-      public static final int BALANCE_AUGMENTER             = 4; //  driver stick Y button
-      public static final int DriveGenericTester            = 4; //  driver stick Y button
-      public static final int kDriverFieldOrientedButtonIdx = 5; // driverJoystick button left-bumper
-      public static final int kElbowUpButton                = 3; // driverJoystick button right-bumper
-      public static final int kElbowDownButton              = 2; // driverJoystick back button
-      public static final int kStopElbowButton              = 1; // driverJoystick start button
+        public static final int kDriverYAxis                  = 0;
+        public static final int kDriverXAxis                  = 1;
+        public static final int kDriverRotAxis                = 4;
+        public static final int fineControlAxis               = 2;
+        public static final int kDriverResetGyroButtonIdx     = 1; // driverJoystick button A
+        public static final int kDriverResetOdometryButtonIdx = 3; // driverJoystick button X
+        public static final int BALANCE_AUGMENTER             = 4; //  driver stick Y button
+        public static final int DriveGenericTester            = 4; //  driver stick Y button
+        public static final int kDriverFieldOrientedButtonIdx = 5; // driverJoystick button left-bumper
+        public static final int kElbowUpButton                = 3; // driverJoystick button right-bumper
+        public static final int kElbowDownButton              = 2; // driverJoystick back button
+        public static final int kStopElbowButton              = 1; // driverJoystick start button
         
       // buttons on mech controller
       public static final int kWristDownButton              = 1;  // A 

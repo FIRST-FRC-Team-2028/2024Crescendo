@@ -61,9 +61,10 @@ public class Robot extends TimedRobot {
      * for any
      * initialization code.
      */
+   
+ 
+    
 
-     private final I2C.Port i2cPort = I2C.Port.kOnboard;                        // Maddox: Color sensor
-     private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);    // Maddox: Color sensor
 
 
     @Override
@@ -115,20 +116,7 @@ public class Robot extends TimedRobot {
 
         // Maddox: Color sensor
 
-        Color detectedColor = m_colorSensor.getColor();
 
-        double IR = m_colorSensor.getIR();
-
-        SmartDashboard.putNumber("Red", detectedColor.red);
-        SmartDashboard.putNumber("Green", detectedColor.green);
-        SmartDashboard.putNumber("Blue", detectedColor.blue);
-        SmartDashboard.putNumber("IR", IR);
-
-        int proximity = m_colorSensor.getProximity();
-
-        SmartDashboard.putNumber("Proximity", proximity);
-
-        CommandScheduler.getInstance().run();
     }
 
     /** This function is called once each time the robot enters Disabled mode. */
@@ -162,10 +150,10 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        UsbCamera usbCamera = new UsbCamera("Front Cam", 0);
-        MjpegServer mjpegServer1 = new MjpegServer("Front Server", 1181);
-        mjpegServer1.setSource(usbCamera);
-        CameraServer.startAutomaticCapture();
+        //UsbCamera usbCamera = new UsbCamera("Front Cam", 0);
+        //MjpegServer mjpegServer1 = new MjpegServer("Front Server", 1181);
+        //mjpegServer1.setSource(usbCamera);
+        //CameraServer.startAutomaticCapture();
 
          // Creates the CvSink and connects it to the UsbCamera
         //CvSink cvSink = new CvSink("opencv_USB Camera 0");

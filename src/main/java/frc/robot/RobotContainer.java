@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.sysid.SysIdRoutineLog;
+import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -36,22 +37,25 @@ import frc.robot.commands.ElbowDown;
 //import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.ElbowUp;
 //import frc.robot.commands.DriveGeneric;
-import frc.robot.commands.GetAprilTag;
 import frc.robot.commands.GetRobotPosition;
 import frc.robot.commands.SwerveJoystickCmd;
 //import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.AprilTagCamera;
+import frc.robot.subsystems.AprilCamera;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.ColorSensor;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Handler;
 import frc.robot.commands.WristUp;
 
 public class RobotContainer {
 
+    private AprilCamera april;
     private Arm armSubsystem;
     private Handler handlerSubsystem;
     private Drivetrain swerveSubsystem;
     private AprilTagCamera camera;
+    private ColorSensor colorSensor;
     //private DriveGeneric driveGeneric;
     private Pigeon2 gyro;
     private SysIdRoutine routine;
@@ -142,6 +146,9 @@ public class RobotContainer {
         mechJoytick.setRumble(GenericHID.RumbleType.kBothRumble,1);
      }
  
+     public void teleopPeriodic() {
+
+     }
 
  
      /**
