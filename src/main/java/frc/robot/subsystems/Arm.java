@@ -256,9 +256,9 @@ public class Arm extends SubsystemBase {
     elbow.stopMotor();
   }
   
-  /* public void stopWrist() {
+   public void stopWrist() {
     wrist.stopMotor();
-  } */
+  } 
 
   public void run(double targetW, double target) {
     positionArm(target);
