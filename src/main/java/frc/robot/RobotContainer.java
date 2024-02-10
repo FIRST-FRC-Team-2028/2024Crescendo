@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
@@ -45,6 +46,7 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.ColorSensor;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Handler;
+import frc.robot.commands.WristUp;
 
 public class RobotContainer {
 
@@ -60,7 +62,8 @@ public class RobotContainer {
     SendableChooser <Command> m_chooser;
     
   
-        private final Joystick driverJoytick = new Joystick(OIConstants.kDriverControllerPort);
+    private final Joystick driverJoytick = new Joystick(OIConstants.kDriverControllerPort);
+    private final Joystick mechJoytick = new Joystick(OIConstants.kMechControllerPort);
   
     
         public RobotContainer() {
@@ -129,6 +132,18 @@ public class RobotContainer {
                 whileTrue(new ElbowUp(armSubsystem));
         new JoystickButton(driverJoytick, OIConstants.kElbowDownButton).
                 whileTrue(new ElbowDown(armSubsystem));
+
+        new JoystickButton(mechJoytick, OIConstants.kWristUpButton).
+                whileTrue(new WristUp(armSubsystem,.3))
+                //.andThen(()-> {this::rumble;})
+                ;
+        new JoystickButton(mechJoytick, OIConstants.kWristDownButton).
+                whileTrue(new WristUp(armSubsystem,-.3));
+     }
+
+
+     void rumble(){
+        mechJoytick.setRumble(GenericHID.RumbleType.kBothRumble,1);
      }
  
      public void teleopPeriodic() {

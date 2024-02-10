@@ -277,7 +277,7 @@ public final class Constants {
       // Arm
       public static final int elbow = 50; // left
       public static final int elbow_follower = 51; // right
-      public static final int wrist = 99;
+      public static final int wrist = 52;
       
         //Handler
       public static final int low_side = 53;
@@ -305,6 +305,7 @@ public final class Constants {
 
     public static final class OIConstants {
       public static final int kDriverControllerPort  = 0;
+      public static final int kMechControllerPort = 1;
         //public static final int kButtonBoxPort_0       = 1; // buttonBox Port 0
         //public static final int kButtonBoxPort_1       = 2; // buttonBox Port 1
         //public static final int kDriverControllerPort4 = 3; // ti launchpad
@@ -322,9 +323,14 @@ public final class Constants {
         public static final int kElbowDownButton              = 2; // driverJoystick back button
         public static final int kStopElbowButton              = 1; // driverJoystick start button
         
+      // buttons on mech controller
+      public static final int kWristDownButton              = 1;  // A 
+      public static final int kWristUpButton                = 4;  // Y
       //need to start putting stuff on the button board TODO
         
       public static final double kDeadband = 0.05;
+
+      
     }
 
     public static final class CamConstant {
