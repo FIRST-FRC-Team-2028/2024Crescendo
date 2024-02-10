@@ -251,6 +251,8 @@ public final class Constants {
         public static final int RelMin = 0;
         public static final int Ratio = 0;
         public static final double AbsMin = 0;
+
+        public static final double ElbowCurrentLimit = 5.;    //Constraint on current
     
     }
 
