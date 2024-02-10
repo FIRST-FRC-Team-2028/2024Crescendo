@@ -27,14 +27,13 @@ public class InHandler extends Command {
  //   intake.iHaveIt();                                           COLOR SENSOR STUFF
  // } else intake.iDontHaveIt();                                  COLOR SENSOR STUFF
   
-   if (intake.sense()) {
-        intake.stop();
+    if (intake.sense()) {
+      intake.stop();
     }
     else {
-     intake.low_in();
+      intake.low_in();
     }
 
-    
   }
 
   // Called every time the scheduler runs while the command is scheduled.

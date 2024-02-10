@@ -16,6 +16,7 @@ import com.revrobotics.SparkPIDController;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.ArmConstants;
@@ -31,8 +32,9 @@ public class Arm extends SubsystemBase {
   private final CANSparkMax wrist;
 
   private final RelativeEncoder elbow_encoder;
-  private final RelativeEncoder wrist_encoder;
+  //private final RelativeEncoder wrist_encoder;
   private final SparkPIDController elbow_PidController;
+  //
   private final SparkPIDController wrist_PidController;
   private final AnalogInput boreHole;
   double Target;
@@ -40,7 +42,8 @@ public class Arm extends SubsystemBase {
   double kp;
   double wkp;
   boolean IamDone;
-  
+  double elbow_Current;
+  boolean armSafety = true;   // true for arm motion enabled
   
   /** Creates a new Arm. */
   public Arm() {
@@ -52,26 +55,30 @@ public class Arm extends SubsystemBase {
 
     elbow.restoreFactoryDefaults();
     elbow_follower.restoreFactoryDefaults();
-    wrist.restoreFactoryDefaults();
-    //elbow_follower.follow(elbow, false);
+    //wrist.restoreFactoryDefaults();
+    elbow_follower.follow(elbow, true);
 
     elbow.setIdleMode(IdleMode.kBrake);
     elbow_follower.setIdleMode(IdleMode.kBrake);
-    wrist.setIdleMode(IdleMode.kBrake);
+    //wrist.setIdleMode(IdleMode.kBrake);
 
+    
     elbow_encoder = elbow.getEncoder();
-    wrist_encoder = wrist.getEncoder();
+    //wrist_encoder = wrist.getEncoder();
 
     elbow_PidController = elbow.getPIDController();
     wrist_PidController = wrist.getPIDController();
+
+   
+    
 
     elbow_PidController.setP(Constants.ArmConstants.kElbowP);
     elbow_PidController.setI(Constants.ArmConstants.kElbowI);
     elbow_PidController.setD(Constants.ArmConstants.kElbowD);
 
-    wrist_PidController.setP(Constants.ArmConstants.kWristP);
-    wrist_PidController.setI(Constants.ArmConstants.kWristI);
-    wrist_PidController.setD(Constants.ArmConstants.kWristD);
+    //wrist_PidController.setP(Constants.ArmConstants.kWristP);
+    //wrist_PidController.setI(Constants.ArmConstants.kWristI);
+    //wrist_PidController.setD(Constants.ArmConstants.kWristD);
 
     final double abs_pos_floor= 680;
     final double abs_pos_upright= 1280;
@@ -79,23 +86,21 @@ public class Arm extends SubsystemBase {
 
     final double rel_delta = 70;  //  from floor to upright (0 at floor)
 
-  elbow_encoder.setPosition(     (boreHole.getAverageValue()-abs_pos_floor)*rel_delta/abs_delta    );
+    elbow_encoder.setPosition(     (boreHole.getAverageValue()-abs_pos_floor)*rel_delta/abs_delta    );
 
-
-   elbow.setSoftLimit(SoftLimitDirection.kForward, 70); //elbow forward limit
-   elbow.setSoftLimit(SoftLimitDirection.kReverse, 0); //elbow reverse limit
+    elbow_encoder.setPositionConversionFactor(90./74.);
+    
+    elbow.setSoftLimit(SoftLimitDirection.kForward, 90); //elbow forward limit
+    elbow.setSoftLimit(SoftLimitDirection.kReverse, 0); //elbow reverse limit
 
 
   //  elbow.setSoftLimit(SoftLimitDirection.kForward, ArmConstants.kElbowForwardLimit); //elbow forward limit
   //  elbow.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.kElbowReverseLimit); //elbow reverse limit
-    wrist.setSoftLimit(SoftLimitDirection.kForward, ArmConstants.kWristForwardLimit); //wrist forward limit
-    wrist.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.kWristReverseLimit); //wrist reverse limit
+    //wrist.setSoftLimit(SoftLimitDirection.kForward, ArmConstants.kWristForwardLimit); //wrist forward limit
+    //wrist.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.kWristReverseLimit); //wrist reverse limit
 
     elbow.enableSoftLimit(SoftLimitDirection.kForward, true);
-       elbow.enableSoftLimit(SoftLimitDirection.kReverse, true);
-
-  
-  
+    elbow.enableSoftLimit(SoftLimitDirection.kReverse, true);
 
   }
 
@@ -104,32 +109,107 @@ public class Arm extends SubsystemBase {
     return Constants.ArmConstants.RelMin + Constants.ArmConstants.Ratio * (absval - Constants.ArmConstants.AbsMin);
   }
   public void elbowUp() {
-   elbow.set(1);
+   if(armSafety)elbow.set(.7);
 
-SmartDashboard.putNumber("Encoder test", elbow_encoder.getPosition());
-System.out.println("Insdie elbowup"); }
+    SmartDashboard.putNumber("Encoder test", elbow_encoder.getPosition());
+    System.out.println("Insdie elbowup"); 
+  }
   public void elbowDown() {
-    elbow.set(-1);
+    if(armSafety)elbow.set(-.7);
   }
   public void elbowDownSlow() {
-    elbow.set(-.2);
+    if(armSafety)elbow.set(-.2);
   }
   public void elbowUpSlow() {
-    elbow.set(.2);
+    if(armSafety)elbow.set(.2);
   }
+
+  /** move arm
+   * 
+   * @param speed  positive is up from ground
+  */
+  public void moveArm(double speed){
+    if(armSafety)elbow.set(speed);
+  }
+
+  public double getElbowCurrent() {
+    return elbow.getOutputCurrent();
+  }
+
+
+
+
+  /** disable arm */
+  public void disableArm(){
+    armSafety = false;
+  }
+
+  /**  */
   
-/* For test:
-* stepping the motor 1 or 2 degrees in both directions
-* */
+  /* For test:
+   * stepping the motor 1 or 2 degrees in both directions
+   * 
+   * Temporarily  suspend following of the elbow follower and move individual motors
+   */
+  /*public Command tweakElbow(){
+    return runOnce(
+        () -> this.unfollow())  // kill following
+        //.andThen()            // tweak position of one motor
+        //.andThen()            // reset following mode
+        ;
+  }
+
+  void unfollow () {
+    //TODO I think we have to reset to factory defaults and reconfigure everything!
+    int dummy=0;
+  }
+  void reFollow() {
+    elbow_follower.follow(elbow);
+  } */
+
+  /** moveWrist 
+   * @param speed is positive in the same axis as the arm
+  */
+  public void moveWrist(double speed) {
+    wrist.set(speed);
+  }
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("Current", getElbowCurrent());
     SmartDashboard.putNumber("RelVal", elbow_encoder.getPosition());
     SmartDashboard.putNumber("AbsVal", boreHole.getAverageValue());
+    //if(getElbowCurrent()>Constants.ArmConstants.ElbowCurrentLimit) armSafety = false;
+    //SmartDashboard.putBoolean("Elbow Warning", getElbowCurrent()<Constants.ArmConstants.ElbowCurrentLimit);
+    SmartDashboard.putBoolean("Elbow Warning", armSafety);
 
 
-    System.out.println("TEST");
+    //System.out.println("TEST");
     // This method will be called once per scheduler run
+  }
+
+  /** Allow the arm to move  (after safety shutdown)*/
+  public void rearmArm() {
+    armSafety = true;
+  }
+
+  /** Disable motion of the arm */
+  public void disarmArm() {
+    armSafety = false;
+  }
+
+  /** closed loop control arm to
+   * @param target
+   */
+  public void positionArm(double target) {
+    elbow_PidController.setReference(target, ControlType.kPosition);
+  }
+
+  /** closed loop control wrist to
+   * @param target
+   */
+  public void positionWrist(double target) {
+    wrist_PidController.setReference(target, ControlType.kPosition);
   }
 
   /*public void retract() {
@@ -161,28 +241,28 @@ System.out.println("Insdie elbowup"); }
     kp = 1 * Constants.ArmConstants.kElbowP / distance;
     wkp = 1 * Constants.ArmConstants.kWristP / wristDistance;
     elbow_PidController.setP(kp);
-    wrist_PidController.setP(wkp);
+    //wrist_PidController.setP(wkp);
   }
 
   public double getElbowPos() {
     return elbow_encoder.getPosition();
   }
 
-  public double getWristPos() {
+  /* public double getWristPos() {
     return wrist_encoder.getPosition();
-  }
+  } */
 
   public void stopElbow() {
     elbow.stopMotor();
   }
   
-  public void stopWrist() {
+  /* public void stopWrist() {
     wrist.stopMotor();
-  }
+  } */
 
   public void run(double targetW, double target) {
-    wrist_PidController.setReference(WristTarget, ControlType.kPosition);
-    elbow_PidController.setReference(Target, ControlType.kPosition);
+    positionArm(target);
+    positionWrist(targetW);
   }
 
   public boolean amIDone() {
