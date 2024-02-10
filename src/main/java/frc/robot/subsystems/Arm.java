@@ -95,8 +95,8 @@ public class Arm extends SubsystemBase {
 
   //  elbow.setSoftLimit(SoftLimitDirection.kForward, ArmConstants.kElbowForwardLimit); //elbow forward limit
   //  elbow.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.kElbowReverseLimit); //elbow reverse limit
-    wrist.setSoftLimit(SoftLimitDirection.kForward, ArmConstants.kWristForwardLimit); //wrist forward limit
-    wrist.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.kWristReverseLimit); //wrist reverse limit
+    //wrist.setSoftLimit(SoftLimitDirection.kForward, ArmConstants.kWristForwardLimit); //wrist forward limit
+    //wrist.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.kWristReverseLimit); //wrist reverse limit
 
     elbow.enableSoftLimit(SoftLimitDirection.kForward, true);
     elbow.enableSoftLimit(SoftLimitDirection.kReverse, true);
@@ -108,13 +108,13 @@ public class Arm extends SubsystemBase {
     return Constants.ArmConstants.RelMin + Constants.ArmConstants.Ratio * (absval - Constants.ArmConstants.AbsMin);
   }
   public void elbowUp() {
-   if(armSafety)elbow.set(.5);
+   if(armSafety)elbow.set(.7);
 
     SmartDashboard.putNumber("Encoder test", elbow_encoder.getPosition());
     System.out.println("Insdie elbowup"); 
   }
   public void elbowDown() {
-    if(armSafety)elbow.set(-.5);
+    if(armSafety)elbow.set(-.7);
   }
   public void elbowDownSlow() {
     if(armSafety)elbow.set(-.2);
@@ -140,7 +140,7 @@ public class Arm extends SubsystemBase {
    * 
    * Temporarily  suspend following of the elbow follower and move individual motors
    */
-  public Command tweakElbow(){
+  /*public Command tweakElbow(){
     return runOnce(
         () -> this.unfollow())  // kill following
         //.andThen()            // tweak position of one motor
@@ -154,6 +154,13 @@ public class Arm extends SubsystemBase {
   }
   void reFollow() {
     elbow_follower.follow(elbow);
+  } */
+
+  /** moveWrist 
+   * @param speed is positive in the same axis as the arm
+  */
+  public void moveWrist(double speed) {
+    wrist.set(speed);
   }
 
   @Override
@@ -161,15 +168,16 @@ public class Arm extends SubsystemBase {
     SmartDashboard.putNumber("Current", getElbowCurrent());
     SmartDashboard.putNumber("RelVal", elbow_encoder.getPosition());
     SmartDashboard.putNumber("AbsVal", boreHole.getAverageValue());
-    if(getElbowCurrent()<Constants.ArmConstants.ElbowCurrentLimit) armSafety = false;
-    SmartDashboard.putBoolean("Elbow Warning", getElbowCurrent()<Constants.ArmConstants.ElbowCurrentLimit);
+    //if(getElbowCurrent()>Constants.ArmConstants.ElbowCurrentLimit) armSafety = false;
+    //SmartDashboard.putBoolean("Elbow Warning", getElbowCurrent()<Constants.ArmConstants.ElbowCurrentLimit);
+    SmartDashboard.putBoolean("Elbow Warning", armSafety);
 
 
     //System.out.println("TEST");
     // This method will be called once per scheduler run
   }
 
-  /** Allow the arm to move */
+  /** Allow the arm to move  (after safety shutdown)*/
   public void rearmArm() {
     armSafety = true;
   }
