@@ -268,6 +268,7 @@ public final class Constants {
 
     public static final class ColorConstants {
       public static final I2C.Port sensorPort = I2C.Port.kOnboard;
+    public static final float NoteHue = 0;
     }
 
     public static final class CANIDs {
@@ -275,11 +276,15 @@ public final class Constants {
       // Arm
         public static final int elbow = 50; // left
         public static final int elbow_follower = 51; // right
-        public static final int wrist = 99;
+        public static final int wrist = 52;
       
         //Handler
       public static final int low_side = 53;
       public static final int high_side = 54;
+
+      // Climber
+      public static final int climb_right = 56;
+      public static final int climb_left  = 55;
       
     }
  
