@@ -43,7 +43,6 @@ import frc.robot.commands.SwerveJoystickCmd;
 import frc.robot.subsystems.AprilTagCamera;
 import frc.robot.subsystems.AprilCamera;
 import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.ColorSensor;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Handler;
 import frc.robot.commands.WristUp;
@@ -55,7 +54,6 @@ public class RobotContainer {
     private Handler handlerSubsystem;
     private Drivetrain swerveSubsystem;
     private AprilTagCamera camera;
-    private ColorSensor colorSensor;
     //private DriveGeneric driveGeneric;
     private Pigeon2 gyro;
     private SysIdRoutine routine;

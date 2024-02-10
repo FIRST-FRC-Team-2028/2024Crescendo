@@ -61,15 +61,11 @@ public class Arm extends SubsystemBase {
     elbow_follower.setIdleMode(IdleMode.kBrake);
     wrist.setIdleMode(IdleMode.kBrake);
 
-    
     elbow_encoder = elbow.getEncoder();
     wrist_encoder = wrist.getEncoder();
 
     elbow_PidController = elbow.getPIDController();
     wrist_PidController = wrist.getPIDController();
-
-   
-    
 
     elbow_PidController.setP(Constants.ArmConstants.kElbowP);
     elbow_PidController.setI(Constants.ArmConstants.kElbowI);
@@ -94,12 +90,14 @@ public class Arm extends SubsystemBase {
 
 
   //  elbow.setSoftLimit(SoftLimitDirection.kForward, ArmConstants.kElbowForwardLimit); //elbow forward limit
-  //  elbow.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.kElbowReverseLimit); //elbow reverse limit
+    //  elbow.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.kElbowReverseLimit); //elbow reverse limit
     //wrist.setSoftLimit(SoftLimitDirection.kForward, ArmConstants.kWristForwardLimit); //wrist forward limit
     //wrist.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.kWristReverseLimit); //wrist reverse limit
 
-    elbow.enableSoftLimit(SoftLimitDirection.kForward, true);
+    elbow.enableSoftLimit(SoftLimitDirection.kForward,true);
     elbow.enableSoftLimit(SoftLimitDirection.kReverse, true);
+
+    //elbow_encoder.setPosition(abs2rel(boreHole.getAverageValue()));
 
   }
 
@@ -110,8 +108,8 @@ public class Arm extends SubsystemBase {
   public void elbowUp() {
    if(armSafety)elbow.set(.7);
 
-    SmartDashboard.putNumber("Encoder test", elbow_encoder.getPosition());
-    System.out.println("Insdie elbowup"); 
+SmartDashboard.putNumber("Encoder test", elbow_encoder.getPosition());
+System.out.println("Insdie elbowup"); 
   }
   public void elbowDown() {
     if(armSafety)elbow.set(-.7);
@@ -134,10 +132,20 @@ public class Arm extends SubsystemBase {
   public double getElbowCurrent() {
     return elbow.getOutputCurrent();
   }
+
+
+
+
+  /** disable arm */
+  public void disableArm(){
+    armSafety = false;
+  }
+
+  /**  */
   
-  /* For test:
-   * stepping the motor 1 or 2 degrees in both directions
-   * 
+/* For test:
+* stepping the motor 1 or 2 degrees in both directions
+* 
    * Temporarily  suspend following of the elbow follower and move individual motors
    */
   /*public Command tweakElbow(){
@@ -165,10 +173,10 @@ public class Arm extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Current", getElbowCurrent());
+SmartDashboard.putNumber("Current", getElbowCurrent());
     SmartDashboard.putNumber("RelVal", elbow_encoder.getPosition());
     SmartDashboard.putNumber("AbsVal", boreHole.getAverageValue());
-    //if(getElbowCurrent()>Constants.ArmConstants.ElbowCurrentLimit) armSafety = false;
+//if(getElbowCurrent()>Constants.ArmConstants.ElbowCurrentLimit) armSafety = false;
     //SmartDashboard.putBoolean("Elbow Warning", getElbowCurrent()<Constants.ArmConstants.ElbowCurrentLimit);
     SmartDashboard.putBoolean("Elbow Warning", armSafety);
 
