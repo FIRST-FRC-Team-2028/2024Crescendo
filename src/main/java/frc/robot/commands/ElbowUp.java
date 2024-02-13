@@ -5,12 +5,15 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
 
 public class ElbowUp extends Command {
   Arm m_arm;
   public ElbowUp(Arm arm) {
+    if (Constants.ARM_AVAILABLE){
     addRequirements(arm);
+    }
     // Use addRequirements() here to declare subsystem dependencies.
     this.m_arm = arm;
   }

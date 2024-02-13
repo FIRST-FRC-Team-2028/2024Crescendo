@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj.I2C.Port;
  *    CANIDs
  *    AutoConstants
  *    OIConstants
-  *    CamConstant
+ *    CamConstant
  *    RobotConstants
  *    FieldConstants
  */
@@ -31,9 +31,9 @@ public final class Constants {
   public static final boolean PHOTONVISION_AVAILABLE = false;
   public static final boolean DRIVE_AVAILABLE = false;
   public static final boolean ARM_AVAILABLE = true;
-  public static final boolean INTAKE_AVAILABLE = false;
+  public static final boolean INTAKE_AVAILABLE = true;
   public static final boolean CLIMB_AVAILABLE = false;
-  public static final boolean APRIL_AVAILABLE = false;
+  public static final boolean APRIL_AVAILABLE = true;
 
 
   public static final class ModuleConstants {
@@ -215,45 +215,53 @@ public final class Constants {
     }
 
     public static final class ArmConstants {
-
-
-      
       //Elbow PID
-      public static final double kElbowP = 0;
+      public static final double kElbowP = 0.25;
       public static final double kElbowI = 0;
       public static final double kElbowD = 0;
-//Wrist PID
+      //Wrist PID
       public static final double kWristP = 0;
       public static final double kWristI = 0;
       public static final double kWristD = 0;
-      //Elbow Positions
-      public static final double kRetractPosition = 0;
+      //Elbow Position  (in degrees up from parallel to the floor)
       public static final double kElbowGround = 0;
-            public static final double kElbowSource = 0;
-            public static final double kElbowSpeaker = 0;
-            public static final double kElbowAmp = 0;
-//Wrist Positions
-        public static final double kWristSource = 0;
-        public static final double kWristGround = 0;
-        public static final double kWristSpeaker = 0;
-        public static final double kWristAmp = 0;
+      public static final double kElbowSource = -5;
+      public static final double kElbowSpeaker = -45;
+      public static final double kElbowAmp = 0;
+      //Wrist Positions (in degrees from perpendicular to arm)
+      public static final double kWristSource = 0;
+      public static final double kWristGround = 0;
+      public static final double kWristSpeaker = 0;
+      public static final double kWristAmp = 0;
 
       //Tolerances
-      public static final double elbowTolerance = 0;
-      public static final double wristTolerance = 0;
+      public static final double elbowTolerance = 1;
+      public static final double wristTolerance = 1;
       //Soft limits
-        public static final float kElbowForwardLimit = 8;
-      public static final float kElbowReverseLimit = -70;
-      public static final float kWristForwardLimit = 0;
-      public static final float kWristReverseLimit = 0;
-//Encoders
+      public static final float kElbowForwardLimit = 90.f;
+      public static final float kElbowReverseLimit = 0.f;
+      public static final float kWristForwardLimit = 15.f;
+      public static final float kWristReverseLimit = -15.f;
+      //Encoders
       public static final int ABSENCODERPORT = 0;
-public static final int kAbsoluteEncoder = 0;
-      public static final int RelMin = 0;
-      public static final int Ratio = 0;
-      public static final double AbsMin = 0;
+      public static final int kAbsoluteEncoder = 0;
+      public static final double elbowEncoderFactor = 90./(80.);  //TODO redo calibration
+      public static final int RelMin = 0;  //  upright
+      public static final int AbsMin = 400;  // parallel to floor
+      public static final int RelMax = 90;  // upright
+      public static final int AbsMax = 1080; // upright
+      public static final double Ratio = 90./(1080.-400.); //(RelMax-RelMin)/(AbsMax-AbsMin);
+      public static final int kAbsoluteEncoderW = 0;
+      public static final double wristEncoderFactor = 90./(90-0);  //TODO redo calibration
+      public static final int RelMinW = 0;
+      public static final int AbsMinW = 0;
+      public static final int RelMaxW = 10;
+      public static final int AbsMaxW = 10;
+      public static final double RatioW = (RelMaxW-RelMinW)/(AbsMaxW-AbsMinW);
 
-        public static final double ElbowCurrentLimit = 5.;
+      public static final double ElbowCurrentLimit = 5.;
+      public static final double kElbowRampRate = 2.;  // seconds
+      public static final double kWristRampRate = 2.;  // seconds
     
     }
 
@@ -273,7 +281,7 @@ public static final int kAbsoluteEncoder = 0;
 
     public static final class ColorConstants {
       public static final I2C.Port sensorPort = I2C.Port.kOnboard;
-    public static final float NoteHue = 0;
+      public static final float NoteHue = 0;
     }
 
     public static final class CANIDs {
@@ -283,7 +291,7 @@ public static final int kAbsoluteEncoder = 0;
       public static final int elbow_follower = 51; // right
       public static final int wrist = 52;
 
-//Handler
+      //Handler
       public static final int low_side = 53;
       public static final int high_side = 54;
       
@@ -327,15 +335,17 @@ public static final int kAbsoluteEncoder = 0;
         public static final int BALANCE_AUGMENTER             = 4; //  driver stick Y button
         public static final int DriveGenericTester            = 4; //  driver stick Y button
         public static final int kDriverFieldOrientedButtonIdx = 5; // driverJoystick button left-bumper
-        public static final int kElbowUpButton                = 3; // driverJoystick button right-bumper
-        public static final int kElbowDownButton              = 2; // driverJoystick back button
-        public static final int kStopElbowButton              = 1; // driverJoystick start button
+        public static final int kElbowUpButton                = 3; // driverJoystick X button
+        public static final int kElbowDownButton              = 2; // driverJoystick B button
+        public static final int kElbowRearmButton             = 1; // driverJoystick A button
         //Mech contoller buttons start here
         public static final int kWristDownButton = 1;
         public static final int kWristUpButton = 4;
         //need to start putting stuff on the button board TODO
         
         public static final double kDeadband = 0.05;
+        public static final int kElbowSource = 3;
+        public static final int kElbowSpeaker = 2;
 
         
 
@@ -344,15 +354,8 @@ public static final int kAbsoluteEncoder = 0;
     }
 
     public static final class CamConstant {
-        // april tag USB camera connected to RaspBerry Pi runnind PhotonVision
-        public static final double PitchAngle =           0.; // Pitch angle of camera in degrees
-        public static final double CameraLocationX =      0.; // camera location relative to robots center
-        public static final double CameraLocationY =      0.;
-        public static final double CameraLocationZ =      0.;
-        public static final double CameraLocationX_COMP = Units.inchesToMeters(5.); // camera location relative to robots center
-        public static final double CameraLocationY_COMP = 0.;
-        public static final double CameraLocationZ_COMP = Units.inchesToMeters(45.);
-        public static final double PitchAngle_Comp =      -30.; // Pitch angle of camera in degrees
+      public static final double camera_Height_Meters = Units.inchesToMeters(7);
+      public static final double target_Height_Meters = Units.inchesToMeters(78);
 
     }
 

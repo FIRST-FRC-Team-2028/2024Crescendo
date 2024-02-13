@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
 
 public class WristUp extends Command {
@@ -14,8 +15,11 @@ public class WristUp extends Command {
   public WristUp(Arm subsys, double speed) {
     this.subsys = subsys;
     this.speed = speed;
+      if (Constants.ARM_AVAILABLE){
     addRequirements(subsys); //here to declare subsystem dependencies.
+      }
   }
+
 
   // Called when the command is initially scheduled.
   @Override

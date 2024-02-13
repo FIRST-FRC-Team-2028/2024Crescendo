@@ -34,6 +34,7 @@ public class AprilCamera extends SubsystemBase {
   double distanceToTarget;
   Transform3d robotToCam;
   PhotonPoseEstimator photonPoseEstimator;
+  
   //private PhotonPipelineResult result;
   /** Creates a new AprilTags. */
   public AprilCamera() {
@@ -59,22 +60,25 @@ public class AprilCamera extends SubsystemBase {
     System.out.println(getRobotPosition());
   }
 
-  public void showYaw() {
-    SmartDashboard.putNumber("YE Yaw", target.getYaw());
-  }
+  //public void showYaw() {
+  //  SmartDashboard.putNumber("YE Yaw", target.getYaw());         IF DONT HAVE TARGET, DONT RUN SHOWYAW
+  //}
 
 
 
   @Override
   public void periodic() {
-   // showYaw();
-   // photonPoseEstimator.update();
-   // var result = camera.getLatestResult();
-   // hasTargets = result.hasTargets();
-   // targets = result.getTargets();
-   // target = result.getBestTarget();
-   // robotPose = PhotonUtils.estimateFieldToRobotAprilTag(target.getBestCameraToTarget(),
-   //           aprilTagFieldLayout.getTagPose(target.getFiducialId()).get(), robotToCam);
+
+    //photonPoseEstimator.update();
+    //var result = camera.getLatestResult();
+    //hasTargets = result.hasTargets();
+    //targets = result.getTargets();
+    //target = result.getBestTarget();
+    //robotPose = PhotonUtils.estimateFieldToRobotAprilTag(target.getBestCameraToTarget(),
+    //          aprilTagFieldLayout.getTagPose(target.getFiducialId()).get(), robotToCam);
+    //showYaw();
+
+    //SmartDashboard.putString("Robot Pose", photonPoseEstimator.toString());
     //SmartDashboard.put("April Tag X", result.getTargets());
     // This method will be called once per scheduler run
   }

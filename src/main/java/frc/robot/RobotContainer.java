@@ -33,16 +33,16 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.ArmRun;
 import frc.robot.commands.ElbowDown;
 //import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.ElbowUp;
 //import frc.robot.commands.DriveGeneric;
-import frc.robot.commands.GetRobotPosition;
 import frc.robot.commands.SwerveJoystickCmd;
 //import frc.robot.subsystems.SwerveSubsystem;
-import frc.robot.subsystems.AprilTagCamera;
 import frc.robot.subsystems.AprilCamera;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Handler;
 import frc.robot.commands.WristUp;
@@ -53,7 +53,8 @@ public class RobotContainer {
     private Arm armSubsystem;
     private Handler handlerSubsystem;
     private Drivetrain swerveSubsystem;
-    private AprilTagCamera camera;
+    private Climber climber;
+    
     //private DriveGeneric driveGeneric;
     private Pigeon2 gyro;
     private SysIdRoutine routine;
@@ -79,9 +80,7 @@ public class RobotContainer {
                 }
                 else swerveSubsystem = null;
 
-                if (Constants.PHOTONVISION_AVAILABLE){
-                        camera = new AprilTagCamera();
-               }
+               
 
                 if (Constants.ARM_AVAILABLE){
                        armSubsystem = new Arm();
@@ -92,8 +91,14 @@ public class RobotContainer {
                         handlerSubsystem = new Handler();
                 }
                 else handlerSubsystem = null;
+                if (Constants.APRIL_AVAILABLE){
+                        april = new AprilCamera();
+                }
 
                 gyro = new Pigeon2(0);
+
+                if (Constants.CLIMB_AVAILABLE) climber = new Climber(gyro);
+                
                 configureButtonBindings();       
 
                 m_chooser = new SendableChooser<>();
@@ -130,6 +135,8 @@ public class RobotContainer {
                 whileTrue(new ElbowUp(armSubsystem));
         new JoystickButton(driverJoytick, OIConstants.kElbowDownButton).
                 whileTrue(new ElbowDown(armSubsystem));
+        new JoystickButton(driverJoytick, OIConstants.kElbowRearmButton).
+                onTrue(Commands.runOnce( armSubsystem::rearmArm, armSubsystem));
 
         new JoystickButton(mechJoytick, OIConstants.kWristUpButton).
                 whileTrue(new WristUp(armSubsystem,.3))
@@ -137,6 +144,10 @@ public class RobotContainer {
                 ;
         new JoystickButton(mechJoytick, OIConstants.kWristDownButton).
                 whileTrue(new WristUp(armSubsystem,-.3));
+        new JoystickButton(mechJoytick, OIConstants.kElbowSource).
+                onTrue(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowSource, 5));
+        new JoystickButton(mechJoytick, OIConstants.kElbowSpeaker).
+                onTrue(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowSpeaker, 5));
      }
 
 
@@ -287,10 +298,6 @@ public class RobotContainer {
         return gyro;
     }
 */
-        public AprilTagCamera getPhotonVisionSS() {
-                if (Constants.PHOTONVISION_AVAILABLE) {
-                        return camera;
-                } else return null;
-        }
+     
 
 }

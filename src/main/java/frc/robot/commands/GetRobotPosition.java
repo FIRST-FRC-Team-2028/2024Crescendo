@@ -7,14 +7,14 @@ package frc.robot.commands;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.AprilTagCamera;
+//import frc.robot.subsystems.AprilTagCamera;
 
 
 public class GetRobotPosition extends Command {
-  AprilTagCamera camera;
+  //AprilTagCamera camera;
   Pose2d robotposition;
   /** Gets Robot position using the april tag camera */
-  public GetRobotPosition(AprilTagCamera camera) {
+  public GetRobotPosition(/*AprilTagCamera camera*/) {
     // Use addRequirements() here to declare subsystem dependencies.
     //this.camera = camera;
    

@@ -24,23 +24,24 @@ public class ArmRun extends Command {
   @Override
   public void initialize() {
     //arm.pidCoefficient(Math.abs(Target - arm.getElbowPos()), Math.abs(WristTarget - arm.getWristPos()));
-    arm.run(Target, WristTarget);
+    arm.positionArm(Target);
+    arm.positionWrist(WristTarget);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (arm.getElbowPos() >= Target - ArmConstants.elbowTolerance
+    /*if (arm.getElbowPos() >= Target - ArmConstants.elbowTolerance
      && arm.getElbowPos() <= Target + ArmConstants.elbowTolerance) arm.stopElbow();
-    //if (arm.getWristPos() >= Target - ArmConstants.wristTolerance
-    // && arm.getWristPos() <= Target + ArmConstants.wristTolerance) arm.stopWrist();
+    if (arm.getWristPos() >= Target - ArmConstants.wristTolerance
+     && arm.getWristPos() <= Target + ArmConstants.wristTolerance) arm.stopWrist();*/
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     arm.stopElbow();
-    //arm.stopWrist();
+    arm.stopWrist();
   }
 
   // Returns true when the command should end.
@@ -48,8 +49,8 @@ public class ArmRun extends Command {
   public boolean isFinished() {
     return arm.getElbowPos() >= Target - ArmConstants.elbowTolerance
       && arm.getElbowPos() <= Target + ArmConstants.elbowTolerance
-      //&& arm.getWristPos() >= Target - ArmConstants.wristTolerance
-      //&& arm.getWristPos() <= Target + ArmConstants.wristTolerance
+      && arm.getWristPos() >= Target - ArmConstants.wristTolerance
+      && arm.getWristPos() <= Target + ArmConstants.wristTolerance
       || arm.amIDone();
   }
 }

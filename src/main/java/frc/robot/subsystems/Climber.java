@@ -5,14 +5,20 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import com.ctre.phoenix6.hardware.Pigeon2;
 
 public class Climber extends SubsystemBase {
-  /** Climber hooks would go up, hook, then go down. */
-  public Climber() {}
+  /** Climber hooks would go up, hook, then go down. 
+   *  The robot should maintain zero roll angle during climb.
+  */
+  public Climber(Pigeon2 gyro) {
+    
+  }
 
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
   }
+
 }

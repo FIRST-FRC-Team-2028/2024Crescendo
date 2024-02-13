@@ -188,9 +188,9 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         
 
-        if (driverJoytick.getRawButton(3)) {
+        /* if (driverJoytick.getRawButton(3)) {
                 System.out.println("Button Pressed");
-        }
+        } */
 
         //SmartDashboard.putNumber("BotA", pigeon.getAngle());
         SmartDashboard.putNumber("BatV", PDH.getVoltage());
