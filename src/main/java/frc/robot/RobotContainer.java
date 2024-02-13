@@ -29,14 +29,17 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.Amp;
 import frc.robot.commands.ArmRun;
 import frc.robot.commands.ElbowDown;
 //import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.ElbowUp;
+import frc.robot.commands.InHandler;
 //import frc.robot.commands.DriveGeneric;
 import frc.robot.commands.SwerveJoystickCmd;
 //import frc.robot.subsystems.SwerveSubsystem;
@@ -108,6 +111,10 @@ public class RobotContainer {
         public final Arm getArm() {
                 return armSubsystem;
         }
+    
+        public final Handler getHandler() {
+                return handlerSubsystem;
+        }
 
      //MEE 
         private void configureButtonBindings() { 
@@ -145,9 +152,18 @@ public class RobotContainer {
         new JoystickButton(mechJoytick, OIConstants.kWristDownButton).
                 whileTrue(new WristUp(armSubsystem,-.3));
         new JoystickButton(mechJoytick, OIConstants.kElbowSource).
-                onTrue(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowSource, 5));
+                onTrue(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowSource, 0));
         new JoystickButton(mechJoytick, OIConstants.kElbowSpeaker).
-                onTrue(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowSpeaker, 5));
+                onTrue(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowSpeaker, 0));
+        /*new JoystickButton(mechJoytick, OIConstants.kRetract).
+                onTrue(new ArmRun(armSubsystem, ArmConstants.kRetract, ArmConstants.kRetract));*/
+        new JoystickButton(mechJoytick, OIConstants.kIntake).
+                whileTrue(new InHandler(handlerSubsystem));
+        new JoystickButton(mechJoytick, OIConstants.kAmp).
+                whileTrue(new Amp(handlerSubsystem));
+        /*new JoystickButton(mechJoytick,2).whileTrue(Commands.run(() -> {
+                 handlerSubsystem.low_out(mechJoytick::getRawAxis(1));
+        }));*/
      }
 
 

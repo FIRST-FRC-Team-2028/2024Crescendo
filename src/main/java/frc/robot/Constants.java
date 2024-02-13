@@ -33,7 +33,8 @@ public final class Constants {
   public static final boolean ARM_AVAILABLE = true;
   public static final boolean INTAKE_AVAILABLE = true;
   public static final boolean CLIMB_AVAILABLE = false;
-  public static final boolean APRIL_AVAILABLE = true;
+  public static final boolean APRIL_AVAILABLE = false;
+  public static final boolean COLOR_AVALIBLE = false;
 
 
   public static final class ModuleConstants {
@@ -233,6 +234,7 @@ public final class Constants {
       public static final double kWristGround = 0;
       public static final double kWristSpeaker = 0;
       public static final double kWristAmp = 0;
+      public static final double kRetract = 85;
 
       //Tolerances
       public static final double elbowTolerance = 1;
@@ -262,6 +264,7 @@ public final class Constants {
       public static final double ElbowCurrentLimit = 5.;
       public static final double kElbowRampRate = 2.;  // seconds
       public static final double kWristRampRate = 2.;  // seconds
+
     
     }
 
@@ -272,9 +275,9 @@ public final class Constants {
       //public static final double kHighP = 0;
       //public static final double kHighI = 0;
       //public static final double kHighD = 0;
-      public static final double kLowInSpeed = 0;
-      public static final double kHighOutSpeed = 0;
-      public static final double kLowOutSpeed = 0;
+      public static final double kLowInSpeed = 0.25;
+      public static final double kHighOutSpeed = 0.5;
+      public static final double kLowOutSpeed = -0.25;
       public static final int SENSORPORT = 0;
       
     }
@@ -331,9 +334,7 @@ public final class Constants {
         public static final int kDriverRotAxis                = 4;
         public static final int fineControlAxis               = 2;
         public static final int kDriverResetGyroButtonIdx     = 1; // driverJoystick button A
-        public static final int kDriverResetOdometryButtonIdx = 3; // driverJoystick button X
-        public static final int BALANCE_AUGMENTER             = 4; //  driver stick Y button
-        public static final int DriveGenericTester            = 4; //  driver stick Y button
+        public static final int kDriverResetOdometryButtonIdx = 4; // driverJoystick button X
         public static final int kDriverFieldOrientedButtonIdx = 5; // driverJoystick button left-bumper
         public static final int kElbowUpButton                = 3; // driverJoystick X button
         public static final int kElbowDownButton              = 2; // driverJoystick B button
@@ -346,6 +347,9 @@ public final class Constants {
         public static final double kDeadband = 0.05;
         public static final int kElbowSource = 3;
         public static final int kElbowSpeaker = 2;
+        //public static final int kRetract = 1;
+        public static final int kIntake = 5;
+        public static final int kAmp = 6;
 
         
 

@@ -16,6 +16,7 @@ public class Amp extends Command {
   /** Put the note in the Amp */
   public Amp(Handler Intake) {
     intake = Intake;
+    timer = new Timer();
     addRequirements(intake);   //here to declare subsystem dependencies. TODO
   }
 

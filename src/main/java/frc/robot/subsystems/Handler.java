@@ -5,11 +5,13 @@
 package frc.robot.subsystems;
 
 import java.util.function.BooleanSupplier;
+import java.util.function.Supplier;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.MotControllerJNI;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.fasterxml.jackson.databind.deser.std.ContainerDeserializerBase;
 //import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorSensorV3;
@@ -34,7 +36,7 @@ import frc.robot.Constants;
  */
 public class Handler extends SubsystemBase {
   private final TalonSRX low_side;
-  private final TalonSRX high_side;
+  //private final TalonSRX high_side;
   private final ColorSensorV3 sensor;
   boolean doIHaveIt;
 
@@ -46,13 +48,13 @@ public class Handler extends SubsystemBase {
   /** Creates a new HandlerIntake. */
   public Handler() {
     low_side = new TalonSRX(Constants.CANIDs.low_side);
-    high_side = new TalonSRX(Constants.CANIDs.high_side);
+    //high_side = new TalonSRX(Constants.CANIDs.high_side);
 
     low_side.configFactoryDefault();
-    high_side.configFactoryDefault();
+    //high_side.configFactoryDefault();
 
     low_side.setNeutralMode(NeutralMode.Brake); 
-    high_side.setNeutralMode(NeutralMode.Coast);
+    //high_side.setNeutralMode(NeutralMode.Coast);
 
    // low_encoder = low_side.getEncoder();
    // high_encoder = high_side.getEncoder();
@@ -67,7 +69,9 @@ public class Handler extends SubsystemBase {
     //high_PidController.setP(Constants.IntakeConstants.kHighP);
     //high_PidController.setI(Constants.IntakeConstants.kHighI);
     //high_PidController.setD(Constants.IntakeConstants.kHighD);
-    sensor = new ColorSensorV3(Constants.ColorConstants.sensorPort);
+
+      sensor = new ColorSensorV3(Constants.ColorConstants.sensorPort);
+    
   }
   
   static final double closeHue = 0.05;  // How close to the Hue data [0-1.] is good enough
@@ -75,16 +79,20 @@ public class Handler extends SubsystemBase {
   /** return true if sensor sees a note */
   public boolean useSensor() {
     // return sensor.get();  TODO
-    Color notesensor = sensor.getColor();
-    SmartDashboard.putString("Sensor", notesensor.toHexString());
-    float[] george={0.f,0.f,0.f};
-    george = java.awt.Color.RGBtoHSB((int)(notesensor.red  *255), 
-                                            (int)(notesensor.green*255), 
-                                            (int)(notesensor.blue *255), george);
-                                            double diffHue = Math.abs(george[0] - Constants.ColorConstants.NoteHue);
-    if ( diffHue < closeHue)return true;
-                                        
-    return false;
+    if (Constants.COLOR_AVALIBLE){
+      Color notesensor = sensor.getColor();
+      SmartDashboard.putString("Sensor", notesensor.toHexString());
+      float[] george={0.f,0.f,0.f};
+      george = java.awt.Color.RGBtoHSB((int)(notesensor.red  *255), 
+                                              (int)(notesensor.green*255), 
+                                              (int)(notesensor.blue *255), george);
+                                              double diffHue = Math.abs(george[0] - Constants.ColorConstants.NoteHue);
+      if ( diffHue < closeHue)return true;
+
+      return false;
+    } else{                     
+      return false;
+    }
   }
 
   @Override
@@ -113,11 +121,17 @@ public class Handler extends SubsystemBase {
 
 
   public void high_out() {
-    high_side.set(TalonSRXControlMode.PercentOutput, Constants.HandlerConstants.kHighOutSpeed);
+    //high_side.set(TalonSRXControlMode.PercentOutput, Constants.HandlerConstants.kHighOutSpeed);
   }
+
+  /*public void printVoltage() {
+    System.out.println(low_side.getBusVoltage());
+    System.out.println(low_side.getStatorCurrent());
+  }*/
 
   public void low_in() {
     low_side.set(TalonSRXControlMode.PercentOutput, Constants.HandlerConstants.kLowInSpeed);
+    
   }
 
   public void low_out() {
@@ -125,8 +139,9 @@ public class Handler extends SubsystemBase {
   }
 
   public void stop() {
-    high_side.set(TalonSRXControlMode.PercentOutput, 0);
+    //high_side.set(TalonSRXControlMode.PercentOutput, 0);
     low_side.set(TalonSRXControlMode.PercentOutput, 0);
+     System.out.println("Works LowStop");
   }
 
   /**ShootIt command

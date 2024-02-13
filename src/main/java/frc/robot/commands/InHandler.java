@@ -15,9 +15,9 @@ public class InHandler extends Command {
    * run an intake motor in the intake direction
    * stop motor when note is acquired 
    */
-  public InHandler(Handler Intake) {
-    intake = Intake;
-    addRequirements(Intake); // here to declare subsystem dependencies. TODO
+  public InHandler(Handler Handler) {
+    intake = Handler;
+    addRequirements(Handler); // here to declare subsystem dependencies. TODO
   }
 
   // Called when the command is initially scheduled.
@@ -39,6 +39,7 @@ public class InHandler extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
   // if (/*Color sensor reads if there is a note*/) {              COLOR SENSOR STUFF
   //   intake.iHaveIt();                                           COLOR SENSOR STUFF
   // }
