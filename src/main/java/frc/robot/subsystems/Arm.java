@@ -97,6 +97,8 @@ public class Arm extends SubsystemBase {
 
     elbow.enableSoftLimit(SoftLimitDirection.kForward,true);
     elbow.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    wrist.enableSoftLimit(SoftLimitDirection.kForward,true);
+    wrist.enableSoftLimit(SoftLimitDirection.kReverse, true);
 
     
     wrist.setOpenLoopRampRate(Constants.ArmConstants.kWristRampRate);
