@@ -190,7 +190,11 @@ public class Arm extends SubsystemBase {
     currP = (currP+1)%5;
     SmartDashboard.putNumber("RelVal", elbow_encoder.getPosition());
     SmartDashboard.putNumber("AbsVal", boreHole.getAverageValue());
-    if(avgCurrent>Constants.ArmConstants.ElbowCurrentLimit) armSafety = false;
+    if(avgCurrent>Constants.ArmConstants.ElbowCurrentLimit) {
+      for (double each: currentHist) System.out.print(" "+each);
+      System.out.println(" => avg: "+avgCurrent);
+      armSafety = false;
+    }
     SmartDashboard.putBoolean("Elbow Warning", armSafety);
 
 
