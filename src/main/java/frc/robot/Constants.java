@@ -225,10 +225,10 @@ public final class Constants {
       public static final double kWristI = 0;
       public static final double kWristD = 0;
       //Elbow Position  (in degrees up from parallel to the floor)
-      public static final double kElbowGround = 0;
-      public static final double kElbowSource = -5;
-      public static final double kElbowSpeaker = -45;
-      public static final double kElbowAmp = 0;
+      public static final double kElbowGround = 10;
+      public static final double kElbowSource = 60;
+      public static final double kElbowSpeaker = 30;
+      public static final double kElbowAmp = 70;
       //Wrist Positions (in degrees from perpendicular to arm)
       public static final double kWristSource = 0;
       public static final double kWristGround = 0;
