@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.I2C.Port;
  *    DriveConstants
  *    ArmConstants
  *    HandlerConstants
+ *    ClimberConstants
  *    ColorConstants
  *    CANIDs
  *    AutoConstants
@@ -280,6 +281,11 @@ public final class Constants {
       public static final double kLowOutSpeed = -0.25;
       public static final int SENSORPORT = 0;
       
+    }
+
+    public static final class ClimberConstants {
+        public static final double ExtendSpeed = 0;
+        public static final double ExtendPosition = 0;
     }
 
     public static final class ColorConstants {
