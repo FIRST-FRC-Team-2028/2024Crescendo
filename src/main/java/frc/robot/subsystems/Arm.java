@@ -149,26 +149,7 @@ public class Arm extends SubsystemBase {
     return wrist.getOutputCurrent();
   }
   
-  /* For test:
-   * stepping the motor 1 or 2 degrees in both directions
-   * 
-   * Temporarily  suspend following of the elbow follower and move individual motors
-   */
-  /*public Command tweakElbow(){
-    return runOnce(
-        () -> this.unfollow())  // kill following
-        //.andThen()            // tweak position of one motor
-        //.andThen()            // reset following mode
-        ;
-  }
 
-  void unfollow () {
-    //TODO I think we have to reset to factory defaults and reconfigure everything!
-    int dummy=0;
-  }
-  void reFollow() {
-    elbow_follower.follow(elbow);
-  } */
 
   /** moveWrist 
    * @param speed is positive in the same axis as the arm

@@ -10,28 +10,28 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.subsystems.Handler;
 
 public class InHandler extends Command {
-  Handler intake;
+  Handler handler;
   /** Acquire a note
-   * run an intake motor in the intake direction
+   * run an handler motor in the handler direction
    * stop motor when note is acquired 
    */
-  public InHandler(Handler Intake) {
-    intake = Intake;
-    addRequirements(Intake); // here to declare subsystem dependencies. TODO
+  public InHandler(Handler handler) {
+    handler = handler;
+    addRequirements(handler); // here to declare subsystem dependencies. TODO
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
  // if (/*Color sensor reads if there is a note*/) {              COLOR SENSOR STUFF
- //   intake.iHaveIt();                                           COLOR SENSOR STUFF
- // } else intake.iDontHaveIt();                                  COLOR SENSOR STUFF
+ //   handler.iHaveIt();                                           COLOR SENSOR STUFF
+ // } else handler.iDontHaveIt();                                  COLOR SENSOR STUFF
   
-    if (intake.sense()) {
-      intake.stop();
+    if (handler.sense()) {
+      handler.stop();
     }
     else {
-      intake.low_in();
+      handler.low_in();
     }
 
   }
@@ -40,14 +40,14 @@ public class InHandler extends Command {
   @Override
   public void execute() {
   // if (/*Color sensor reads if there is a note*/) {              COLOR SENSOR STUFF
-  //   intake.iHaveIt();                                           COLOR SENSOR STUFF
+  //   handler.iHaveIt();                                           COLOR SENSOR STUFF
   // }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intake.stop();
+    handler.stop();
   }
 
   // Returns true when the command should end.
@@ -55,6 +55,6 @@ public class InHandler extends Command {
   public boolean isFinished() {
     //COLOR SENSOR STUFF GOES HERE TO MAKE IT STOP
     //NOT SETUP FOR A STOP BUTTON
-    return intake.doIHaveIt();
+    return handler.doIHaveIt();
   }
 }

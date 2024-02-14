@@ -87,7 +87,7 @@ public class RobotContainer {
                 }
                 else armSubsystem = null;
 
-                if (Constants.INTAKE_AVAILABLE){
+                if (Constants.HANDLER_AVAILABLE){
                         handlerSubsystem = new Handler();
                 }
                 else handlerSubsystem = null;
@@ -145,9 +145,9 @@ public class RobotContainer {
         new JoystickButton(mechJoytick, OIConstants.kWristDownButton).
                 whileTrue(new WristUp(armSubsystem,-.3));
         new JoystickButton(mechJoytick, OIConstants.kElbowSource).
-                onTrue(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowSource, 5));
+                onTrue(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowSource, Constants.ArmConstants.kWristSource));
         new JoystickButton(mechJoytick, OIConstants.kElbowSpeaker).
-                onTrue(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowSpeaker, 5));
+                onTrue(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowSpeaker, Constants.ArmConstants.kWristSpeaker));
      }
 
 

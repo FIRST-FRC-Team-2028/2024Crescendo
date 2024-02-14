@@ -251,7 +251,7 @@ public class Robot extends TimedRobot {
 
         // 4. Construct desired chassis speeds
         ChassisSpeeds chassisSpeeds;
-        if ( !driverJoytick.getRawButton(OIConstants.kDriverFieldOrientedButtonIdx)) {
+        if ( !driverJoytick.getRawButton(OIConstants.kDriverRobotOrientedButtonIdx)) {
             // Relative to field
             chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
                     xSpeed, ySpeed, turningSpeed, swerveSubsystem.getRotation2d());
