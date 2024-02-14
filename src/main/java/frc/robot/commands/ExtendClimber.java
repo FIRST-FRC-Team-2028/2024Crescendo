@@ -4,27 +4,22 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Handler;
+import frc.robot.Constants;
+import frc.robot.subsystems.Climber;
 
-public class Amp extends Command {
-  Handler intake;
-  Timer timer;
-
-  /** Put the note in the Amp */
-  public Amp(Handler Intake) {
-    intake = Intake;
-    timer = new Timer();
-    addRequirements(intake);   //here to declare subsystem dependencies. TODO
+public class ExtendClimber extends Command {
+  Climber climber;
+  /** Extend climber arms */
+  public ExtendClimber(Climber climber) {
+    this.climber = climber;
+    addRequirements(climber);  // here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    timer.start();
-    intake.low_out();
+    climber.extend(Constants.ClimberConstants.ExtendSpeed);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -34,14 +29,12 @@ public class Amp extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    timer.stop();
-    timer.reset();
-    intake.stop();
+    climber.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return timer.hasElapsed(1.25);
+    return climber.getPosition()>Constants.ClimberConstants.ExtendPosition;
   }
 }

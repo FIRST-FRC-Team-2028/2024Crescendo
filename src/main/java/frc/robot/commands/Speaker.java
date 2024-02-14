@@ -26,16 +26,15 @@ public class Speaker extends Command {
   public void initialize() {
     timer.start();
     if (handler.doIHaveIt()) {
-      handler.high_out();
+      handler.shootIt();
     }
   }
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (timer.hasElapsed(.25)) {
-      handler.low_in();
-    }
+    
   }
+
 
   // Called once the command ends or is interrupted.
   @Override

@@ -31,6 +31,8 @@ import edu.wpi.first.wpilibj.util.Color;    // Maddox: Color sensor
 
 import com.revrobotics.ColorSensorV3;       // Maddox: Color sensor
 
+import frc.robot.subsystems.Handler;
+
 //import com.ctre.phoenix.sensors.Pigeon2_Faults;
 
 /**
@@ -284,16 +286,27 @@ public class Robot extends TimedRobot {
         }
     }
 
+    Handler handler;
     @Override
     public void testInit() {
         // Cancels all running commands at the start of test mode.
         CommandScheduler.getInstance().cancelAll();
+        handler = m_robotContainer.getHandler();
+        
+
     }
 
     /** This function is called periodically during test mode. */
     @Override
 
     public void testPeriodic() {
+
+
+        //handler.low_out(.4);
+
+
+
+
         if (new JoystickButton(driverJoytick, OIConstants.kElbowUpButton).getAsBoolean()) {
             new InstantCommand(()-> m_robotContainer.getArm().elbowUpSlow());  
         } 

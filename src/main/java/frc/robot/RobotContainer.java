@@ -29,14 +29,17 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.Amp;
 import frc.robot.commands.ArmRun;
 import frc.robot.commands.ElbowDown;
 //import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.ElbowUp;
+import frc.robot.commands.InHandler;
 //import frc.robot.commands.DriveGeneric;
 import frc.robot.commands.SwerveJoystickCmd;
 //import frc.robot.subsystems.SwerveSubsystem;
@@ -107,6 +110,10 @@ public class RobotContainer {
     
         public final Arm getArm() {
                 return armSubsystem;
+        }
+    
+        public final Handler getHandler() {
+                return handlerSubsystem;
         }
 
      //MEE 

@@ -172,8 +172,10 @@ public class Arm extends SubsystemBase {
     avgCurrent += currentCurrent/5. - currentHist[currP]/5.;
     currentHist[currP] = currentCurrent;
     currP = (currP+1)%5;
-    SmartDashboard.putNumber("RelVal", elbow_encoder.getPosition());
-    SmartDashboard.putNumber("AbsVal", boreHole.getAverageValue());
+    SmartDashboard.putNumber("ElbowRelVal", elbow_encoder.getPosition());
+    SmartDashboard.putNumber("ElbowAbsVal", boreHole.getAverageValue());
+    SmartDashboard.putNumber("WristRelVal", wrist_encoder.getPosition());
+    //SmartDashboard.putNumber("WristAbsVal", );
     if(avgCurrent>Constants.ArmConstants.ElbowCurrentLimit) {
       for (double each: currentHist) System.out.print(" "+each);
       System.out.println(" => avg: "+avgCurrent);

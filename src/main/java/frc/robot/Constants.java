@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.I2C.Port;
  *    DriveConstants
  *    ArmConstants
  *    HandlerConstants
+ *    ClimberConstants
  *    ColorConstants
  *    CANIDs
  *    AutoConstants
@@ -33,7 +34,8 @@ public final class Constants {
   public static final boolean ARM_AVAILABLE = true;
   public static final boolean HANDLER_AVAILABLE = true;
   public static final boolean CLIMB_AVAILABLE = false;
-  public static final boolean APRIL_AVAILABLE = true;
+  public static final boolean APRIL_AVAILABLE = false;
+  public static final boolean COLOR_AVALIBLE = false;
 
 
   public static final class ModuleConstants {
@@ -233,6 +235,7 @@ public final class Constants {
       public static final double kWristGround = 0;
       public static final double kWristSpeaker = 0;
       public static final double kWristAmp = 0;
+      public static final double kRetract = 85;
 
       //Tolerances
       public static final double elbowTolerance = 1;
@@ -262,6 +265,7 @@ public final class Constants {
       public static final double ElbowCurrentLimit = 5.;
       public static final double kElbowRampRate = 2.;  // seconds
       public static final double kWristRampRate = 2.;  // seconds
+
     
     }
 
@@ -272,11 +276,16 @@ public final class Constants {
       //public static final double kHighP = 0;
       //public static final double kHighI = 0;
       //public static final double kHighD = 0;
-      public static final double kLowInSpeed = 0;
-      public static final double kHighOutSpeed = 0;
-      public static final double kLowOutSpeed = 0;
+      public static final double kLowInSpeed = 0.25;
+      public static final double kHighOutSpeed = 0.5;
+      public static final double kLowOutSpeed = -0.25;
       public static final int SENSORPORT = 0;
       
+    }
+
+    public static final class ClimberConstants {
+        public static final double ExtendSpeed = 0;
+        public static final double ExtendPosition = 0;
     }
 
     public static final class ColorConstants {
@@ -353,6 +362,9 @@ public final class Constants {
         public static final double kDeadband = 0.05;
         public static final int kElbowSource = 3;
         public static final int kElbowSpeaker = 2;
+        //public static final int kRetract = 1;
+        public static final int kIntake = 5;
+        public static final int kAmp = 6;
         public static final int kWristSpeaker = 0;
         public static final int kWristSource = 0;
 
