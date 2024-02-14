@@ -32,7 +32,7 @@ public final class Constants {
   public static final boolean PHOTONVISION_AVAILABLE = false;
   public static final boolean DRIVE_AVAILABLE = false;
   public static final boolean ARM_AVAILABLE = true;
-  public static final boolean INTAKE_AVAILABLE = true;
+  public static final boolean HANDLER_AVAILABLE = true;
   public static final boolean CLIMB_AVAILABLE = false;
   public static final boolean APRIL_AVAILABLE = false;
   public static final boolean COLOR_AVALIBLE = false;
@@ -339,16 +339,25 @@ public final class Constants {
         public static final int kDriverXAxis                  = 1;
         public static final int kDriverRotAxis                = 4;
         public static final int fineControlAxis               = 2;
-        public static final int kDriverResetGyroButtonIdx     = 1; // driverJoystick button A
-        public static final int kDriverResetOdometryButtonIdx = 4; // driverJoystick button X
-        public static final int kDriverFieldOrientedButtonIdx = 5; // driverJoystick button left-bumper
-        public static final int kElbowUpButton                = 3; // driverJoystick X button
-        public static final int kElbowDownButton              = 2; // driverJoystick B button
-        public static final int kElbowRearmButton             = 1; // driverJoystick A button
+        public static final int kDriverResetGyroButtonIdx     = 4; // driverJoystick button A
+        public static final int kDriverResetOdometryButtonIdx = 5; // driverJoystick button X
+        public static final int kDriverRobotOrientedButtonIdx = 6; // driverJoystick button left-bumper
         //Mech contoller buttons start here
-        public static final int kWristDownButton = 1;
-        public static final int kWristUpButton = 4;
-        //need to start putting stuff on the button board TODO
+
+        public static final int kArmSubwoofer                 = 1;
+        public static final int kArmStage                     = 2;
+        public static final int kArmAmp                       = 3;
+        public static final int kArmFloor                     = 4;
+        public static final int kArmSource                    = 5;
+        public static final int kClimberExtend                = 6;
+        public static final int kClimberRetract               = 7;
+        public static final int kElbowRearmButton             = 8;
+        //Mech controller 2 buttons 
+        public static final int kElbowDownButton                = 2;
+        public static final int kElbowUpButton                  = 3;
+        public static final int kWristDownButton              = 6;
+        public static final int kWristUpButton                = 7;
+
         
         public static final double kDeadband = 0.05;
         public static final int kElbowSource = 3;
@@ -356,6 +365,8 @@ public final class Constants {
         //public static final int kRetract = 1;
         public static final int kIntake = 5;
         public static final int kAmp = 6;
+        public static final int kWristSpeaker = 0;
+        public static final int kWristSource = 0;
 
         
 

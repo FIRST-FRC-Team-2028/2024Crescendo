@@ -9,24 +9,24 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Handler;
 
 public class Speaker extends Command {
-  Handler intake;
+  Handler handler;
   Timer timer;
 
   /* Shoot into the Speaker:
    *   Presuming the robot is positioned and named9
    */
   /** Shoot note into Speaker */
-  public Speaker(Handler Intake) {
-    intake = Intake;
-    addRequirements(intake);   // here to declare subsystem dependencies. TODO
+  public Speaker(Handler handler) {
+    handler = handler;
+    addRequirements(handler);   // here to declare subsystem dependencies. TODO
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     timer.start();
-    if (intake.doIHaveIt()) {
-      intake.shootIt();
+    if (handler.doIHaveIt()) {
+      handler.shootIt();
     }
   }
   // Called every time the scheduler runs while the command is scheduled.
@@ -39,6 +39,7 @@ public class Speaker extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    handler.stop();
     timer.stop();
     timer.reset();
   }

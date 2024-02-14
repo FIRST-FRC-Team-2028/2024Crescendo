@@ -30,7 +30,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 
 /** Handler consists of:
- *     motor to drive intake rollers and belts, low_side
+ *     motor to drive handler rollers and belts, low_side
  *     motor to drive shooter rollers, (high_side)
  *     sensor to determine when note has been acquired.
  */
@@ -45,7 +45,7 @@ public class Handler extends SubsystemBase {
 
   //private final SparkPIDController low_PidController;
   //private final SparkPIDController high_PidController;
-  /** Creates a new HandlerIntake. */
+  /** Creates a new Handlerhandler. */
   public Handler() {
     low_side = new TalonSRX(Constants.CANIDs.low_side);
     //high_side = new TalonSRX(Constants.CANIDs.high_side);
@@ -62,9 +62,9 @@ public class Handler extends SubsystemBase {
     //low_PidController = low_side.getPIDController();
     //high_PidController = high_side.getPIDController();
 
-    //low_PidController.setP(Constants.IntakeConstants.kLowP);
-    //low_PidController.setI(Constants.IntakeConstants.kLowI);
-    //low_PidController.setD(Constants.IntakeConstants.kLowD);
+    //low_PidController.setP(Constants.handlerConstants.kLowP);
+    //low_PidController.setI(Constants.handlerConstants.kLowI);
+    //low_PidController.setD(Constants.handlerConstants.kLowD);
     
     //high_PidController.setP(Constants.IntakeConstants.kHighP);
     //high_PidController.setI(Constants.IntakeConstants.kHighI);
