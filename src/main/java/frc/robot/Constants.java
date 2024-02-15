@@ -308,9 +308,8 @@ public final class Constants {
       public static final int high_side_follower = 55;
       
       // Climber
-      public static final int climb_right = 56;
-      public static final int climb_left  = 55;
-
+      public static final int climb_right = 57;
+      public static final int climb_left  = 56;
       
     }
  
@@ -335,7 +334,7 @@ public final class Constants {
     public static final class OIConstants {
         public static final int kDriverControllerPort  = 0;
         public static final int kMechControllerPort = 1;
-        
+        public static final int kMechControllerPort2 =2;
         //public static final int kButtonBoxPort_0       = 1; // buttonBox Port 0
         //public static final int kButtonBoxPort_1       = 2; // buttonBox Port 1
         //public static final int kDriverControllerPort4 = 3; // ti launchpad
