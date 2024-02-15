@@ -36,7 +36,8 @@ import frc.robot.Constants;
  */
 public class Handler extends SubsystemBase {
   private final TalonSRX low_side;
-  //private final TalonSRX high_side;
+  private final TalonSRX high_side_follower;
+  private final TalonSRX high_side;
   private final ColorSensorV3 sensor;
   boolean doIHaveIt;
 
@@ -48,13 +49,18 @@ public class Handler extends SubsystemBase {
   /** Creates a new Handlerhandler. */
   public Handler() {
     low_side = new TalonSRX(Constants.CANIDs.low_side);
-    //high_side = new TalonSRX(Constants.CANIDs.high_side);
+    high_side = new TalonSRX(Constants.CANIDs.high_side);
+    high_side_follower = new TalonSRX(Constants.CANIDs.high_side_follower);
 
     low_side.configFactoryDefault();
-    //high_side.configFactoryDefault();
+    high_side.configFactoryDefault();
+    high_side_follower.configFactoryDefault();
+
+    high_side_follower.setInverted(true);
+    high_side_follower.follow(high_side);
 
     low_side.setNeutralMode(NeutralMode.Brake); 
-    //high_side.setNeutralMode(NeutralMode.Coast);
+    high_side.setNeutralMode(NeutralMode.Coast);
 
    // low_encoder = low_side.getEncoder();
    // high_encoder = high_side.getEncoder();
@@ -121,7 +127,7 @@ public class Handler extends SubsystemBase {
 
 
   public void high_out() {
-    //high_side.set(TalonSRXControlMode.PercentOutput, Constants.HandlerConstants.kHighOutSpeed);
+    high_side.set(TalonSRXControlMode.PercentOutput, Constants.HandlerConstants.kHighOutSpeed);
   }
 
   /*public void printVoltage() {
@@ -139,7 +145,7 @@ public class Handler extends SubsystemBase {
   }
 
   public void stop() {
-    //high_side.set(TalonSRXControlMode.PercentOutput, 0);
+    high_side.set(TalonSRXControlMode.PercentOutput, 0);
     low_side.set(TalonSRXControlMode.PercentOutput, 0);
      System.out.println("Works LowStop");
   }

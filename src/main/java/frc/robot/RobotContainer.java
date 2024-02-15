@@ -93,7 +93,7 @@ public class RobotContainer {
                 if (Constants.HANDLER_AVAILABLE){
                         handlerSubsystem = new Handler();
                 }
-                else handlerSubsystem = null;
+
                 if (Constants.APRIL_AVAILABLE){
                         april = new AprilCamera();
                 }
@@ -145,16 +145,22 @@ public class RobotContainer {
         new JoystickButton(driverJoytick, OIConstants.kElbowRearmButton).
                 onTrue(Commands.runOnce( armSubsystem::rearmArm, armSubsystem));
 
-        new JoystickButton(mechJoytick, OIConstants.kWristUpButton).
-                whileTrue(new WristUp(armSubsystem,.3))
+        new JoystickButton(mechJoytick, 1).
+                whileTrue(new WristUp(armSubsystem,.2))
                 //.andThen(()-> {this::rumble;})
                 ;
-        new JoystickButton(mechJoytick, OIConstants.kWristDownButton).
-                whileTrue(new WristUp(armSubsystem,-.3));
-        new JoystickButton(mechJoytick, OIConstants.kElbowSource).
-                onTrue(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowSource, Constants.ArmConstants.kWristSource));
-        new JoystickButton(mechJoytick, OIConstants.kElbowSpeaker).
-                onTrue(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowSpeaker, Constants.ArmConstants.kWristSpeaker));
+        new JoystickButton(mechJoytick, 2).
+                whileTrue(new WristUp(armSubsystem,-.2));
+        
+        new JoystickButton(mechJoytick, 5).
+                whileTrue(new InHandler(handlerSubsystem));
+        new JoystickButton(mechJoytick, OIConstants.kElbowRearmButton).
+                onTrue(Commands.runOnce( armSubsystem::rearmArm, armSubsystem));
+        new JoystickButton(mechJoytick, OIConstants.kArmFloor).
+                onTrue(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowFloor, Constants.ArmConstants.kWristFloor));
+        new JoystickButton(mechJoytick, 3).
+                 onTrue(new ArmRun(armSubsystem, 90, 0));
+
      }
 
 

@@ -30,7 +30,7 @@ import edu.wpi.first.wpilibj.I2C.Port;
 
 public final class Constants {
   public static final boolean PHOTONVISION_AVAILABLE = false;
-  public static final boolean DRIVE_AVAILABLE = false;
+  public static final boolean DRIVE_AVAILABLE = true;
   public static final boolean ARM_AVAILABLE = true;
   public static final boolean HANDLER_AVAILABLE = true;
   public static final boolean CLIMB_AVAILABLE = false;
@@ -218,7 +218,7 @@ public final class Constants {
 
     public static final class ArmConstants {
       //Elbow PID
-      public static final double kElbowP = 0.25;
+      public static final double kElbowP = 0.1;
       public static final double kElbowI = 0;
       public static final double kElbowD = 0;
       //Wrist PID
@@ -230,6 +230,7 @@ public final class Constants {
       public static final double kElbowSource = 60;
       public static final double kElbowSpeaker = 30;
       public static final double kElbowAmp = 70;
+      public static final double kElbowFloor = 15;
       //Wrist Positions (in degrees from perpendicular to arm)
       public static final double kWristSource = 0;
       public static final double kWristGround = 0;
@@ -240,11 +241,11 @@ public final class Constants {
       //Tolerances
       public static final double elbowTolerance = 1;
       public static final double wristTolerance = 1;
-      //Soft limits
+      //Soft limits 
       public static final float kElbowForwardLimit = 90.f;
       public static final float kElbowReverseLimit = 0.f;
-      public static final float kWristForwardLimit = 15.f;
-      public static final float kWristReverseLimit = -15.f;
+      public static final float kWristForwardLimit = 30.f;
+      public static final float kWristReverseLimit = -30.f;
       //Encoders
       public static final int ABSENCODERPORT = 0;
       public static final int kAbsoluteEncoder = 0;
@@ -254,17 +255,18 @@ public final class Constants {
       public static final int RelMax = 90;  // upright
       public static final int AbsMax = 1080; // upright
       public static final double Ratio = 90./(1080.-400.); //(RelMax-RelMin)/(AbsMax-AbsMin);
-      public static final int kAbsoluteEncoderW = 0;
+      public static final int kAbsoluteEncoderW = 1;
       public static final double wristEncoderFactor = 57./(6.23+5.07);  //TODO redo calibration
-      public static final int RelMinW = 0;
-      public static final int AbsMinW = 0;
-      public static final int RelMaxW = 10;
-      public static final int AbsMaxW = 10;
-      public static final double RatioW = (RelMaxW-RelMinW)/(AbsMaxW-AbsMinW);
+      public static final int RelMinW = -38;     //SUBJECT TO CHEANGE
+      public static final int AbsMinW = 1025;   //SUBJECT TO CHEANGE
+      public static final int RelMaxW = 27;     //SUBJECT TO CHEANGE
+      public static final int AbsMaxW = 1300;    //SUBJECT TO CHEANGE
+      public static final double RatioW = 65./(AbsMaxW-AbsMinW);
 
-      public static final double ElbowCurrentLimit = 5.;
+      public static final double ElbowCurrentLimit = 7.;
       public static final double kElbowRampRate = 2.;  // seconds
       public static final double kWristRampRate = 2.;  // seconds
+      public static final double kWristFloor = 0;
 
     
     }
@@ -276,7 +278,7 @@ public final class Constants {
       //public static final double kHighP = 0;
       //public static final double kHighI = 0;
       //public static final double kHighD = 0;
-      public static final double kLowInSpeed = 0.25;
+      public static final double kLowInSpeed = 1;
       public static final double kHighOutSpeed = 0.5;
       public static final double kLowOutSpeed = -0.25;
       public static final int SENSORPORT = 0;
@@ -303,10 +305,12 @@ public final class Constants {
       //Handler
       public static final int low_side = 53;
       public static final int high_side = 54;
+      public static final int high_side_follower = 55;
       
       // Climber
       public static final int climb_right = 56;
       public static final int climb_left  = 55;
+
       
     }
  
@@ -331,6 +335,7 @@ public final class Constants {
     public static final class OIConstants {
         public static final int kDriverControllerPort  = 0;
         public static final int kMechControllerPort = 1;
+        
         //public static final int kButtonBoxPort_0       = 1; // buttonBox Port 0
         //public static final int kButtonBoxPort_1       = 2; // buttonBox Port 1
         //public static final int kDriverControllerPort4 = 3; // ti launchpad
@@ -347,26 +352,22 @@ public final class Constants {
         public static final int kArmSubwoofer                 = 1;
         public static final int kArmStage                     = 2;
         public static final int kArmAmp                       = 3;
-        public static final int kArmFloor                     = 4;
-        public static final int kArmSource                    = 5;
+        public static final int kArmFloor                     = 4; // button Y
+        public static final int kArmSource                    = 5; // Left Bumper
         public static final int kClimberExtend                = 6;
         public static final int kClimberRetract               = 7;
         public static final int kElbowRearmButton             = 8;
         //Mech controller 2 buttons 
-        public static final int kElbowDownButton                = 2;
-        public static final int kElbowUpButton                  = 3;
-        public static final int kWristDownButton              = 6;
-        public static final int kWristUpButton                = 7;
+        public static final int kElbowDownButton                = 2; //button X
+        public static final int kElbowUpButton                  = 3; // button B
+        public static final int kWristDownButton              = 5; // Left Bumper
+        public static final int kWristUpButton                = 6; // Right Bumper
 
         
-        public static final double kDeadband = 0.05;
-        public static final int kElbowSource = 3;
-        public static final int kElbowSpeaker = 2;
+        public static final double kDeadband = 0.075;
         //public static final int kRetract = 1;
-        public static final int kIntake = 5;
-        public static final int kAmp = 6;
-        public static final int kWristSpeaker = 0;
-        public static final int kWristSource = 0;
+        public static final int kIntake = 1;
+
 
         
 

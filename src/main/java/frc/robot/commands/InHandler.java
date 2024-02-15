@@ -15,8 +15,8 @@ public class InHandler extends Command {
    * run an handler motor in the handler direction
    * stop motor when note is acquired 
    */
-  public InHandler(Handler handler) {
-    handler = handler;
+  public InHandler(Handler Handler) {
+    handler = Handler;
     addRequirements(handler); // here to declare subsystem dependencies. TODO
   }
 
@@ -27,13 +27,14 @@ public class InHandler extends Command {
  //   handler.iHaveIt();                                           COLOR SENSOR STUFF
  // } else handler.iDontHaveIt();                                  COLOR SENSOR STUFF
   
-    if (handler.sense()) {
+  /*   if (handler.sense()) {
       handler.stop();
     }
     else {
       handler.low_in();
-    }
+    }*/
 
+    handler.low_in();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

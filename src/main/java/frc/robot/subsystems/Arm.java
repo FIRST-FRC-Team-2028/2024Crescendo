@@ -35,7 +35,8 @@ public class Arm extends SubsystemBase {
   private final RelativeEncoder wrist_encoder;
   private final SparkPIDController elbow_PidController;
   private final SparkPIDController wrist_PidController;
-  private final AnalogInput boreHole;
+  private final AnalogInput elbowAbs;
+  private final AnalogInput wristAbs;
   //private final AnalogInput boreHoleW;
   double Target;
   double WristTarget;
@@ -50,8 +51,10 @@ public class Arm extends SubsystemBase {
     elbow = new CANSparkMax(Constants.CANIDs.elbow, MotorType.kBrushless);
     elbow_follower = new CANSparkMax(Constants.CANIDs.elbow_follower, MotorType.kBrushless);
     wrist = new CANSparkMax(Constants.CANIDs.wrist, MotorType.kBrushless);
-    boreHole = new AnalogInput(Constants.ArmConstants.kAbsoluteEncoder);
-    boreHole.setAverageBits(40);
+    elbowAbs = new AnalogInput(Constants.ArmConstants.kAbsoluteEncoder);
+    wristAbs = new AnalogInput(Constants.ArmConstants.kAbsoluteEncoderW);
+    elbowAbs.setAverageBits(40);
+    wristAbs.setAverageBits(40);
     //boreHoleW = new AnalogInput(Constants.ArmConstants.kAbsoluteEncoderW);
     //boreHoleW.setAverageBits(40);
 
@@ -85,9 +88,9 @@ public class Arm extends SubsystemBase {
     elbow_encoder.setPositionConversionFactor(Constants.ArmConstants.elbowEncoderFactor);
     wrist_encoder.setPositionConversionFactor(Constants.ArmConstants.wristEncoderFactor);
     //elbow_encoder.setPosition(     (boreHole.getAverageValue()-abs_pos_floor)*rel_delta/abs_delta    );
-    elbow_encoder.setPosition(abs2rel(boreHole.getAverageValue()));
+    elbow_encoder.setPosition(abs2rel(elbowAbs.getAverageValue()));
     //wrist_encoder.setPosition(abs2relw(boreHolew.getAverageValue()));
-    wrist_encoder.setPosition(0);  // presuming user has positioned handler perpendicular at startup //MrG
+    wrist_encoder.setPosition(abs2relw(wristAbs.getAverageValue()));  // presuming user has positioned handler perpendicular at startup //MrG
 
     
     elbow.setSoftLimit(SoftLimitDirection.kForward, ArmConstants.kElbowForwardLimit); //elbow forward limit
@@ -100,7 +103,8 @@ public class Arm extends SubsystemBase {
     wrist.enableSoftLimit(SoftLimitDirection.kForward,true);
     wrist.enableSoftLimit(SoftLimitDirection.kReverse, true);
 
-    
+    elbow.setOpenLoopRampRate(Constants.ArmConstants.kElbowRampRate);
+    elbow.setClosedLoopRampRate(Constants.ArmConstants.kElbowRampRate);
     wrist.setOpenLoopRampRate(Constants.ArmConstants.kWristRampRate);
     wrist.setClosedLoopRampRate(Constants.ArmConstants.kWristRampRate);
 
@@ -115,6 +119,9 @@ public class Arm extends SubsystemBase {
   }
   /** Calibrate relative encoder from absolute encoder for the wrist*/
   double abs2relw(double absval){
+    System.out.println("calibrate Wrist");
+    double val = Constants.ArmConstants.RelMinW + Constants.ArmConstants.RatioW * (absval - Constants.ArmConstants.AbsMinW);
+    System.out.println("               "+Constants.ArmConstants.RelMinW+" + " + Constants.ArmConstants.RatioW+ " * ("+absval+" - "+Constants.ArmConstants.AbsMinW+") = "+val);
     return Constants.ArmConstants.RelMinW + Constants.ArmConstants.RatioW * (absval - Constants.ArmConstants.AbsMinW);
   }
   public void elbowUp() {
@@ -167,13 +174,14 @@ public class Arm extends SubsystemBase {
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("AbsWrist", wristAbs.getAverageValue());
     double currentCurrent = getElbowCurrent();
     SmartDashboard.putNumber("Current", currentCurrent);
     avgCurrent += currentCurrent/5. - currentHist[currP]/5.;
     currentHist[currP] = currentCurrent;
     currP = (currP+1)%5;
     SmartDashboard.putNumber("ElbowRelVal", elbow_encoder.getPosition());
-    SmartDashboard.putNumber("ElbowAbsVal", boreHole.getAverageValue());
+    SmartDashboard.putNumber("ElbowAbsVal", elbowAbs.getAverageValue());
     SmartDashboard.putNumber("WristRelVal", wrist_encoder.getPosition());
     //SmartDashboard.putNumber("WristAbsVal", );
     if(avgCurrent>Constants.ArmConstants.ElbowCurrentLimit) {
@@ -214,14 +222,15 @@ public class Arm extends SubsystemBase {
    * @param target
    */
   public void positionArm(double target) {
-    elbow_PidController.setReference(target, ControlType.kPosition);
+    elbow_PidController.setReference(target, CANSparkMax.ControlType.kPosition);
+
   }
 
   /** closed loop control wrist to
    * @param target
    */
   public void positionWrist(double target) {
-    wrist_PidController.setReference(target, ControlType.kPosition);
+    wrist_PidController.setReference(target, CANSparkMax.ControlType.kPosition);
   }
 
 
