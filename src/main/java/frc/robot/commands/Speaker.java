@@ -17,7 +17,7 @@ public class Speaker extends Command {
    */
   /** Shoot note into Speaker */
   public Speaker(Handler handler) {
-    handler = handler;
+    this.handler = handler;
     addRequirements(handler);   // here to declare subsystem dependencies. TODO
   }
 
