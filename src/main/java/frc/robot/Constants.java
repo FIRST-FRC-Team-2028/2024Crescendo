@@ -255,7 +255,7 @@ public final class Constants {
       public static final int AbsMax = 1080; // upright
       public static final double Ratio = 90./(1080.-400.); //(RelMax-RelMin)/(AbsMax-AbsMin);
       public static final int kAbsoluteEncoderW = 0;
-      public static final double wristEncoderFactor = 90./(90-0);  //TODO redo calibration
+      public static final double wristEncoderFactor = 57./(6.23+5.07);  //TODO redo calibration
       public static final int RelMinW = 0;
       public static final int AbsMinW = 0;
       public static final int RelMaxW = 10;
