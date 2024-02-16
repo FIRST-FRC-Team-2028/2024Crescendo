@@ -34,7 +34,7 @@ public class InHandler extends Command {
       handler.low_in();
     }*/
 
-    handler.low_in();
+    handler.low_PickUp();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

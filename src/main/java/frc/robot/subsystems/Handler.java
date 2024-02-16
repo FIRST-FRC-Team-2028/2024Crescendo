@@ -56,10 +56,10 @@ public class Handler extends SubsystemBase {
     high_side.configFactoryDefault();
     high_side_follower.configFactoryDefault();
 
-    high_side_follower.setInverted(true);
+    //high_side_follower.setInverted(true);
     high_side_follower.follow(high_side);
 
-    low_side.setNeutralMode(NeutralMode.Brake); 
+    low_side.setNeutralMode(NeutralMode.Coast); 
     high_side.setNeutralMode(NeutralMode.Coast);
 
    // low_encoder = low_side.getEncoder();
@@ -135,9 +135,13 @@ public class Handler extends SubsystemBase {
     System.out.println(low_side.getStatorCurrent());
   }*/
 
-  public void low_in() {
-    low_side.set(TalonSRXControlMode.PercentOutput, Constants.HandlerConstants.kLowInSpeed);
+  public void low_PickUp() {
+    low_side.set(TalonSRXControlMode.PercentOutput, Constants.HandlerConstants.kLowPickUpSpeed);
     
+  }
+
+  public void low_ToHigh() {
+    low_side.set(TalonSRXControlMode.PercentOutput, Constants.HandlerConstants.kLowToHighSpeed);
   }
 
   public void low_out() {
@@ -157,7 +161,8 @@ public class Handler extends SubsystemBase {
    */
   public Command shootIt() {
     return runOnce( () -> { high_out(); })
-          .andThen( () -> { low_in(); })
+          .andThen(new WaitCommand(.5))
+          .andThen( () -> { low_ToHigh(); })
           .andThen(new WaitCommand(.5))
           .andThen( () -> { stop(); })
       ;

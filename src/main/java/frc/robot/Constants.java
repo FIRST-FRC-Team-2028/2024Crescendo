@@ -263,7 +263,7 @@ public final class Constants {
       public static final int AbsMaxW = 1300;    //SUBJECT TO CHEANGE
       public static final double RatioW = 65./(AbsMaxW-AbsMinW);
 
-      public static final double ElbowCurrentLimit = 7.;
+      public static final double ElbowCurrentLimit = 10.;
       public static final double kElbowRampRate = 2.;  // seconds
       public static final double kWristRampRate = 2.;  // seconds
       public static final double kWristFloor = 0;
@@ -278,9 +278,10 @@ public final class Constants {
       //public static final double kHighP = 0;
       //public static final double kHighI = 0;
       //public static final double kHighD = 0;
-      public static final double kLowInSpeed = 1;
-      public static final double kHighOutSpeed = 0.5;
-      public static final double kLowOutSpeed = -0.25;
+      public static final double kLowPickUpSpeed = .5;
+      public static final double kLowToHighSpeed = 1;
+      public static final double kHighOutSpeed = 1;
+      public static final double kLowOutSpeed = -.5;
       public static final int SENSORPORT = 0;
       
     }

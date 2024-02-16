@@ -18,6 +18,7 @@ public class Speaker extends Command {
   /** Shoot note into Speaker */
   public Speaker(Handler handler) {
     this.handler = handler;
+    timer = new Timer();
     addRequirements(handler);   // here to declare subsystem dependencies. TODO
   }
 
@@ -25,14 +26,13 @@ public class Speaker extends Command {
   @Override
   public void initialize() {
     timer.start();
-    if (handler.doIHaveIt()) {
-      handler.shootIt();
-    }
+    handler.high_out();
+
   }
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
+    if (timer.hasElapsed(2)) handler.low_ToHigh();
   }
 
 
@@ -47,6 +47,6 @@ public class Speaker extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return timer.hasElapsed(1);
+    return timer.hasElapsed(3);
   }
 }

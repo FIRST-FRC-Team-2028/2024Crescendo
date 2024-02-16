@@ -40,6 +40,7 @@ import frc.robot.commands.ElbowDown;
 //import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.ElbowUp;
 import frc.robot.commands.InHandler;
+import frc.robot.commands.Speaker;
 //import frc.robot.commands.DriveGeneric;
 import frc.robot.commands.SwerveJoystickCmd;
 //import frc.robot.subsystems.SwerveSubsystem;
@@ -160,6 +161,11 @@ public class RobotContainer {
                 onTrue(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowFloor, Constants.ArmConstants.kWristFloor));
         new JoystickButton(mechJoytick, 3).
                  onTrue(new ArmRun(armSubsystem, 90, 0));
+        new JoystickButton(mechJoytick, 7).
+                onTrue(new Speaker(handlerSubsystem));
+        new JoystickButton(mechJoytick, 6).
+                onTrue(new Amp(handlerSubsystem));
+        
 
      }
 
