@@ -65,7 +65,7 @@ public class Drivetrain extends SubsystemBase {
 
   private SwerveModule[] modules = {m_frontLeft, m_frontRight, m_backLeft, m_backRight};
 
-  private final Pigeon2 m_gyro = new Pigeon2(1);
+  private final Pigeon2 m_gyro = new Pigeon2(0);
 
 
   private final SwerveDriveOdometry m_odometry =
