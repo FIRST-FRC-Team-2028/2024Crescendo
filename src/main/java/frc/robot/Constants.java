@@ -283,6 +283,8 @@ public final class Constants {
       public static final double kHighOutSpeed = 1;
       public static final double kLowOutSpeed = -.5;
       public static final int SENSORPORT = 0;
+      public static final double HighSpinTime = 2;
+    public static final double TotalShootTime = 3;
       
     }
 

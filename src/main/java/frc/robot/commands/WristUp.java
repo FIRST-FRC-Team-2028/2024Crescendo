@@ -15,7 +15,7 @@ public class WristUp extends Command {
   public WristUp(Arm subsys, double speed) {
     this.subsys = subsys;
     this.speed = speed;
-      if (Constants.ARM_AVAILABLE){
+     if (Constants.ARM_AVAILABLE){
     addRequirements(subsys); //here to declare subsystem dependencies.
       }
   }
