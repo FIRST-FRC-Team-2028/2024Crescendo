@@ -92,7 +92,7 @@ public class Handler extends SubsystemBase {
       george = java.awt.Color.RGBtoHSB((int)(notesensor.red  *255), 
                                               (int)(notesensor.green*255), 
                                               (int)(notesensor.blue *255), george);
-                                              double diffHue = Math.abs(george[0] - Constants.ColorConstants.NoteHue);
+      double diffHue = Math.abs(george[0] - Constants.ColorConstants.NoteHue);
       if ( diffHue < closeHue)return true;
 
       return false;

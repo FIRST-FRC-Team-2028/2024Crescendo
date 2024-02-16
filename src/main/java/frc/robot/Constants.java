@@ -222,7 +222,7 @@ public final class Constants {
       public static final double kElbowI = 0;
       public static final double kElbowD = 0;
       //Wrist PID
-      public static final double kWristP = 0.025;
+      public static final double kWristP = 0.01;
       public static final double kWristI = 0;
       public static final double kWristD = 0;
       //Elbow Position  (in degrees up from parallel to the floor)
@@ -282,10 +282,10 @@ public final class Constants {
       //public static final double kHighP = 0;
       //public static final double kHighI = 0;
       //public static final double kHighD = 0;
-      public static final double kLowPickUpSpeed = .5;
+      public static final double kLowPickUpSpeed = 1;
       public static final double kLowToHighSpeed = 1;
       public static final double kHighOutSpeed = 1;
-      public static final double kLowOutSpeed = -.5;
+      public static final double kLowOutSpeed = -1;
       public static final int SENSORPORT = 0;
       public static final double HighSpinTime = 2;
     public static final double TotalShootTime = 3;

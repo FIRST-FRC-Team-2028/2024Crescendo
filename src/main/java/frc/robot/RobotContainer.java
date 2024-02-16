@@ -67,7 +67,7 @@ public class RobotContainer {
   
     private final Joystick driverJoytick = new Joystick(OIConstants.kDriverControllerPort);
     private final Joystick mechJoytick1 = new Joystick(OIConstants.kMechControllerPort);
-    private final Joystick mechJoytick2 = new Joystick(OIConstants.kMechControllerPort);
+    private final Joystick mechJoytick2 = new Joystick(OIConstants.kMechControllerPort2);
   
     
         public RobotContainer() {

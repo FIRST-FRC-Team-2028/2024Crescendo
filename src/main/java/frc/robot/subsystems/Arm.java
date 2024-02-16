@@ -243,7 +243,7 @@ public class Arm extends SubsystemBase {
 
   public void retargetWrist(double Adjustment) {
     latestTargetW += Adjustment;
-    wrist_PidController.setReference(Adjustment, CANSparkMax.ControlType.kPosition);
+    wrist_PidController.setReference(latestTargetW, CANSparkMax.ControlType.kPosition);
   }
   
 
