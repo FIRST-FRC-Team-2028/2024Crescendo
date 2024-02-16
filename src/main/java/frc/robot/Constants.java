@@ -218,34 +218,34 @@ public final class Constants {
 
     public static final class ArmConstants {
       //Elbow PID
-      public static final double kElbowP = 0.1;
+      public static final double kElbowP = 0.05;
       public static final double kElbowI = 0;
       public static final double kElbowD = 0;
       //Wrist PID
-      public static final double kWristP = 0;
+      public static final double kWristP = 0.025;
       public static final double kWristI = 0;
       public static final double kWristD = 0;
       //Elbow Position  (in degrees up from parallel to the floor)
       public static final double kElbowGround = 10;
       public static final double kElbowSource = 60;
-      public static final double kElbowSpeaker = 30;
+      public static final double kElbowSpeaker = 43;
       public static final double kElbowAmp = 70;
       public static final double kElbowFloor = 15;
       //Wrist Positions (in degrees from perpendicular to arm)
       public static final double kWristSource = 0;
       public static final double kWristGround = 0;
-      public static final double kWristSpeaker = 0;
+      public static final double kWristSpeaker = -10;
       public static final double kWristAmp = 0;
       public static final double kRetract = 85;
 
       //Tolerances
-      public static final double elbowTolerance = 1;
-      public static final double wristTolerance = 1;
+      public static final double elbowTolerance = .1;
+      public static final double wristTolerance = .1;
       //Soft limits 
       public static final float kElbowForwardLimit = 90.f;
       public static final float kElbowReverseLimit = 0.f;
-      public static final float kWristForwardLimit = 30.f;
-      public static final float kWristReverseLimit = -30.f;
+      public static final float kWristForwardLimit = 85.f;
+      public static final float kWristReverseLimit = -66.f;
       //Encoders
       public static final int ABSENCODERPORT = 0;
       public static final int kAbsoluteEncoder = 0;
@@ -256,19 +256,23 @@ public final class Constants {
       public static final int AbsMax = 1080; // upright
       public static final double Ratio = 90./(1080.-400.); //(RelMax-RelMin)/(AbsMax-AbsMin);
       public static final int kAbsoluteEncoderW = 1;
-      public static final double wristEncoderFactor = 57./(6.23+5.07);  //TODO redo calibration
-      public static final int RelMinW = -38;     //SUBJECT TO CHEANGE
-      public static final int AbsMinW = 1025;   //SUBJECT TO CHEANGE
-      public static final int RelMaxW = 27;     //SUBJECT TO CHEANGE
-      public static final int AbsMaxW = 1300;    //SUBJECT TO CHEANGE
-      public static final double RatioW = 65./(AbsMaxW-AbsMinW);
+      public static final double wristEncoderFactor = 64.7/16.5;  //TODO redo calibration
+      public static final int RelMinW = -32;     //SUBJECT TO CHEANGE
+      public static final int AbsMinW = 1345;   //SUBJECT TO CHEANGE
+      public static final int RelMaxW = 32;     //SUBJECT TO CHEANGE
+      public static final int AbsMaxW = 950;    //SUBJECT TO CHEANGE
+      public static final double RatioW = 64./(950-1345);
+      //public static final double RatioW = (RelMaxW-RelMinW)./(AbsMaxW-AbsMinW);
 
-      public static final double ElbowCurrentLimit = 10.;
+      public static final double ElbowCurrentLimit = 25.;
       public static final double kElbowRampRate = 2.;  // seconds
       public static final double kWristRampRate = 2.;  // seconds
       public static final double kWristFloor = 0;
-
-    
+        //33.2 = 38.7
+        //49.7 = -28
+        // 16.5 = -64.7
+    public static final double elbowNudgeAmount = 5;
+    public static final double elbowWristAmount = 5;
     }
 
     public static final class HandlerConstants {
@@ -360,15 +364,17 @@ public final class Constants {
         public static final int kClimberRetract               = 7;
         public static final int kElbowRearmButton             = 8;
         //Mech controller 2 buttons 
-        public static final int kElbowDownButton                = 2; //button X
-        public static final int kElbowUpButton                  = 3; // button B
-        public static final int kWristDownButton              = 5; // Left Bumper
-        public static final int kWristUpButton                = 6; // Right Bumper
+        public static final int kNudgeElbowUp = 3;
+        public static final int kNudgeElbowDown = 2;
+        public static final int kNudgeWristUp = 6;
+        public static final int kNudgeWristDown = 7;
+        public static final int kIntake = 4;
 
         
         public static final double kDeadband = 0.075;
         //public static final int kRetract = 1;
-        public static final int kIntake = 1;
+
+
 
 
         

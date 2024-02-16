@@ -307,14 +307,14 @@ public class Robot extends TimedRobot {
 
 
 
-        if (new JoystickButton(driverJoytick, OIConstants.kElbowUpButton).getAsBoolean()) {
+        if (new JoystickButton(driverJoytick, OIConstants.kNudgeElbowUp).getAsBoolean()) {
             new InstantCommand(()-> m_robotContainer.getArm().elbowUpSlow());  
         } 
         else {
             m_robotContainer.getArm().stopElbow();
         }
          
-        if (new JoystickButton(driverJoytick, OIConstants.kElbowDownButton).getAsBoolean() ) {
+        if (new JoystickButton(driverJoytick, OIConstants.kNudgeElbowDown).getAsBoolean() ) {
             new InstantCommand(()-> m_robotContainer.getArm().elbowDownSlow());  
         }
         else {

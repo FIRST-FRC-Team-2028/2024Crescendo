@@ -38,8 +38,10 @@ public class Arm extends SubsystemBase {
   private final AnalogInput elbowAbs;
   private final AnalogInput wristAbs;
   //private final AnalogInput boreHoleW;
-  double Target;
-  double WristTarget;
+  double targetE;
+  double targetW;
+  double latestTarget;
+  double latestTargetW;
   double kp;
   double wkp;
   boolean IamDone;
@@ -95,13 +97,13 @@ public class Arm extends SubsystemBase {
     
     elbow.setSoftLimit(SoftLimitDirection.kForward, ArmConstants.kElbowForwardLimit); //elbow forward limit
     elbow.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.kElbowReverseLimit); //elbow reverse limit
-    //wrist.setSoftLimit(SoftLimitDirection.kForward, ArmConstants.kWristForwardLimit); //wrist forward limit
-    //wrist.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.kWristReverseLimit); //wrist reverse limit
+    wrist.setSoftLimit(SoftLimitDirection.kForward, ArmConstants.kWristForwardLimit); //wrist forward limit
+    wrist.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.kWristReverseLimit); //wrist reverse limit
 
     elbow.enableSoftLimit(SoftLimitDirection.kForward,true);
     elbow.enableSoftLimit(SoftLimitDirection.kReverse, true);
-    //wrist.enableSoftLimit(SoftLimitDirection.kForward,true);
-    //wrist.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    wrist.enableSoftLimit(SoftLimitDirection.kForward,true);
+    wrist.enableSoftLimit(SoftLimitDirection.kReverse, true);
 
     elbow.setOpenLoopRampRate(Constants.ArmConstants.kElbowRampRate);
     elbow.setClosedLoopRampRate(Constants.ArmConstants.kElbowRampRate);
@@ -223,7 +225,7 @@ public class Arm extends SubsystemBase {
    */
   public void positionArm(double target) {
     elbow_PidController.setReference(target, CANSparkMax.ControlType.kPosition);
-
+    latestTarget = target;
   }
 
   /** closed loop control wrist to
@@ -231,8 +233,19 @@ public class Arm extends SubsystemBase {
    */
   public void positionWrist(double target) {
     wrist_PidController.setReference(target, CANSparkMax.ControlType.kPosition);
+    latestTargetW = target;
   }
 
+  public void retargetElbow(double Adjustment) {
+     latestTarget += Adjustment;
+    elbow_PidController.setReference(latestTarget, CANSparkMax.ControlType.kPosition);
+  }
+
+  public void retargetWrist(double Adjustment) {
+    latestTargetW += Adjustment;
+    wrist_PidController.setReference(Adjustment, CANSparkMax.ControlType.kPosition);
+  }
+  
 
 
   public void pidCoefficient(double distance, double wristDistance) {

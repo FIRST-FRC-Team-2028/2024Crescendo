@@ -66,7 +66,8 @@ public class RobotContainer {
     
   
     private final Joystick driverJoytick = new Joystick(OIConstants.kDriverControllerPort);
-    private final Joystick mechJoytick = new Joystick(OIConstants.kMechControllerPort);
+    private final Joystick mechJoytick1 = new Joystick(OIConstants.kMechControllerPort);
+    private final Joystick mechJoytick2 = new Joystick(OIConstants.kMechControllerPort);
   
     
         public RobotContainer() {
@@ -139,39 +140,42 @@ public class RobotContainer {
                 //new JoystickButton(buttonBox1, OIConstants.kgetAprilTagButton).
                         //onTrue(new GetAprilTag(camera));
         }*/
-        new JoystickButton(driverJoytick, OIConstants.kElbowUpButton).
-                whileTrue(new ElbowUp(armSubsystem));
-        new JoystickButton(driverJoytick, OIConstants.kElbowDownButton).
-                whileTrue(new ElbowDown(armSubsystem));
         new JoystickButton(driverJoytick, OIConstants.kElbowRearmButton).
                 onTrue(Commands.runOnce( armSubsystem::rearmArm, armSubsystem));
 
-        new JoystickButton(mechJoytick, 1).
-                whileTrue(new WristUp(armSubsystem,.2))
+        new JoystickButton(mechJoytick1, 3).
+                whileTrue(new WristUp(armSubsystem,.2));
+        new JoystickButton(mechJoytick1, OIConstants.kArmSubwoofer).
+                onTrue(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowSpeaker, ArmConstants.kWristSpeaker));
                 //.andThen(()-> {this::rumble;})
-                ;
-        new JoystickButton(mechJoytick, 2).
-                whileTrue(new WristUp(armSubsystem,-.2));
+
         
-        new JoystickButton(mechJoytick, 5).
+        new JoystickButton(mechJoytick2, OIConstants.kIntake).
                 whileTrue(new InHandler(handlerSubsystem));
-        new JoystickButton(mechJoytick, OIConstants.kElbowRearmButton).
+        new JoystickButton(mechJoytick1, OIConstants.kElbowRearmButton).
                 onTrue(Commands.runOnce( armSubsystem::rearmArm, armSubsystem));
-        new JoystickButton(mechJoytick, OIConstants.kArmFloor).
+        new JoystickButton(mechJoytick1, OIConstants.kArmFloor).
                 onTrue(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowFloor, Constants.ArmConstants.kWristFloor));
-        new JoystickButton(mechJoytick, 3).
-                 onTrue(new ArmRun(armSubsystem, 90, 0));
-        new JoystickButton(mechJoytick, 7).
+        /*new JoystickButton(mechJoytick, 3).
+                 onTrue(new ArmRun(armSubsystem, 90, 0));*/
+        new JoystickButton(mechJoytick2, 1).
                 onTrue(new Speaker(handlerSubsystem));
-        new JoystickButton(mechJoytick, 6).
+        new JoystickButton(mechJoytick2, 5).
                 onTrue(new Amp(handlerSubsystem));
-        
+        new JoystickButton(mechJoytick2, OIConstants.kNudgeElbowUp).
+                onTrue(new InstantCommand(() -> armSubsystem.retargetElbow(ArmConstants.elbowNudgeAmount)));
+        new JoystickButton(mechJoytick2, OIConstants.kNudgeElbowDown).
+                onTrue(new InstantCommand(() -> armSubsystem.retargetElbow(-ArmConstants.elbowNudgeAmount)));
+        new JoystickButton(mechJoytick2, OIConstants.kNudgeWristUp).
+                onTrue(new InstantCommand(() -> armSubsystem.retargetWrist(ArmConstants.elbowWristAmount)));
+        new JoystickButton(mechJoytick2, OIConstants.kNudgeWristDown).
+                onTrue(new InstantCommand(() -> armSubsystem.retargetWrist(-ArmConstants.elbowWristAmount)));
 
      }
 
 
      void rumble(){
-        mechJoytick.setRumble(GenericHID.RumbleType.kBothRumble,1);
+        mechJoytick1.setRumble(GenericHID.RumbleType.kBothRumble,1);
      }
  
      public void teleopPeriodic() {
