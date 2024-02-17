@@ -218,13 +218,14 @@ public final class Constants {
 
     public static final class ArmConstants {
       //Elbow PID
-      public static final double kElbowP = 0.05;
+      public static final double kElbowP = 0.025;
       public static final double kElbowI = 0;
       public static final double kElbowD = 0;
       //Wrist PID
       public static final double kWristP = 0.01;
       public static final double kWristI = 0;
       public static final double kWristD = 0;
+
       //Elbow Position  (in degrees up from parallel to the floor)
       public static final double kElbowGround = 10;
       public static final double kElbowSource = 60;
@@ -236,7 +237,17 @@ public final class Constants {
       public static final double kWristGround = 0;
       public static final double kWristSpeaker = -10;
       public static final double kWristAmp = 0;
+      public static final double kWristFloor = 15;
       public static final double kRetract = 85;
+      // sweet spot where, when disabled, the arm and handler to not sag
+      public static final double elbowSweetSpot = 77.;  
+      public static final double wristSweetSpot = 6.4;
+      // arm and wrist position to drive under stage
+      public static final double elbowDuck = 27.;  
+      public static final double wristDuck = 36.4;
+      // arm and wrist position to drive under stage
+      public static final double elbowTravel = 57.;  
+      public static final double wristTravel = 0;
 
       //Tolerances
       public static final double elbowTolerance = .1;
@@ -267,15 +278,12 @@ public final class Constants {
       public static final double ElbowCurrentLimit = 25.;
       public static final double kElbowRampRate = 2.;  // seconds
       public static final double kWristRampRate = 2.;  // seconds
-      public static final double kWristFloor = 15;
+
         //33.2 = 38.7
         //49.7 = -28
         // 16.5 = -64.7
       public static final double elbowNudgeAmount = 2.5;
       public static final double elbowWristAmount = 5;
-      // sweet spot where, when disabled, the arm and handler to not sag
-      public static final double elbowSweetSpot = 77.;  
-      public static final double wristSweetSpot = 6.4;
     }
 
     public static final class HandlerConstants {
@@ -342,10 +350,8 @@ public final class Constants {
 
     public static final class OIConstants {
         public static final int kDriverControllerPort  = 0;
-        public static final int kMechControllerPort = 1;
-        public static final int kMechControllerPort2 =2;
-        //public static final int kButtonBoxPort_0       = 1; // buttonBox Port 0
-        //public static final int kButtonBoxPort_1       = 2; // buttonBox Port 1
+        public static final int kMechControllerPort = 1;  // left region of button box (A)
+        public static final int kMechControllerPort2 =2;  // right region of button box (B)
         //public static final int kDriverControllerPort4 = 3; // ti launchpad
 
         public static final int kDriverYAxis                  = 0;
@@ -355,8 +361,8 @@ public final class Constants {
         public static final int kDriverResetGyroButtonIdx     = 4; // driverJoystick button A
         public static final int kDriverResetOdometryButtonIdx = 5; // driverJoystick button X
         public static final int kDriverRobotOrientedButtonIdx = 6; // driverJoystick button left-bumper
-        //Mech contoller buttons start here
 
+        //Mech contoller buttons left region
         public static final int kArmSubwoofer                 = 1;
         public static final int kArmStage                     = 2;
         public static final int kArmAmp                       = 3;
@@ -365,12 +371,15 @@ public final class Constants {
         public static final int kClimberExtend                = 6;
         public static final int kClimberRetract               = 7;
         public static final int kElbowRearmButton             = 8;
-        //Mech controller 2 buttons 
+
+        //Mech controller buttons right region
+        public static final int kShootSequenceButton = 1;
         public static final int kNudgeElbowUp = 3;
         public static final int kNudgeElbowDown = 2;
+        public static final int kIntake = 4;
+        public static final int shootButton = 5;
         public static final int kNudgeWristUp = 6;
         public static final int kNudgeWristDown = 7;
-        public static final int kIntake = 4;
 
         
         public static final double kDeadband = 0.075;

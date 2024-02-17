@@ -43,6 +43,8 @@ import frc.robot.commands.InHandler;
 import frc.robot.commands.Speaker;
 //import frc.robot.commands.DriveGeneric;
 import frc.robot.commands.SwerveJoystickCmd;
+import frc.robot.commands.TravelPosition;
+import frc.robot.commands.Wait;
 //import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.AprilCamera;
 import frc.robot.subsystems.Arm;
@@ -107,7 +109,10 @@ public class RobotContainer {
                 configureButtonBindings();       
 
                 m_chooser = new SendableChooser<>();
-        
+                m_chooser.setDefaultOption("DoNothing", new Wait(1));
+                m_chooser.addOption("Travel Test", getAutonomousCommand());
+                SmartDashboard.putData(m_chooser);
+
         }
     
         public final Arm getArm() {
@@ -118,16 +123,24 @@ public class RobotContainer {
                 return handlerSubsystem;
         }
 
-     //MEE 
+
+
+
+
+     /** map operations to triggers:
+      *       driver operations
+      *       arm/wrist combinations
+      *       handler operations
+      */
         private void configureButtonBindings() { 
         // driverJoytick Buttons
-                if (swerveSubsystem!=null){
+            if (swerveSubsystem!=null){
                 new JoystickButton(driverJoytick, OIConstants.kDriverResetGyroButtonIdx).
-                  onTrue(new InstantCommand(() -> swerveSubsystem.resetGyro())); 
-         new JoystickButton(driverJoytick, OIConstants.kDriverResetOdometryButtonIdx).
-                  onTrue(new InstantCommand(() -> 
-                  swerveSubsystem.resetOdometry(new Pose2d(0., 0., new Rotation2d(0.0)))));
-        }
+                     onTrue(new InstantCommand(() -> swerveSubsystem.resetGyro())); 
+                new JoystickButton(driverJoytick, OIConstants.kDriverResetOdometryButtonIdx).
+                     onTrue(new InstantCommand(() -> 
+                        swerveSubsystem.resetOdometry(new Pose2d(0., 0., new Rotation2d(0.0)))));
+            }
          /*  new JoystickButton(driverJoytick, 5).
           whileTrue(routine.quasistatic(SysIdRoutine.Direction.kForward));
         // whenPressed(() -> swerveSubsystem.resetOdometry(new Pose2d(0., 0., new Rotation2d(0.0))));
@@ -143,11 +156,15 @@ public class RobotContainer {
         new JoystickButton(driverJoytick, OIConstants.kElbowRearmButton).
                 onTrue(Commands.runOnce( armSubsystem::rearmArm, armSubsystem));
 
-        new JoystickButton(mechJoytick1, 3).
-                whileTrue(new WristUp(armSubsystem,.2));
+        /*new JoystickButton(mechJoytick1, 3).
+                whileTrue(new WristUp(armSubsystem,.2));*/
+        new JoystickButton(mechJoytick1, OIConstants.kArmAmp).
+                onTrue(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowAmp, ArmConstants.kWristAmp)
+                );
         new JoystickButton(mechJoytick1, OIConstants.kArmSubwoofer).
-                onTrue(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowSpeaker, ArmConstants.kWristSpeaker));
-                //.andThen(()-> {this::rumble;})
+                onTrue(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowSpeaker, ArmConstants.kWristSpeaker)
+                .andThen(new InstantCommand(() -> this.rumble()))
+                );
 
         
         new JoystickButton(mechJoytick2, OIConstants.kIntake).
@@ -155,15 +172,24 @@ public class RobotContainer {
         new JoystickButton(mechJoytick1, OIConstants.kElbowRearmButton).
                 onTrue(Commands.runOnce( armSubsystem::rearmArm, armSubsystem));
         new JoystickButton(mechJoytick1, OIConstants.kArmFloor).
-                onTrue(new InstantCommand(() -> armSubsystem.makeMeDone()).
-                andThen(new WaitCommand(0.25)).
-                andThen(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowFloor, Constants.ArmConstants.kWristFloor)));
+                onTrue(
+                        //new InstantCommand(() -> armSubsystem.makeMeDone())
+                //.andThen(new WaitCommand(0.25))
+                //.andThen(
+                        new ArmRun(armSubsystem, Constants.ArmConstants.kElbowFloor, Constants.ArmConstants.kWristFloor))
+                        ;
         /*new JoystickButton(mechJoytick, 3).
                  onTrue(new ArmRun(armSubsystem, 90, 0));*/
-        new JoystickButton(mechJoytick2, 1).
-                onTrue(new Speaker(handlerSubsystem));
-        new JoystickButton(mechJoytick2, 5).
-                whileTrue(new Amp(handlerSubsystem));
+        new JoystickButton(mechJoytick2, Constants.OIConstants.kShootSequenceButton ).
+                onTrue(new Speaker(handlerSubsystem)
+                // and return arm/wrist to travelling position  TODO
+                .andThen(new TravelPosition(armSubsystem))
+                );
+        new JoystickButton(mechJoytick2, Constants.OIConstants.shootButton).
+                whileTrue(new Amp(handlerSubsystem)
+                // back up a bit
+                // return arm to travel position
+                );
         new JoystickButton(mechJoytick2, OIConstants.kNudgeElbowUp).
                 onTrue(new InstantCommand(() -> armSubsystem.retargetElbow(ArmConstants.elbowNudgeAmount)));
         new JoystickButton(mechJoytick2, OIConstants.kNudgeElbowDown).
@@ -181,6 +207,7 @@ public class RobotContainer {
      }
  
      public void teleopPeriodic() {
+        // MRG What is this for? TODO
 
      }
 

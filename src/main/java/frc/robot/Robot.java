@@ -25,6 +25,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.TravelPosition;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj.I2C;           // Maddox: Color sensor
 import edu.wpi.first.wpilibj.util.Color;    // Maddox: Color sensor
@@ -51,6 +53,7 @@ public class Robot extends TimedRobot {
     private SlewRateLimiter xLimiter, yLimiter, turningLimiter;
     private final Joystick driverJoytick = new Joystick(OIConstants.kDriverControllerPort);
     private Drivetrain swerveSubsystem;
+    Arm arm;
    // private Pigeon2 pigeon;
 
     private PowerDistribution PDH;
@@ -58,17 +61,12 @@ public class Robot extends TimedRobot {
     private PWM lights;
     //private boolean choice;  // choose which robot to control, true is competion bot
     // private Timer timer = new Timer();
+
     /**
      * This function is run when the robot is first started up and should be used
      * for any
      * initialization code.
      */
-   
- 
-    
-
-
-
     @Override
     public void robotInit() {
 
@@ -138,6 +136,8 @@ public class Robot extends TimedRobot {
     public void autonomousInit() {
         //lights.setSpeed(0.93);
         m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+        if (arm == null) arm = m_robotContainer.getArm();
+        new TravelPosition(arm);
         //pigeon.setYaw(180);
         // schedule the autonomous command (example)
         if (m_autonomousCommand != null) {
@@ -174,6 +174,10 @@ public class Robot extends TimedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
+
+        // start up arm PID controller to Travel position
+        if (arm == null) arm = m_robotContainer.getArm();
+        (new TravelPosition(arm)).schedule();
         // CRG added stuff to drive in teleopPeriodic rather than defaultCommand {
         this.swerveSubsystem = m_robotContainer.getSwerveSS();
         this.xLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);

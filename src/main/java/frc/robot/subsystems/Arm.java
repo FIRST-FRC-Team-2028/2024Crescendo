@@ -37,9 +37,7 @@ public class Arm extends SubsystemBase {
   private final SparkPIDController wrist_PidController;
   private final AnalogInput elbowAbs;
   private final AnalogInput wristAbs;
-  //private final AnalogInput boreHoleW;
-  double targetE;
-  double targetW;
+  
   double latestTarget;
   double latestTargetW;
   double kp;
@@ -73,6 +71,22 @@ public class Arm extends SubsystemBase {
     elbow_encoder = elbow.getEncoder();
     wrist_encoder = wrist.getEncoder();
 
+    elbow_encoder.setPositionConversionFactor(Constants.ArmConstants.elbowEncoderFactor);
+    wrist_encoder.setPositionConversionFactor(Constants.ArmConstants.wristEncoderFactor);
+    elbow_encoder.setPosition(abs2rel(elbowAbs.getAverageValue()));
+    wrist_encoder.setPosition(abs2relw(wristAbs.getAverageValue()));
+
+    
+    elbow.setSoftLimit(SoftLimitDirection.kForward, ArmConstants.kElbowForwardLimit); //elbow forward limit
+    elbow.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.kElbowReverseLimit); //elbow reverse limit
+    wrist.setSoftLimit(SoftLimitDirection.kForward, ArmConstants.kWristForwardLimit); //wrist forward limit
+    wrist.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.kWristReverseLimit); //wrist reverse limit
+
+    elbow.enableSoftLimit(SoftLimitDirection.kForward,true);
+    elbow.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    wrist.enableSoftLimit(SoftLimitDirection.kForward,true);
+    wrist.enableSoftLimit(SoftLimitDirection.kReverse, true);
+
     elbow_PidController = elbow.getPIDController();
     wrist_PidController = wrist.getPIDController();
 
@@ -86,30 +100,8 @@ public class Arm extends SubsystemBase {
 
     elbow.setOpenLoopRampRate(Constants.ArmConstants.kElbowRampRate);
     elbow.setClosedLoopRampRate(Constants.ArmConstants.kElbowRampRate);
-
-    elbow_encoder.setPositionConversionFactor(Constants.ArmConstants.elbowEncoderFactor);
-    wrist_encoder.setPositionConversionFactor(Constants.ArmConstants.wristEncoderFactor);
-    //elbow_encoder.setPosition(     (boreHole.getAverageValue()-abs_pos_floor)*rel_delta/abs_delta    );
-    elbow_encoder.setPosition(abs2rel(elbowAbs.getAverageValue()));
-    //wrist_encoder.setPosition(abs2relw(boreHolew.getAverageValue()));
-    wrist_encoder.setPosition(abs2relw(wristAbs.getAverageValue()));  // presuming user has positioned handler perpendicular at startup //MrG
-
-    
-    elbow.setSoftLimit(SoftLimitDirection.kForward, ArmConstants.kElbowForwardLimit); //elbow forward limit
-    elbow.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.kElbowReverseLimit); //elbow reverse limit
-    wrist.setSoftLimit(SoftLimitDirection.kForward, ArmConstants.kWristForwardLimit); //wrist forward limit
-    wrist.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.kWristReverseLimit); //wrist reverse limit
-
-    elbow.enableSoftLimit(SoftLimitDirection.kForward,true);
-    elbow.enableSoftLimit(SoftLimitDirection.kReverse, true);
-    wrist.enableSoftLimit(SoftLimitDirection.kForward,true);
-    wrist.enableSoftLimit(SoftLimitDirection.kReverse, true);
-
-    elbow.setOpenLoopRampRate(Constants.ArmConstants.kElbowRampRate);
-    elbow.setClosedLoopRampRate(Constants.ArmConstants.kElbowRampRate);
     wrist.setOpenLoopRampRate(Constants.ArmConstants.kWristRampRate);
     wrist.setClosedLoopRampRate(Constants.ArmConstants.kWristRampRate);
-
   }
 
   /** Calibrate relative encoder from absolute encoder for the elbow*/
@@ -126,23 +118,28 @@ public class Arm extends SubsystemBase {
     System.out.println("               "+Constants.ArmConstants.RelMinW+" + " + Constants.ArmConstants.RatioW+ " * ("+absval+" - "+Constants.ArmConstants.AbsMinW+") = "+val);
     return Constants.ArmConstants.RelMinW + Constants.ArmConstants.RatioW * (absval - Constants.ArmConstants.AbsMinW);
   }
+
+  /** Elbow up open loop control */
   public void elbowUp() {
    if(armSafety)elbow.set(.7);
 
     //SmartDashboard.putNumber("Encoder test", elbow_encoder.getPosition());
     //System.out.println("Insdie elbowup"); 
   }
+  /** Elbow down open loop control */
   public void elbowDown() {
     if(armSafety)elbow.set(-.7);
   }
+  /** Elbow down open loop control */
   public void elbowDownSlow() {
     if(armSafety)elbow.set(-.2);
   }
+  /** Elbow up open loop control */
   public void elbowUpSlow() {
     if(armSafety)elbow.set(.2);
   }
 
-  /** move arm
+  /** move arm - open loop
    * 
    * @param speed  positive is up from ground
   */
@@ -158,7 +155,6 @@ public class Arm extends SubsystemBase {
     return wrist.getOutputCurrent();
   }
   
-
 
   /** moveWrist 
    * @param speed is positive in the same axis as the arm
@@ -220,7 +216,7 @@ public class Arm extends SubsystemBase {
     armSafetyw = false;
   }
 
-  /** closed loop control arm to
+  /** closed loop control arm to target
    * @param target
    */
   public void positionArm(double target) {
@@ -228,7 +224,7 @@ public class Arm extends SubsystemBase {
     latestTarget = target;
   }
 
-  /** closed loop control wrist to
+  /** closed loop control wrist to target
    * @param target
    */
   public void positionWrist(double target) {
@@ -236,11 +232,13 @@ public class Arm extends SubsystemBase {
     latestTargetW = target;
   }
 
+  /** Adjust elbow PID target */
   public void retargetElbow(double Adjustment) {
      latestTarget += Adjustment;
     elbow_PidController.setReference(latestTarget, CANSparkMax.ControlType.kPosition);
   }
 
+  /** Adjust wrist PID target */
   public void retargetWrist(double Adjustment) {
     latestTargetW += Adjustment;
     wrist_PidController.setReference(latestTargetW, CANSparkMax.ControlType.kPosition);
@@ -255,10 +253,17 @@ public class Arm extends SubsystemBase {
     wrist_PidController.setP(wkp);
   }
 
+  /** Get Elbow position
+   *   degrees up from parallel to floor
+   */
   public double getElbowPos() {
     return elbow_encoder.getPosition();
   }
 
+  /** Get wrist position
+   *   degrees from perpendicular to arm,
+   *   rotation direction same as arm
+   */
   public double getWristPos() {
     return wrist_encoder.getPosition();
   }
@@ -271,6 +276,7 @@ public class Arm extends SubsystemBase {
     wrist.stopMotor();
   }
 
+  /** set closed loop position of both elbow and wrist */
   public void run(double targetW, double target) {
     positionArm(target);
     positionWrist(targetW);

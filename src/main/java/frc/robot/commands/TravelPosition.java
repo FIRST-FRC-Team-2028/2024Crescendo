@@ -7,40 +7,41 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.Constants.ArmConstants;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Handler;
 
-public class Speaker extends Command {
-  Handler handler;
+public class TravelPosition extends Command {
+  Arm arm;
   Timer timer;
-
-  /* Shoot into the Speaker:
-   *   Presuming the robot is positioned and aimed
-   */
-  /** Shoot note into Speaker */
-  public Speaker(Handler handler) {
-    this.handler = handler;
+  /** Position Arm and Wrist to 
+   *  PID controlled travel position 
+  */
+  public TravelPosition(Arm arm) {
+    this.arm = arm;
     timer = new Timer();
-    addRequirements(handler);   // here to declare subsystem dependencies.
+    addRequirements(arm);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    arm.run(arm.getWristPos(), ArmConstants.elbowTravel);
     timer.start();
-    handler.high_out();
-
+    System.out.println("Initialize");
   }
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (timer.hasElapsed(Constants.HandlerConstants.HighSpinTime)) handler.low_ToHigh();
+    System.out.println("Execute");
   }
-
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    handler.stop();
+    arm.positionWrist(ArmConstants.wristTravel);
+    System.out.println("End");
     timer.stop();
     timer.reset();
   }
@@ -48,6 +49,7 @@ public class Speaker extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return timer.hasElapsed(Constants.HandlerConstants.TotalShootTime);
+    return timer.hasElapsed(0.5);
+
   }
 }
