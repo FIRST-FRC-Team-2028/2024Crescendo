@@ -305,6 +305,7 @@ public final class Constants {
     public static final class ClimberConstants {
         public static final double ExtendSpeed = 0;
         public static final double ExtendPosition = 0;
+        public static final double RetractPosition = 0;
     }
 
     public static final class ColorConstants {
