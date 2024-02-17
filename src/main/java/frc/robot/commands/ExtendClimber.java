@@ -35,6 +35,6 @@ public class ExtendClimber extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return climber.getPosition()>Constants.ClimberConstants.ExtendPosition;
+    return climber.getPositionDriver()>Constants.ClimberConstants.ExtendPosition;
   }
 }

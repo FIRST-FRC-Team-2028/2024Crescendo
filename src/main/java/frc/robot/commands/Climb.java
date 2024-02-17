@@ -4,7 +4,9 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.Climber;
 
 public class Climb extends Command {
@@ -22,22 +24,29 @@ public class Climb extends Command {
   // Called when the command is initially scheduled.
   // start retracting the arms
   @Override
-  public void initialize() {}
+  public void initialize() {
+    climber.retract(Constants.ClimberConstants.RetractPosition);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   // Maintain level, ie run the PIDController
   @Override
-  public void execute() {}
+  public void execute() {
+    climber.levelme();
+  }
 
   // Called once the command ends or is interrupted.
   // Don't let the robot fall after it has climbed
   @Override
-  public void end(boolean interrupted) {}
-
+  public void end(boolean interrupted) {
+    climber.retract(climber.getPositionDriver());
+  }
+  
+  double small = .5;  //inches
   // Returns true when the command should end.
   // When either of the arms reaches the retracted position
   @Override
   public boolean isFinished() {
-    return false;
+    return climber.getPositionLeveler() <= Constants.ClimberConstants.RetractPosition + small;
   }
 }
