@@ -208,6 +208,8 @@ public class Arm extends SubsystemBase {
   public void rearmArm() {
     armSafety = true;
     armSafetyw = true;
+    elbow_encoder.setPosition(abs2rel(elbowAbs.getAverageValue()));
+    wrist_encoder.setPosition(abs2relw(wristAbs.getAverageValue()));
   }
 
   /** Disable motion of the arm */

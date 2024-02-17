@@ -230,14 +230,16 @@ public final class Constants {
       public static final double kElbowGround = 10;
       public static final double kElbowSource = 60;
       public static final double kElbowSpeaker = 43;
-      public static final double kElbowAmp = 70;
-      public static final double kElbowFloor = 15;
+      public static final double kElbowAmp = 80;
+      public static final double kElbowPreFloow = 20;
+      public static final double kElbowFloor = -5;
       //Wrist Positions (in degrees from perpendicular to arm)
       public static final double kWristSource = 0;
       public static final double kWristGround = 0;
-      public static final double kWristSpeaker = -10;
-      public static final double kWristAmp = 0;
-      public static final double kWristFloor = 15;
+      public static final double kWristSpeaker = 28;
+      public static final double kWristAmp = 41;
+      public static final double kWristPreFloor = 30;
+      public static final double kWristFloor = 68;
       public static final double kRetract = 85;
       // sweet spot where, when disabled, the arm and handler to not sag
       public static final double elbowSweetSpot = 77.;  
@@ -254,7 +256,7 @@ public final class Constants {
       public static final double wristTolerance = .1;
       //Soft limits 
       public static final float kElbowForwardLimit = 90.f;
-      public static final float kElbowReverseLimit = 0.f;
+      public static final float kElbowReverseLimit = -5f;
       public static final float kWristForwardLimit = 85.f;
       public static final float kWristReverseLimit = -66.f;
       //Encoders
@@ -284,6 +286,8 @@ public final class Constants {
         // 16.5 = -64.7
       public static final double elbowNudgeAmount = 2.5;
       public static final double elbowWristAmount = 5;
+
+
     }
 
     public static final class HandlerConstants {
@@ -298,7 +302,9 @@ public final class Constants {
       public static final double kHighOutSpeed = 1;
       public static final double kLowOutSpeed = -.5;
       public static final double HighSpinTime = 2;
-      public static final double TotalShootTime = 3;
+      public static final double TotalShootTime = 3.5;
+      public static final double kHighAmpSpeed = 0.5;
+    public static final double kLowAmpSpeed = .5;
       
     }
 

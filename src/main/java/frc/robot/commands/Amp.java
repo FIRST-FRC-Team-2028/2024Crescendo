@@ -24,12 +24,16 @@ public class Amp extends Command {
   @Override
   public void initialize() {
     timer.start();
-    intake.low_out();
+    intake.shootInAmpHigh();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    if(timer.hasElapsed(0.1)) {
+      intake.shootInAmpLow();
+    }
+  }
 
   // Called once the command ends or is interrupted.
   @Override

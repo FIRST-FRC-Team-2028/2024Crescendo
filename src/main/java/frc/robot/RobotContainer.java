@@ -159,25 +159,23 @@ public class RobotContainer {
         /*new JoystickButton(mechJoytick1, 3).
                 whileTrue(new WristUp(armSubsystem,.2));*/
         new JoystickButton(mechJoytick1, OIConstants.kArmAmp).
-                onTrue(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowAmp, ArmConstants.kWristAmp)
+                onTrue(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowAmp, ArmConstants.kWristAmp, .25)
                 );
         new JoystickButton(mechJoytick1, OIConstants.kArmSubwoofer).
-                onTrue(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowSpeaker, ArmConstants.kWristSpeaker)
+                onTrue(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowSpeaker, ArmConstants.kWristSpeaker, .25)
                 .andThen(new InstantCommand(() -> this.rumble()))
                 );
 
         
         new JoystickButton(mechJoytick2, OIConstants.kIntake).
-                whileTrue(new InHandler(handlerSubsystem));
+                whileTrue(new InHandler(handlerSubsystem)
+                .andThen(new TravelPosition(armSubsystem).onlyIf(handlerSubsystem::doIHaveIt))
+                );
         new JoystickButton(mechJoytick1, OIConstants.kElbowRearmButton).
                 onTrue(Commands.runOnce( armSubsystem::rearmArm, armSubsystem));
         new JoystickButton(mechJoytick1, OIConstants.kArmFloor).
-                onTrue(
-                        //new InstantCommand(() -> armSubsystem.makeMeDone())
-                //.andThen(new WaitCommand(0.25))
-                //.andThen(
-                        new ArmRun(armSubsystem, Constants.ArmConstants.kElbowFloor, Constants.ArmConstants.kWristFloor))
-                        ;
+                onTrue(new ArmRun(armSubsystem, ArmConstants.kElbowPreFloow, ArmConstants.kWristPreFloor, 3)
+                .andThen(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowFloor, Constants.ArmConstants.kWristFloor, .25)));
         /*new JoystickButton(mechJoytick, 3).
                  onTrue(new ArmRun(armSubsystem, 90, 0));*/
         new JoystickButton(mechJoytick2, Constants.OIConstants.kShootSequenceButton ).

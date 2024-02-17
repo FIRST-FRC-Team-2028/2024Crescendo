@@ -28,6 +28,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
+import frc.robot.Constants.HandlerConstants;
 
 /** Handler consists of:
  *     motor to drive handler rollers and belts, low_side
@@ -150,6 +151,23 @@ public class Handler extends SubsystemBase {
 
   public void low_out() {
     low_side.set(TalonSRXControlMode.PercentOutput, Constants.HandlerConstants.kLowOutSpeed);
+  }
+
+  public void shootInAmpHigh() {
+    high_side.set(TalonSRXControlMode.PercentOutput, HandlerConstants.kHighAmpSpeed);
+  }
+
+  public void shootInAmpLow() {
+    low_side.set(TalonSRXControlMode.PercentOutput, HandlerConstants.kLowAmpSpeed);
+  }
+
+/**
+Move note off of high speed wheels. Low Out, Wait, Stop
+*/
+  public void spit_Back() {
+    low_out();
+    new WaitCommand(.25);
+    stop();
   }
 
   public void stop() {
