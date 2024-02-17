@@ -35,7 +35,7 @@ public final class Constants {
   public static final boolean HANDLER_AVAILABLE = true;
   public static final boolean CLIMB_AVAILABLE = false;
   public static final boolean APRIL_AVAILABLE = false;
-  public static final boolean COLOR_AVALIBLE = false;
+  public static final boolean COLOR_AVALIBLE = true;
 
 
   public static final class ModuleConstants {
@@ -267,12 +267,15 @@ public final class Constants {
       public static final double ElbowCurrentLimit = 25.;
       public static final double kElbowRampRate = 2.;  // seconds
       public static final double kWristRampRate = 2.;  // seconds
-      public static final double kWristFloor = 0;
+      public static final double kWristFloor = 15;
         //33.2 = 38.7
         //49.7 = -28
         // 16.5 = -64.7
-    public static final double elbowNudgeAmount = 5;
-    public static final double elbowWristAmount = 5;
+      public static final double elbowNudgeAmount = 2.5;
+      public static final double elbowWristAmount = 5;
+      // sweet spot where, when disabled, the arm and handler to not sag
+      public static final double elbowSweetSpot = 77.;  
+      public static final double wristSweetSpot = 6.4;
     }
 
     public static final class HandlerConstants {
@@ -282,13 +285,12 @@ public final class Constants {
       //public static final double kHighP = 0;
       //public static final double kHighI = 0;
       //public static final double kHighD = 0;
-      public static final double kLowPickUpSpeed = 1;
+      public static final double kLowPickUpSpeed = .5;
       public static final double kLowToHighSpeed = 1;
       public static final double kHighOutSpeed = 1;
-      public static final double kLowOutSpeed = -1;
-      public static final int SENSORPORT = 0;
+      public static final double kLowOutSpeed = -.5;
       public static final double HighSpinTime = 2;
-    public static final double TotalShootTime = 3;
+      public static final double TotalShootTime = 3;
       
     }
 
@@ -299,7 +301,7 @@ public final class Constants {
 
     public static final class ColorConstants {
       public static final I2C.Port sensorPort = I2C.Port.kOnboard;
-      public static final float NoteHue = 0;
+      public static final double NoteHue = 0.2;
     }
 
     public static final class CANIDs {

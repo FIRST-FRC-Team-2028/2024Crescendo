@@ -155,13 +155,15 @@ public class RobotContainer {
         new JoystickButton(mechJoytick1, OIConstants.kElbowRearmButton).
                 onTrue(Commands.runOnce( armSubsystem::rearmArm, armSubsystem));
         new JoystickButton(mechJoytick1, OIConstants.kArmFloor).
-                onTrue(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowFloor, Constants.ArmConstants.kWristFloor));
+                onTrue(new InstantCommand(() -> armSubsystem.makeMeDone()).
+                andThen(new WaitCommand(0.25)).
+                andThen(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowFloor, Constants.ArmConstants.kWristFloor)));
         /*new JoystickButton(mechJoytick, 3).
                  onTrue(new ArmRun(armSubsystem, 90, 0));*/
         new JoystickButton(mechJoytick2, 1).
                 onTrue(new Speaker(handlerSubsystem));
         new JoystickButton(mechJoytick2, 5).
-                onTrue(new Amp(handlerSubsystem));
+                whileTrue(new Amp(handlerSubsystem));
         new JoystickButton(mechJoytick2, OIConstants.kNudgeElbowUp).
                 onTrue(new InstantCommand(() -> armSubsystem.retargetElbow(ArmConstants.elbowNudgeAmount)));
         new JoystickButton(mechJoytick2, OIConstants.kNudgeElbowDown).

@@ -17,7 +17,7 @@ public class InHandler extends Command {
    */
   public InHandler(Handler Handler) {
     handler = Handler;
-    addRequirements(handler); // here to declare subsystem dependencies. TODO
+    addRequirements(handler); // here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
@@ -27,14 +27,13 @@ public class InHandler extends Command {
  //   handler.iHaveIt();                                           COLOR SENSOR STUFF
  // } else handler.iDontHaveIt();                                  COLOR SENSOR STUFF
   
-  /*   if (handler.sense()) {
+     if (handler.useSensor()) {
       handler.stop();
     }
     else {
-      handler.low_in();
-    }*/
+      handler.low_PickUp();
+    }
 
-    handler.low_PickUp();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

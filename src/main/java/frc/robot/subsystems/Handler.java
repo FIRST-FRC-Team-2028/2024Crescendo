@@ -87,12 +87,14 @@ public class Handler extends SubsystemBase {
     // return sensor.get();  TODO
     if (Constants.COLOR_AVALIBLE){
       Color notesensor = sensor.getColor();
-      SmartDashboard.putString("Sensor", notesensor.toHexString());
+      //SmartDashboard.putString("Sensor", notesensor.toHexString());
       float[] george={0.f,0.f,0.f};
       george = java.awt.Color.RGBtoHSB((int)(notesensor.red  *255), 
                                               (int)(notesensor.green*255), 
                                               (int)(notesensor.blue *255), george);
-      double diffHue = Math.abs(george[0] - Constants.ColorConstants.NoteHue);
+      double diffHue = (george[0] - Constants.ColorConstants.NoteHue);
+      SmartDashboard.putNumber("Hue", george[0]);
+      SmartDashboard.putBoolean("DiffHue", diffHue<closeHue);
       if ( diffHue < closeHue)return true;
 
       return false;
@@ -103,7 +105,9 @@ public class Handler extends SubsystemBase {
 
   @Override
   public void periodic() {
-
+    if (useSensor()) {
+      iHaveIt(); 
+    }else {iDontHaveIt();}
     // This method will be called once per scheduler run
   }
 
