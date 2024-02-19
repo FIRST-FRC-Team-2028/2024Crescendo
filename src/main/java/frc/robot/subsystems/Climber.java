@@ -31,6 +31,16 @@ public class Climber extends SubsystemBase {
     this.gyro = gyro;
     encoderLeft = climberLeft.getEncoder();
     encoderRight = climberRight.getEncoder();
+    //encoderLeft.setPosition(0.);   // MRG softlimits for safety
+    //encoderRight.setPosition(0.);
+    //climberLeft.setSoftLimit(SoftLimitDirection.kForward, Constants.ClimberConstants.extendLimit);
+    //climberRight.setSoftLimit(SoftLimitDirection.kForward, Constants.ClimberConstants.extendLimit);
+    //climberLeft.setSoftLimit(SoftLimitDirection.kReverse, Constants.ClimberConstants.retractLimit);  // probably zero
+    //climberRight.setSoftLimit(SoftLimitDirection.kReverse, Constants.ClimberConstants.retractLimit);
+    //climberLeft.enableSoftLimit(SoftLimitDirection.kForward,true);
+    //climberLeft.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    //climberRight.enableSoftLimit(SoftLimitDirection.kForward,true);
+    //climberRight.enableSoftLimit(SoftLimitDirection.kReverse, true);
     pidController = new PIDController( 0, 0, 0);
     climbController = climberLeft.getPIDController();
     climbController.setP(0);
