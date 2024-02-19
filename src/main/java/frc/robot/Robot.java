@@ -138,7 +138,7 @@ public class Robot extends TimedRobot {
         m_autonomousCommand = m_robotContainer.getAutonomousCommand();
         if (arm == null) arm = m_robotContainer.getArm();
         new TravelPosition(arm); MRG thinks this will never run. Should it? Will it impede autonomous commands?
-        //pigeon.setYaw(180);
+        //pigeon.setYaw(180);  Do we need to initialize the gyro?
         // schedule the autonomous command (example)
         if (m_autonomousCommand != null) {
             m_autonomousCommand.schedule();
