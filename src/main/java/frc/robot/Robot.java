@@ -139,6 +139,7 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         //lights.setSpeed(0.93);
+        arm.setBrakeMode();
         m_autonomousCommand = m_robotContainer.getAutonomousCommand();
         if (arm == null) arm = m_robotContainer.getArm();
         (new TravelPosition(arm)).schedule();// MRG thinks this will never run. Should it? Will it impede autonomous commands?
@@ -178,9 +179,11 @@ public class Robot extends TimedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
+        
 
         // start up arm PID controller to Travel position
         if (arm == null) arm = m_robotContainer.getArm();
+        arm.setBrakeMode();
         (new TravelPosition(arm)).schedule();
         // CRG added stuff to drive in teleopPeriodic rather than defaultCommand {
         this.swerveSubsystem = m_robotContainer.getSwerveSS();
@@ -300,8 +303,11 @@ public class Robot extends TimedRobot {
         // Cancels all running commands at the start of test mode.
         CommandScheduler.getInstance().cancelAll();
         handler = m_robotContainer.getHandler();
-        
-
+        if (Constants.CLIMB_AVAILABLE){
+            climber = m_robotContainer.getClimber();
+        }
+        arm = m_robotContainer.getArm();
+        arm.setCoastMode();
     }
 
     /** This function is called periodically during test mode. */
@@ -316,17 +322,13 @@ public class Robot extends TimedRobot {
 
 
         if (new JoystickButton(mechJoytick2, OIConstants.kNudgeElbowUp).getAsBoolean()) {
-            new InstantCommand(()-> m_robotContainer.getArm().elbowUpSlow());  
+            new InstantCommand(()->arm.elbowUpSlow());  
         } 
-        else {
-            m_robotContainer.getArm().stopElbow();
-        }
-         
-        if (new JoystickButton(mechJoytick2, OIConstants.kNudgeElbowDown).getAsBoolean() ) {
-            new InstantCommand(()-> m_robotContainer.getArm().elbowDownSlow());  
+        else if (new JoystickButton(mechJoytick2, OIConstants.kNudgeElbowDown).getAsBoolean() ) {
+            new InstantCommand(()-> arm.elbowDownSlow());  
         }
         else {
-            m_robotContainer.getArm().stopElbow();
+            arm.stopElbow();
         }
       /*   swerveSubsystem = m_robotContainer.getSwerveSS();
         SmartDashboard.putNumber("FLabs", swerveSubsystem.getModules()[0].getAbsoluteEncoderRad());
@@ -337,19 +339,22 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("BR Turn", swerveSubsystem.getModules()[2].getTurningPosition());
         SmartDashboard.putNumber("BLabs", swerveSubsystem.getModules()[3].getAbsoluteEncoderRad());
         SmartDashboard.putNumber("BL Turn", swerveSubsystem.getModules()[3].getTurningPosition()); */
-        if (new JoystickButton(mechJoytick1, OIConstants.kClimberExtend).getAsBoolean()) {
-             m_robotContainer.getClimber().extend(.5);
-             System.out.println(String.format("Climber Position = %4.f" , m_robotContainer.getClimber().getPositionDriver()));
-        }
-         else{
-            m_robotContainer.getClimber().stop();
-         }
-        if (new JoystickButton(mechJoytick1, OIConstants.kClimberRetract).getAsBoolean() ) {
-            m_robotContainer.getClimber().extend(-.5);
-            System.out.println(String.format("Climber Position = %.4f" , m_robotContainer.getClimber().getPositionDriver()));
-        }
-        else{
-            m_robotContainer.getClimber().stop();
+        if (Constants.CLIMB_AVAILABLE){
+            if (new JoystickButton(mechJoytick1, OIConstants.kClimberExtend).getAsBoolean()) {
+                climber.extend(.5);
+                //System.out.println(String.format("Climber Position = %4.f" , m_robotContainer.getClimber().getPositionDriver()));
+                    System.out.println(climber.getPositionDriver());
+
+            }
+            else if (new JoystickButton(mechJoytick1, OIConstants.kClimberRetract).getAsBoolean() ) {
+                climber.extend(-.5);
+                //System.out.println(String.format("Climber Position = %.4f" , m_robotContainer.getClimber().getPositionDriver()));
+                System.out.println(climber.getPositionDriver());
+
+            }
+            else{
+                climber.stop();
+            }
         }
 
     }

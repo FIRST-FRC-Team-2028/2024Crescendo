@@ -193,6 +193,10 @@ public class RobotContainer {
                 // back up a bit
                 // return arm to travel position
                 );
+        new JoystickButton(mechJoytick1, Constants.OIConstants.kArmSource).
+                onTrue(new ArmRun(armSubsystem, ArmConstants.kElbowSource, ArmConstants.kWristSource, 0.25));
+        new JoystickButton(mechJoytick1, Constants.OIConstants.kArmDuck).
+                onTrue(new ArmRun(armSubsystem, ArmConstants.elbowDuck, ArmConstants.wristDuck, 0.25));
         new JoystickButton(mechJoytick2, OIConstants.kNudgeElbowUp).
                 onTrue(new InstantCommand(() -> armSubsystem.retargetElbow(ArmConstants.elbowNudgeAmount)));
         new JoystickButton(mechJoytick2, OIConstants.kNudgeElbowDown).
@@ -202,10 +206,12 @@ public class RobotContainer {
         new JoystickButton(mechJoytick2, OIConstants.kNudgeWristDown).
                 onTrue(new InstantCommand(() -> armSubsystem.retargetWrist(-ArmConstants.elbowWristAmount)));
 
-        new JoystickButton(mechJoytick1, OIConstants.kClimberExtend).
-                onTrue(new ExtendClimber(climber));
-        new JoystickButton(mechJoytick1, OIConstants.kClimberRetract).
-                onTrue(new Climb(climber, gyro, armSubsystem));
+        if (Constants.CLIMB_AVAILABLE){
+                new JoystickButton(mechJoytick1, OIConstants.kClimberExtend).
+                        onTrue(new ExtendClimber(climber));
+                new JoystickButton(mechJoytick1, OIConstants.kClimberRetract).
+                        onTrue(new Climb(climber, gyro, armSubsystem));
+        }
      }
 
 
@@ -328,7 +334,7 @@ public class RobotContainer {
            //     swerveSubsystem);
 
                         final SwerveControllerCommand swerveControllerCommand =
-                        new SwerveControllerCommand( TwoMeterDrive,
+                        new SwerveControllerCommand( exampleTrajectory,
                                 swerveSubsystem::getPose,
                                 Constants.DriveConstants.kDriveKinematics,
                                 xController,

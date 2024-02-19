@@ -28,20 +28,17 @@ public class TravelPosition extends Command {
   public void initialize() {
     arm.run(arm.getWristPos(), ArmConstants.elbowTravel);
     timer.start();
-    System.out.println("Initialize");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("Execute");
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     arm.positionWrist(ArmConstants.wristTravel);
-    System.out.println("End");
     timer.stop();
     timer.reset();
   }

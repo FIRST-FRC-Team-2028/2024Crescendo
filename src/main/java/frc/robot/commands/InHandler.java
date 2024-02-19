@@ -39,6 +39,9 @@ public class InHandler extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if (handler.useSensor()) {
+      handler.iHaveIt(); 
+    }else {handler.iDontHaveIt();}
 
   // if (/*Color sensor reads if there is a note*/) {              COLOR SENSOR STUFF
   //   handler.iHaveIt();                                           COLOR SENSOR STUFF

@@ -228,15 +228,15 @@ public final class Constants {
 
       //Elbow Position  (in degrees up from parallel to the floor)
       public static final double kElbowGround = 10;
-      public static final double kElbowSource = 60;
+      public static final double kElbowSource = 52;
       public static final double kElbowSpeaker = 43;
       public static final double kElbowAmp = 80;
       public static final double kElbowPreFloow = 20;
       public static final double kElbowFloor = -5;
       //Wrist Positions (in degrees from perpendicular to arm)
-      public static final double kWristSource = 0;
+      public static final double kWristSource = 93;
       public static final double kWristGround = 0;
-      public static final double kWristSpeaker = 28;
+      public static final double kWristSpeaker = 22;
       public static final double kWristAmp = 41;
       public static final double kWristPreFloor = 30;
       public static final double kWristFloor = 68;
@@ -245,8 +245,8 @@ public final class Constants {
       public static final double elbowSweetSpot = 77.;  
       public static final double wristSweetSpot = 6.4;
       // arm and wrist position to drive under stage
-      public static final double elbowDuck = 27.;  
-      public static final double wristDuck = 36.4;
+      public static final double elbowDuck = 15.;  
+      public static final double wristDuck = 75;
       // arm and wrist position to drive under stage
       public static final double elbowTravel = 57.;  
       public static final double wristTravel = 0;
@@ -309,12 +309,12 @@ public final class Constants {
     }
 
     public static final class ClimberConstants {
-        public static final double ExtendSpeed = 0;
+        public static final double ExtendSpeed = 0.1;
         public static final double ExtendPosition = 0;
         public static final double RetractPosition = 0;
-        public static final float extendLimit = 0;
+        public static final float extendLimit = 8.5f;
         public static final float retractLimit = 0.f;
-        public static final double encoderConversionFactor = 1.;
+        public static final double encoderConversionFactor = 4.0625/(522-398);
     }
 
     public static final class ColorConstants {
@@ -374,7 +374,7 @@ public final class Constants {
 
         //Mech contoller buttons left region
         public static final int kArmSubwoofer                 = 1;
-        public static final int kArmStage                     = 2;
+        public static final int kArmDuck                     = 2;
         public static final int kArmAmp                       = 3;
         public static final int kArmFloor                     = 4; // button Y
         public static final int kArmSource                    = 5; // Left Bumper

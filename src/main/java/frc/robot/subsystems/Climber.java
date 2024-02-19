@@ -13,12 +13,13 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;
 
 public class Climber extends SubsystemBase {
   CANSparkMax climberLeft =  new CANSparkMax(Constants.CANIDs.climb_left,MotorType.kBrushless);
-  CANSparkMax climberRight =  new CANSparkMax(Constants.CANIDs.climb_right,MotorType.kBrushless);
+  //CANSparkMax climberRight =  new CANSparkMax(Constants.CANIDs.climb_right,MotorType.kBrushless);
   Pigeon2 gyro;
   RelativeEncoder encoderLeft;
   RelativeEncoder encoderRight;
@@ -30,20 +31,22 @@ public class Climber extends SubsystemBase {
   */
   public Climber(Pigeon2 gyro) {
     climberLeft.restoreFactoryDefaults();
-    climberRight.restoreFactoryDefaults();
+    climberLeft.setInverted(true);
+    climberLeft.setIdleMode(IdleMode.kBrake);
+    //climberRight.restoreFactoryDefaults();
     this.gyro = gyro;
     encoderLeft = climberLeft.getEncoder();
-    encoderRight = climberRight.getEncoder();
+    //encoderRight = climberRight.getEncoder();
     encoderLeft.setPositionConversionFactor(Constants.ClimberConstants.encoderConversionFactor);
-    encoderRight.setPositionConversionFactor(Constants.ClimberConstants.encoderConversionFactor);
+    //encoderRight.setPositionConversionFactor(Constants.ClimberConstants.encoderConversionFactor);
     encoderLeft.setPosition(0.);   // MRG softlimits for safety
-    encoderRight.setPosition(0.);
+    //encoderRight.setPosition(0.);
     climberLeft.setSoftLimit(SoftLimitDirection.kForward, Constants.ClimberConstants.extendLimit);
-    climberRight.setSoftLimit(SoftLimitDirection.kForward, Constants.ClimberConstants.extendLimit);
+    //climberRight.setSoftLimit(SoftLimitDirection.kForward, Constants.ClimberConstants.extendLimit);
     climberLeft.setSoftLimit(SoftLimitDirection.kReverse, Constants.ClimberConstants.retractLimit);  // probably zero
-    climberRight.setSoftLimit(SoftLimitDirection.kReverse, Constants.ClimberConstants.retractLimit);
-    //climberLeft.enableSoftLimit(SoftLimitDirection.kForward,true);
-    //climberLeft.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    //climberRight.setSoftLimit(SoftLimitDirection.kReverse, Constants.ClimberConstants.retractLimit);
+    climberLeft.enableSoftLimit(SoftLimitDirection.kForward,true);
+    climberLeft.enableSoftLimit(SoftLimitDirection.kReverse, true);
     //climberRight.enableSoftLimit(SoftLimitDirection.kForward,true);
     //climberRight.enableSoftLimit(SoftLimitDirection.kReverse, true);
     pidController = new PIDController( 0, 0, 0);
@@ -55,7 +58,7 @@ public class Climber extends SubsystemBase {
    * @param speed controls the speed of both motors
    */
   public void extend(double speed) {
-    climberRight.set(speed);
+    //climberRight.set(speed);
     climberLeft.set(speed);
   }
 
@@ -65,7 +68,7 @@ public class Climber extends SubsystemBase {
    * 
    */
   public void levelme() {
-    climberRight.set(pidController.calculate( gyro.getRoll().getValue(), 0.));
+    //climberRight.set(pidController.calculate( gyro.getRoll().getValue(), 0.));
   }
 
   /** retracts to a position in closed loop
@@ -77,7 +80,7 @@ public class Climber extends SubsystemBase {
 
   public void stop() {
     climberLeft.stopMotor();
-    climberRight.stopMotor();
+    //climberRight.stopMotor();
   }
 
   public double getPositionDriver() {
@@ -85,7 +88,8 @@ public class Climber extends SubsystemBase {
   }
 
   public double getPositionLeveler() {
-    return encoderRight.getPosition();
+    //return encoderRight.getPosition();
+    return 5;
   }
 
   @Override

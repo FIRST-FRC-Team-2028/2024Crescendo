@@ -119,6 +119,18 @@ public class Arm extends SubsystemBase {
     return Constants.ArmConstants.RelMinW + Constants.ArmConstants.RatioW * (absval - Constants.ArmConstants.AbsMinW);
   }
 
+  public void setCoastMode() {
+    elbow.setIdleMode(IdleMode.kCoast);
+    elbow_follower.setIdleMode(IdleMode.kCoast);
+    wrist.setIdleMode(IdleMode.kCoast);
+  }
+
+  public void setBrakeMode() {
+    elbow.setIdleMode(IdleMode.kBrake);
+    elbow_follower.setIdleMode(IdleMode.kBrake);
+    wrist.setIdleMode(IdleMode.kBrake);
+  }
+
   /** Elbow up open loop control */
   public void elbowUp() {
    if(armSafety)elbow.set(.7);
@@ -183,8 +195,8 @@ public class Arm extends SubsystemBase {
     SmartDashboard.putNumber("WristRelVal", wrist_encoder.getPosition());
     //SmartDashboard.putNumber("WristAbsVal", );
     if(avgCurrent>Constants.ArmConstants.ElbowCurrentLimit) {
-      for (double each: currentHist) System.out.print(" "+each);
-      System.out.println(" => avg: "+avgCurrent);
+      //for (double each: currentHist) System.out.print(" "+each);
+      //System.out.println(" => avg: "+avgCurrent);
       armSafety = false;
     }
     SmartDashboard.putBoolean("Elbow Warning", armSafety);
@@ -203,6 +215,8 @@ public class Arm extends SubsystemBase {
     //System.out.println("TEST");
     // This method will be called once per scheduler run
   }
+
+
 
   /** Allow the arm to move  (after safety shutdown)*/
   public void rearmArm() {

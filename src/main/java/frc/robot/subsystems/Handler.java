@@ -106,9 +106,7 @@ public class Handler extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if (useSensor()) {
-      iHaveIt(); 
-    }else {iDontHaveIt();}
+
     // This method will be called once per scheduler run
   }
 
