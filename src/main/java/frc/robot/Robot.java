@@ -339,15 +339,18 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("BL Turn", swerveSubsystem.getModules()[3].getTurningPosition()); */
         if (new JoystickButton(mechJoytick1, OIConstants.kClimberExtend).getAsBoolean()) {
              m_robotContainer.getClimber().extend(.5);
+             System.out.println(String.format("Climber Position = %4.f" , m_robotContainer.getClimber().getPositionDriver()));
         }
          else{
             m_robotContainer.getClimber().stop();
          }
         if (new JoystickButton(mechJoytick1, OIConstants.kClimberRetract).getAsBoolean() ) {
             m_robotContainer.getClimber().extend(-.5);
+            System.out.println(String.format("Climber Position = %.4f" , m_robotContainer.getClimber().getPositionDriver()));
         }
         else{
             m_robotContainer.getClimber().stop();
         }
+
     }
 }
