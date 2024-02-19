@@ -18,15 +18,24 @@ public class ArmRun extends Command {
   Timer external_timer;
   Timer internal_timer;
   double m_secs;
-  /** Move Arm to desired position */
+  /** Move Arm to desired position
+   *  @param Target is desired elbow position (in degrees from horizontal)
+   *  @param WristTarget is desired wrist position (in degrees from normal to arm)
+   *  @param m_secs is time (in seconds) to wait after starting motion
+   */
   public ArmRun(Arm Arm, double Target, double WristTarget, double m_secs) {
     arm = Arm;
     this.Target = Target;
     this.WristTarget = WristTarget;
     external_timer = new Timer();
-    internal_timer = new Timer();
+    internal_timer = new Timer();  // MRG do you really need seperate Timers?
     this.m_secs = m_secs;
     addRequirements(arm); // here to declare subsystem dependencies.
+  }
+  
+  /** Move Arm to desired position */
+  public ArmRun(Arm Arm, double Target, double WristTarget) {
+    this(Arm,Target,WristTarget,0.25);  // MRG: built in time due to wrist delay
   }
 
   /** set kP based on curent position and target, and start PID controllers */
