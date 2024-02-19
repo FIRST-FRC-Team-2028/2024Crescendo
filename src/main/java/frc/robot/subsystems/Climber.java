@@ -14,6 +14,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkBase.SoftLimitDirection;
 
 public class Climber extends SubsystemBase {
   CANSparkMax climberLeft =  new CANSparkMax(Constants.CANIDs.climb_left,MotorType.kBrushless);
@@ -28,15 +29,19 @@ public class Climber extends SubsystemBase {
    *  The robot should maintain zero roll angle during climb.
   */
   public Climber(Pigeon2 gyro) {
+    climberLeft.restoreFactoryDefaults();
+    climberRight.restoreFactoryDefaults();
     this.gyro = gyro;
     encoderLeft = climberLeft.getEncoder();
     encoderRight = climberRight.getEncoder();
-    //encoderLeft.setPosition(0.);   // MRG softlimits for safety
-    //encoderRight.setPosition(0.);
-    //climberLeft.setSoftLimit(SoftLimitDirection.kForward, Constants.ClimberConstants.extendLimit);
-    //climberRight.setSoftLimit(SoftLimitDirection.kForward, Constants.ClimberConstants.extendLimit);
-    //climberLeft.setSoftLimit(SoftLimitDirection.kReverse, Constants.ClimberConstants.retractLimit);  // probably zero
-    //climberRight.setSoftLimit(SoftLimitDirection.kReverse, Constants.ClimberConstants.retractLimit);
+    encoderLeft.setPositionConversionFactor(Constants.ClimberConstants.encoderConversionFactor);
+    encoderRight.setPositionConversionFactor(Constants.ClimberConstants.encoderConversionFactor);
+    encoderLeft.setPosition(0.);   // MRG softlimits for safety
+    encoderRight.setPosition(0.);
+    climberLeft.setSoftLimit(SoftLimitDirection.kForward, Constants.ClimberConstants.extendLimit);
+    climberRight.setSoftLimit(SoftLimitDirection.kForward, Constants.ClimberConstants.extendLimit);
+    climberLeft.setSoftLimit(SoftLimitDirection.kReverse, Constants.ClimberConstants.retractLimit);  // probably zero
+    climberRight.setSoftLimit(SoftLimitDirection.kReverse, Constants.ClimberConstants.retractLimit);
     //climberLeft.enableSoftLimit(SoftLimitDirection.kForward,true);
     //climberLeft.enableSoftLimit(SoftLimitDirection.kReverse, true);
     //climberRight.enableSoftLimit(SoftLimitDirection.kForward,true);
@@ -46,15 +51,26 @@ public class Climber extends SubsystemBase {
     climbController.setP(0);
   }
 
+  /** Extends the climber arms up
+   * @param speed controls the speed of both motors
+   */
   public void extend(double speed) {
     climberRight.set(speed);
     climberLeft.set(speed);
   }
 
+  
+  
+  /** levels the robot to 0 in the x-axis
+   * 
+   */
   public void levelme() {
     climberRight.set(pidController.calculate( gyro.getRoll().getValue(), 0.));
   }
 
+  /** retracts to a position in closed loop
+   * @param reatract position to retract to in inches from fully retracted
+   */
   public void retract(double reatract) {
     climbController.setReference(reatract, ControlType.kPosition);
   }

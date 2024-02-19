@@ -312,6 +312,9 @@ public final class Constants {
         public static final double ExtendSpeed = 0;
         public static final double ExtendPosition = 0;
         public static final double RetractPosition = 0;
+        public static final float extendLimit = 0;
+        public static final float retractLimit = 0.f;
+        public static final double encoderConversionFactor = 1.;
     }
 
     public static final class ColorConstants {

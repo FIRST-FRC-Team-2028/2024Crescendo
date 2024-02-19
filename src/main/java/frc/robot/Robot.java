@@ -27,6 +27,7 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.TravelPosition;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj.I2C;           // Maddox: Color sensor
 import edu.wpi.first.wpilibj.util.Color;    // Maddox: Color sensor
@@ -52,8 +53,11 @@ public class Robot extends TimedRobot {
     private RobotContainer m_robotContainer;
     private SlewRateLimiter xLimiter, yLimiter, turningLimiter;
     private final Joystick driverJoytick = new Joystick(OIConstants.kDriverControllerPort);
+    private final Joystick mechJoytick1 = new Joystick(OIConstants.kMechControllerPort);
+    private final Joystick mechJoytick2 = new Joystick(OIConstants.kMechControllerPort2);
     private Drivetrain swerveSubsystem;
     Arm arm;
+    Climber climber;
    // private Pigeon2 pigeon;
 
     private PowerDistribution PDH;
@@ -137,7 +141,7 @@ public class Robot extends TimedRobot {
         //lights.setSpeed(0.93);
         m_autonomousCommand = m_robotContainer.getAutonomousCommand();
         if (arm == null) arm = m_robotContainer.getArm();
-        new TravelPosition(arm); MRG thinks this will never run. Should it? Will it impede autonomous commands?
+        (new TravelPosition(arm)).schedule();// MRG thinks this will never run. Should it? Will it impede autonomous commands?
         //pigeon.setYaw(180);  Do we need to initialize the gyro?
         // schedule the autonomous command (example)
         if (m_autonomousCommand != null) {
@@ -311,14 +315,14 @@ public class Robot extends TimedRobot {
 
 
 
-        if (new JoystickButton(driverJoytick, OIConstants.kNudgeElbowUp).getAsBoolean()) {
+        if (new JoystickButton(mechJoytick2, OIConstants.kNudgeElbowUp).getAsBoolean()) {
             new InstantCommand(()-> m_robotContainer.getArm().elbowUpSlow());  
         } 
         else {
             m_robotContainer.getArm().stopElbow();
         }
          
-        if (new JoystickButton(driverJoytick, OIConstants.kNudgeElbowDown).getAsBoolean() ) {
+        if (new JoystickButton(mechJoytick2, OIConstants.kNudgeElbowDown).getAsBoolean() ) {
             new InstantCommand(()-> m_robotContainer.getArm().elbowDownSlow());  
         }
         else {
@@ -333,5 +337,17 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("BR Turn", swerveSubsystem.getModules()[2].getTurningPosition());
         SmartDashboard.putNumber("BLabs", swerveSubsystem.getModules()[3].getAbsoluteEncoderRad());
         SmartDashboard.putNumber("BL Turn", swerveSubsystem.getModules()[3].getTurningPosition()); */
+        if (new JoystickButton(mechJoytick1, OIConstants.kClimberExtend).getAsBoolean()) {
+             m_robotContainer.getClimber().extend(.5);
+        }
+         else{
+            m_robotContainer.getClimber().stop();
+         }
+        if (new JoystickButton(mechJoytick1, OIConstants.kClimberRetract).getAsBoolean() ) {
+            m_robotContainer.getClimber().extend(-.5);
+        }
+        else{
+            m_robotContainer.getClimber().stop();
+        }
     }
 }

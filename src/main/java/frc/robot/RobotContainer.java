@@ -36,9 +36,11 @@ import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.Amp;
 import frc.robot.commands.ArmRun;
+import frc.robot.commands.Climb;
 import frc.robot.commands.ElbowDown;
 //import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.ElbowUp;
+import frc.robot.commands.ExtendClimber;
 import frc.robot.commands.InHandler;
 import frc.robot.commands.Speaker;
 //import frc.robot.commands.DriveGeneric;
@@ -123,6 +125,9 @@ public class RobotContainer {
                 return handlerSubsystem;
         }
 
+        public final Climber getClimber(){
+                return climber;
+        }
 
 
 
@@ -197,6 +202,10 @@ public class RobotContainer {
         new JoystickButton(mechJoytick2, OIConstants.kNudgeWristDown).
                 onTrue(new InstantCommand(() -> armSubsystem.retargetWrist(-ArmConstants.elbowWristAmount)));
 
+        new JoystickButton(mechJoytick1, OIConstants.kClimberExtend).
+                onTrue(new ExtendClimber(climber));
+        new JoystickButton(mechJoytick1, OIConstants.kClimberRetract).
+                onTrue(new Climb(climber, gyro, armSubsystem));
      }
 
 

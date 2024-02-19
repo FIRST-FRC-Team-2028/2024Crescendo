@@ -4,21 +4,33 @@
 
 package frc.robot.commands;
 
+import com.ctre.phoenix6.hardware.Pigeon2;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Climber;
 
 public class Climb extends Command {
   Climber climber;
+  PIDController pitchController;
+  Pigeon2 gyro;
+  Arm arm;
   /** Climb:
    * retract the climbers to the retracted position 
    * while maintaining levelness
+   * In both axies
+   * roll angle tells us when to start the leveler arm to level the robot
+   * pitch angle tells us when to tweak the arm
    */
-  public Climb(Climber climber) {
+  public Climb(Climber climber, Pigeon2 gyro, Arm arm) {
     this.climber = climber;
+    this.gyro = gyro;
+    this.arm = arm;
     addRequirements(climber);  // here to declare subsystem dependencies.
     // use a PIDController to control the balance arm based on gyro data
+    pitchController = new PIDController(0, 0, 0);
   }
 
   // Called when the command is initially scheduled.
@@ -33,6 +45,7 @@ public class Climb extends Command {
   @Override
   public void execute() {
     climber.levelme();
+    arm.retargetElbow(-pitchController.calculate(gyro.getPitch().getValue(), 0));
   }
 
   // Called once the command ends or is interrupted.
