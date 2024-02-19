@@ -137,7 +137,7 @@ public class Robot extends TimedRobot {
         //lights.setSpeed(0.93);
         m_autonomousCommand = m_robotContainer.getAutonomousCommand();
         if (arm == null) arm = m_robotContainer.getArm();
-        new TravelPosition(arm);
+        new TravelPosition(arm); MRG thinks this will never run. Should it? Will it impede autonomous commands?
         //pigeon.setYaw(180);
         // schedule the autonomous command (example)
         if (m_autonomousCommand != null) {
