@@ -165,6 +165,7 @@ public class RobotContainer {
                 onTrue(Commands.runOnce( armSubsystem::rearmArm, armSubsystem));
         new JoystickButton(driverJoytick, Constants.OIConstants.kArmDuck).
                 onTrue(new ArmRun(armSubsystem, ArmConstants.elbowDuck, ArmConstants.wristDuck, 0.25));
+
         /*new JoystickButton(mechJoytick1, 3).
                 whileTrue(new WristUp(armSubsystem,.2));*/
         new JoystickButton(mechJoytick1, OIConstants.kArmAmp).
@@ -183,7 +184,7 @@ public class RobotContainer {
         new JoystickButton(mechJoytick1, OIConstants.kElbowRearmButton).
                 onTrue(Commands.runOnce( armSubsystem::rearmArm, armSubsystem));
         new JoystickButton(mechJoytick1, OIConstants.kArmFloor).
-                onTrue(new ArmRun(armSubsystem, ArmConstants.kElbowPreFloow, ArmConstants.kWristPreFloor, 3)
+                onTrue(new ArmRun(armSubsystem, ArmConstants.kElbowPreFloow, ArmConstants.kWristPreFloor, 2)
                 .andThen(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowFloor, Constants.ArmConstants.kWristFloor, .25)));
         /*new JoystickButton(mechJoytick, 3).
                  onTrue(new ArmRun(armSubsystem, 90, 0));*/
