@@ -301,8 +301,8 @@ public final class Constants {
       public static final double kLowToHighSpeed = 1;
       public static final double kHighOutSpeed = 1;
       public static final double kLowOutSpeed = -.5;
-      public static final double HighSpinTime = 2;
-      public static final double TotalShootTime = 3.5;
+      public static final double HighSpinTime = 1.5;
+      public static final double TotalShootTime = 2.5;
       public static final double kHighAmpSpeed = 0.5;
     public static final double kLowAmpSpeed = .5;
       
