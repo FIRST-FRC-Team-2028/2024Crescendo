@@ -154,9 +154,12 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousPeriodic() {
     }
+    boolean buttonbinding = false;
 
     @Override
     public void teleopInit() {
+        m_robotContainer.configureButtonBindings();
+        buttonbinding = true;
         //UsbCamera usbCamera = new UsbCamera("Front Cam", 0);
         //MjpegServer mjpegServer1 = new MjpegServer("Front Server", 1181);
         //mjpegServer1.setSource(usbCamera);
@@ -182,6 +185,8 @@ public class Robot extends TimedRobot {
         
 
         // start up arm PID controller to Travel position
+        if (climber == null) climber = m_robotContainer.getClimber();
+        climber.zeroSoftLimit();
         if (arm == null) arm = m_robotContainer.getArm();
         arm.setBrakeMode();
         (new TravelPosition(arm)).schedule();
@@ -191,6 +196,7 @@ public class Robot extends TimedRobot {
         this.yLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
         this.turningLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAngularAccelerationUnitsPerSecond);
       //  this.swerveSubsystem.setCoastMode();
+
     }
 
     double smoothedXSpeed = 0.;
@@ -300,6 +306,9 @@ public class Robot extends TimedRobot {
     Handler handler;
     @Override
     public void testInit() {
+        if (buttonbinding == true){
+            double fred = 1/0;
+        }
         // Cancels all running commands at the start of test mode.
         CommandScheduler.getInstance().cancelAll();
         handler = m_robotContainer.getHandler();
@@ -340,22 +349,45 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("BLabs", swerveSubsystem.getModules()[3].getAbsoluteEncoderRad());
         SmartDashboard.putNumber("BL Turn", swerveSubsystem.getModules()[3].getTurningPosition()); */
         if (Constants.CLIMB_AVAILABLE){
-            if (new JoystickButton(mechJoytick1, OIConstants.kClimberExtend).getAsBoolean()) {
-                climber.extend(.5);
-                //System.out.println(String.format("Climber Position = %4.f" , m_robotContainer.getClimber().getPositionDriver()));
+
+            if (new JoystickButton(mechJoytick2, OIConstants.kSwitch).getAsBoolean()) {
+                climber.disableLimit();
+            }else {
+                climber.enableSoftLimit();
+            }
+                climber.getRoll();
+                if (new JoystickButton(mechJoytick1, OIConstants.kClimberExtend).getAsBoolean()) {
+                    climber.extend_left(.1);
+                    //System.out.println(String.format("Climber Position = %4.f" , m_robotContainer.getClimber().getPositionDriver()));
                     System.out.println(climber.getPositionDriver());
 
-            }
-            else if (new JoystickButton(mechJoytick1, OIConstants.kClimberRetract).getAsBoolean() ) {
-                climber.extend(-.5);
-                //System.out.println(String.format("Climber Position = %.4f" , m_robotContainer.getClimber().getPositionDriver()));
-                System.out.println(climber.getPositionDriver());
+                }
+                else if (new JoystickButton(mechJoytick1, OIConstants.kClimberRetract).getAsBoolean() ) {
+                    climber.extend_left(-.1);
+                    //System.out.println(String.format("Climber Position = %.4f" , m_robotContainer.getClimber().getPositionDriver()));
+                    System.out.println(climber.getPositionDriver());
 
-            }
-            else{
-                climber.stop();
-            }
-        }
+                }
+                else{
+                    climber.stop_left();
+                }
+             if (new JoystickButton(mechJoytick1, OIConstants.kElbowRearmButton).getAsBoolean()) {
+                    climber.extend_right(.1);
+                    //System.out.println(String.format("Climber Position = %4.f" , m_robotContainer.getClimber().getPositionDriver()));
+                    System.out.println(climber.getPositionLeveler());
 
+                }
+                else if (new JoystickButton(mechJoytick2, OIConstants.kShootSequenceButton).getAsBoolean() ) {
+                    climber.extend_right(-.1);
+                    //System.out.println(String.format("Climber Position = %.4f" , m_robotContainer.getClimber().getPositionDriver()));
+                    System.out.println(climber.getPositionLeveler());
+                    System.out.println("maddox");
+
+                }
+                else{
+                    climber.stop_right();
+                }
+            
     }
+}
 }

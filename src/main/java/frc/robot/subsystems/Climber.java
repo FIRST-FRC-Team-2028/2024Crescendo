@@ -19,7 +19,7 @@ import com.revrobotics.CANSparkBase.SoftLimitDirection;
 
 public class Climber extends SubsystemBase {
   CANSparkMax climberLeft =  new CANSparkMax(Constants.CANIDs.climb_left,MotorType.kBrushless);
-  //CANSparkMax climberRight =  new CANSparkMax(Constants.CANIDs.climb_right,MotorType.kBrushless);
+  CANSparkMax climberRight =  new CANSparkMax(Constants.CANIDs.climb_right,MotorType.kBrushless);
   Pigeon2 gyro;
   RelativeEncoder encoderLeft;
   RelativeEncoder encoderRight;
@@ -33,63 +33,103 @@ public class Climber extends SubsystemBase {
     climberLeft.restoreFactoryDefaults();
     climberLeft.setInverted(true);
     climberLeft.setIdleMode(IdleMode.kBrake);
-    //climberRight.restoreFactoryDefaults();
+    climberRight.restoreFactoryDefaults();
+    climberRight.setInverted(false);
+    climberRight.setIdleMode(IdleMode.kBrake);
     this.gyro = gyro;
     encoderLeft = climberLeft.getEncoder();
-    //encoderRight = climberRight.getEncoder();
+    encoderRight = climberRight.getEncoder();
     encoderLeft.setPositionConversionFactor(Constants.ClimberConstants.encoderConversionFactor);
-    //encoderRight.setPositionConversionFactor(Constants.ClimberConstants.encoderConversionFactor);
+    encoderRight.setPositionConversionFactor(Constants.ClimberConstants.encoderConversionFactor);
     encoderLeft.setPosition(0.);   // MRG softlimits for safety
-    //encoderRight.setPosition(0.);
+    encoderRight.setPosition(0.);
     climberLeft.setSoftLimit(SoftLimitDirection.kForward, Constants.ClimberConstants.extendLimit);
-    //climberRight.setSoftLimit(SoftLimitDirection.kForward, Constants.ClimberConstants.extendLimit);
+    climberRight.setSoftLimit(SoftLimitDirection.kForward, Constants.ClimberConstants.extendLimit);
     climberLeft.setSoftLimit(SoftLimitDirection.kReverse, Constants.ClimberConstants.retractLimit);  // probably zero
-    //climberRight.setSoftLimit(SoftLimitDirection.kReverse, Constants.ClimberConstants.retractLimit);
+    climberRight.setSoftLimit(SoftLimitDirection.kReverse, Constants.ClimberConstants.retractLimit);
     climberLeft.enableSoftLimit(SoftLimitDirection.kForward,true);
     climberLeft.enableSoftLimit(SoftLimitDirection.kReverse, true);
-    //climberRight.enableSoftLimit(SoftLimitDirection.kForward,true);
-    //climberRight.enableSoftLimit(SoftLimitDirection.kReverse, true);
-    pidController = new PIDController( 0, 0, 0);
+    climberRight.enableSoftLimit(SoftLimitDirection.kForward,true);
+    climberRight.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    pidController = new PIDController( .15, 0, 0);
     climbController = climberLeft.getPIDController();
-    climbController.setP(0);
+    climbController.setP(.1);
   }
 
   /** Extends the climber arms up
    * @param speed controls the speed of both motors
    */
   public void extend(double speed) {
-    //climberRight.set(speed);
+    climberRight.set(speed);
     climberLeft.set(speed);
   }
-
+  public void extend_right(double speed) {
+    climberRight.set(speed);
+  }
+  public void extend_left(double speed) {
+    climberLeft.set(speed);
+  }
+  public void getRoll() {
+    System.out.println(gyro.getRoll());
+  }
+  
   
   
   /** levels the robot to 0 in the x-axis
    * 
    */
   public void levelme() {
-    //climberRight.set(pidController.calculate( gyro.getRoll().getValue(), 0.));
+    climberRight.set(pidController.calculate( gyro.getRoll().getValue(), 0.));
   }
 
   /** retracts to a position in closed loop
    * @param reatract position to retract to in inches from fully retracted
    */
   public void retract(double reatract) {
+
     climbController.setReference(reatract, ControlType.kPosition);
   }
 
   public void stop() {
     climberLeft.stopMotor();
-    //climberRight.stopMotor();
+    climberRight.stopMotor();
   }
+
+  public void stop_left() {
+    climberLeft.stopMotor();
+  }
+
+    public void stop_right() {
+    climberRight.stopMotor();
+  }
+
+  public void zeroSoftLimit() {
+    encoderLeft.setPosition(0.); 
+    encoderRight.setPosition(0.);
+  }
+
+  public void enableSoftLimit(){
+    climberLeft.enableSoftLimit(SoftLimitDirection.kForward,true);
+    climberLeft.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    climberRight.enableSoftLimit(SoftLimitDirection.kForward,true);
+    climberRight.enableSoftLimit(SoftLimitDirection.kReverse, true);
+  }
+
+  public void disableLimit(){
+    climberLeft.enableSoftLimit(SoftLimitDirection.kForward,false);
+    climberLeft.enableSoftLimit(SoftLimitDirection.kReverse, false);
+    climberRight.enableSoftLimit(SoftLimitDirection.kForward,false);
+    climberRight.enableSoftLimit(SoftLimitDirection.kReverse, false);
+  }
+
 
   public double getPositionDriver() {
     return encoderLeft.getPosition();
   }
 
   public double getPositionLeveler() {
-    //return encoderRight.getPosition();
-    return 5;
+    return encoderRight.getPosition();
+    //return 5;
   }
 
   @Override

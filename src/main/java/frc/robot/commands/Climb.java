@@ -45,6 +45,8 @@ public class Climb extends Command {
   @Override
   public void execute() {
     climber.levelme();
+    System.out.println(climber.getPositionDriver());
+    System.out.println(climber.getPositionLeveler());
     arm.retargetElbow(-pitchController.calculate(gyro.getPitch().getValue(), 0));
   }
 
@@ -53,6 +55,7 @@ public class Climb extends Command {
   @Override
   public void end(boolean interrupted) {
     climber.retract(climber.getPositionDriver());
+
   }
   
   double small = .5;  //inches
@@ -60,6 +63,7 @@ public class Climb extends Command {
   // When either of the arms reaches the retracted position
   @Override
   public boolean isFinished() {
-    return climber.getPositionLeveler() <= Constants.ClimberConstants.RetractPosition + small;
+    return climber.getPositionLeveler() <= Constants.ClimberConstants.RetractPosition + small
+    || climber.getPositionDriver() <= Constants.ClimberConstants.RetractPosition + small;
   }
 }

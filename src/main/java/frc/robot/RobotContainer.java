@@ -98,6 +98,7 @@ public class RobotContainer {
 
                 if (Constants.HANDLER_AVAILABLE){
                         handlerSubsystem = new Handler();
+                        
                 }
 
                 if (Constants.APRIL_AVAILABLE){
@@ -106,9 +107,11 @@ public class RobotContainer {
 
                 gyro = new Pigeon2(0);
 
-                if (Constants.CLIMB_AVAILABLE) climber = new Climber(gyro);
+                if (Constants.CLIMB_AVAILABLE){ 
+                        climber = new Climber(gyro);
+                }
                 
-                configureButtonBindings();       
+                //configureButtonBindings();       
 
                 m_chooser = new SendableChooser<>();
                 m_chooser.setDefaultOption("DoNothing", new Wait(1));
@@ -137,7 +140,7 @@ public class RobotContainer {
       *       arm/wrist combinations
       *       handler operations
       */
-        private void configureButtonBindings() { 
+        public void configureButtonBindings() { 
         // driverJoytick Buttons
             if (swerveSubsystem!=null){
                 new JoystickButton(driverJoytick, OIConstants.kDriverResetGyroButtonIdx).
@@ -160,7 +163,8 @@ public class RobotContainer {
         }*/
         new JoystickButton(driverJoytick, OIConstants.kElbowRearmButton).
                 onTrue(Commands.runOnce( armSubsystem::rearmArm, armSubsystem));
-
+        new JoystickButton(driverJoytick, Constants.OIConstants.kArmDuck).
+                onTrue(new ArmRun(armSubsystem, ArmConstants.elbowDuck, ArmConstants.wristDuck, 0.25));
         /*new JoystickButton(mechJoytick1, 3).
                 whileTrue(new WristUp(armSubsystem,.2));*/
         new JoystickButton(mechJoytick1, OIConstants.kArmAmp).
@@ -195,8 +199,7 @@ public class RobotContainer {
                 );
         new JoystickButton(mechJoytick1, Constants.OIConstants.kArmSource).
                 onTrue(new ArmRun(armSubsystem, ArmConstants.kElbowSource, ArmConstants.kWristSource, 0.25));
-        new JoystickButton(mechJoytick1, Constants.OIConstants.kArmDuck).
-                onTrue(new ArmRun(armSubsystem, ArmConstants.elbowDuck, ArmConstants.wristDuck, 0.25));
+        
         new JoystickButton(mechJoytick2, OIConstants.kNudgeElbowUp).
                 onTrue(new InstantCommand(() -> armSubsystem.retargetElbow(ArmConstants.elbowNudgeAmount)));
         new JoystickButton(mechJoytick2, OIConstants.kNudgeElbowDown).

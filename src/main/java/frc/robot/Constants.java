@@ -33,7 +33,7 @@ public final class Constants {
   public static final boolean DRIVE_AVAILABLE = true;
   public static final boolean ARM_AVAILABLE = true;
   public static final boolean HANDLER_AVAILABLE = true;
-  public static final boolean CLIMB_AVAILABLE = false;
+  public static final boolean CLIMB_AVAILABLE = true;
   public static final boolean APRIL_AVAILABLE = false;
   public static final boolean COLOR_AVALIBLE = true;
 
@@ -309,10 +309,10 @@ public final class Constants {
     }
 
     public static final class ClimberConstants {
-        public static final double ExtendSpeed = 0.1;
-        public static final double ExtendPosition = 0;
+        public static final double ExtendSpeed = 0.5;
+        public static final double ExtendPosition = 8.9;
         public static final double RetractPosition = 0;
-        public static final float extendLimit = 8.5f;
+        public static final float extendLimit = 9f;
         public static final float retractLimit = 0.f;
         public static final double encoderConversionFactor = 4.0625/(522-398);
     }
@@ -380,10 +380,10 @@ public final class Constants {
         public static final int kArmSource                    = 5; // Left Bumper
         public static final int kClimberExtend                = 6;
         public static final int kClimberRetract               = 7;
-        public static final int kElbowRearmButton             = 8;
+        public static final int kElbowRearmButton             = 8; // in test it moves the right climber up
 
         //Mech controller buttons right region
-        public static final int kShootSequenceButton = 1;
+        public static final int kShootSequenceButton = 1;          // in test it moves the right climber down
         public static final int kNudgeElbowUp = 3;
         public static final int kNudgeElbowDown = 2;
         public static final int kIntake = 4;
@@ -394,6 +394,7 @@ public final class Constants {
         
         public static final double kDeadband = 0.075;
         //public static final int kRetract = 1;
+        public static final int kSwitch = 12;
 
 
 
