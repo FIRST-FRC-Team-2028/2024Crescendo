@@ -219,15 +219,76 @@ public class RobotContainer {
      }
 
 
+     
+        public void deconfigureButtonBindings() { 
+        // driverJoytick Buttons
+            if (swerveSubsystem!=null){
+                new JoystickButton(driverJoytick, OIConstants.kDriverResetGyroButtonIdx).
+                     onTrue(null); 
+                new JoystickButton(driverJoytick, OIConstants.kDriverResetOdometryButtonIdx).
+                     onTrue(null);
+            }
+         /*  new JoystickButton(driverJoytick, 5).
+          whileTrue(routine.quasistatic(SysIdRoutine.Direction.kForward));
+        // whenPressed(() -> swerveSubsystem.resetOdometry(new Pose2d(0., 0., new Rotation2d(0.0))));
+        
+                // mechJoytick Buttons
+         
+        if (Constants.PHOTONVISION_AVAILABLE) {
+                //new JoystickButton(buttonBox1, OIConstants.kgetRobotPositionButton).
+                        //onTrue(new GetRobotPosition(camera));
+                //new JoystickButton(buttonBox1, OIConstants.kgetAprilTagButton).
+                        //onTrue(new GetAprilTag(camera));
+        }*/
+        new JoystickButton(driverJoytick, OIConstants.kElbowRearmButton).
+                onTrue(null);
+        new JoystickButton(driverJoytick, Constants.OIConstants.kArmDuck).
+                onTrue(null);
+
+        /*new JoystickButton(mechJoytick1, 3).
+                whileTrue(new WristUp(armSubsystem,.2));*/
+        new JoystickButton(mechJoytick1, OIConstants.kArmAmp).
+                onTrue(null);
+        new JoystickButton(mechJoytick1, OIConstants.kArmSubwoofer).
+                onTrue(null);
+
+        
+        new JoystickButton(mechJoytick2, OIConstants.kIntake).
+                whileTrue(null);
+        new JoystickButton(mechJoytick1, OIConstants.kElbowRearmButton).
+                onTrue(null);
+        new JoystickButton(mechJoytick1, OIConstants.kArmFloor).
+                onTrue(null);
+        /*new JoystickButton(mechJoytick, 3).
+                 onTrue(new ArmRun(armSubsystem, 90, 0));*/
+        new JoystickButton(mechJoytick2, Constants.OIConstants.kShootSequenceButton ).
+                onTrue(null);
+        new JoystickButton(mechJoytick2, Constants.OIConstants.shootButton).
+                whileTrue(null);
+        new JoystickButton(mechJoytick1, Constants.OIConstants.kArmSource).
+                onTrue(null);
+        
+        new JoystickButton(mechJoytick2, OIConstants.kNudgeElbowUp).
+                onTrue(null);
+        new JoystickButton(mechJoytick2, OIConstants.kNudgeElbowDown).
+                onTrue(null);
+        new JoystickButton(mechJoytick2, OIConstants.kNudgeWristUp).
+                onTrue(null);
+        new JoystickButton(mechJoytick2, OIConstants.kNudgeWristDown).
+                onTrue(null);
+
+        if (Constants.CLIMB_AVAILABLE){
+                new JoystickButton(mechJoytick1, OIConstants.kClimberExtend).
+                        onTrue(null);
+                new JoystickButton(mechJoytick1, OIConstants.kClimberRetract).
+                        onTrue(null);
+        }
+     }
+
+
      void rumble(){
         mechJoytick1.setRumble(GenericHID.RumbleType.kBothRumble,1);
      }
- 
-     public void teleopPeriodic() {
-        // MRG What is this for? TODO
-
-     }
-
  
      /**
      * @return

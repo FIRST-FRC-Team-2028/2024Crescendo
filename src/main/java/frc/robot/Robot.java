@@ -23,8 +23,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.ArmRun;
 import frc.robot.commands.TravelPosition;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Climber;
@@ -222,95 +224,102 @@ public class Robot extends TimedRobot {
 
         // CRG use SwerveSubsystem drive methods similar to the SwerveJoysickCmd  {
         if (Constants.DRIVE_AVAILABLE){
-        // 1. Get real-time joystick inputs
-        double xSpeed = -driverJoytick.getRawAxis(OIConstants.kDriverXAxis); // Negative values go forward
-        double ySpeed = -driverJoytick.getRawAxis(OIConstants.kDriverYAxis);
-        double turningSpeed = -driverJoytick.getRawAxis(OIConstants.kDriverRotAxis);
+            // 1. Get real-time joystick inputs
+            double xSpeed = -driverJoytick.getRawAxis(OIConstants.kDriverXAxis); // Negative values go forward
+            double ySpeed = -driverJoytick.getRawAxis(OIConstants.kDriverYAxis);
+            double turningSpeed = -driverJoytick.getRawAxis(OIConstants.kDriverRotAxis);
 
-        // 2. Apply deadband
-        xSpeed = Math.abs(xSpeed) > OIConstants.kDeadband ? xSpeed : 0.0;
-        ySpeed = Math.abs(ySpeed) > OIConstants.kDeadband ? ySpeed : 0.0;
-        turningSpeed = Math.abs(turningSpeed) > OIConstants.kDeadband ? turningSpeed : 0.0;
-        //System.out.println("Deadband Applied");
-        //System.out.println("X: " + String.format("%.3f", xSpeed)
-        //                + " Y: " + String.format("%.3f", ySpeed)
-        //                + " R: " + String.format("%.3f", turningSpeed));
-        xSpeed*=1.-DriveConstants.kFineControlSpeed*driverJoytick.getRawAxis(OIConstants.fineControlAxis);
-        ySpeed*=1.-DriveConstants.kFineControlSpeed*driverJoytick.getRawAxis(OIConstants.fineControlAxis);
-        turningSpeed*=1.-DriveConstants.kFineControlSpeed*driverJoytick.getRawAxis(OIConstants.fineControlAxis);
-        //    Smooth driver inputs
-        smoothedXSpeed = smoothedXSpeed + (xSpeed - smoothedXSpeed) * .08;
-        smoothedYSpeed = smoothedYSpeed + (ySpeed - smoothedYSpeed) * .08;
-        smoothedTurningSpeed = smoothedTurningSpeed + (turningSpeed - smoothedTurningSpeed) * .08;
-        //    System.out.println("Raw Joystick Values");
-        //    System.out.println("X: " + String.format("%.3f", xSpeed) 
-        //                    + " Y: " + String.format("%.3f", ySpeed)
-        //                    + " R: " + String.format("%.3f", turningSpeed));
+            // 2. Apply deadband
+            xSpeed = Math.abs(xSpeed) > OIConstants.kDeadband ? xSpeed : 0.0;
+            ySpeed = Math.abs(ySpeed) > OIConstants.kDeadband ? ySpeed : 0.0;
+            turningSpeed = Math.abs(turningSpeed) > OIConstants.kDeadband ? turningSpeed : 0.0;
+            //System.out.println("Deadband Applied");
+            //System.out.println("X: " + String.format("%.3f", xSpeed)
+            //                + " Y: " + String.format("%.3f", ySpeed)
+            //                + " R: " + String.format("%.3f", turningSpeed));
+            xSpeed*=1.-DriveConstants.kFineControlSpeed*driverJoytick.getRawAxis(OIConstants.fineControlAxis);
+            ySpeed*=1.-DriveConstants.kFineControlSpeed*driverJoytick.getRawAxis(OIConstants.fineControlAxis);
+            turningSpeed*=1.-DriveConstants.kFineControlSpeed*driverJoytick.getRawAxis(OIConstants.fineControlAxis);
+            //    Smooth driver inputs
+            smoothedXSpeed = smoothedXSpeed + (xSpeed - smoothedXSpeed) * .08;
+            smoothedYSpeed = smoothedYSpeed + (ySpeed - smoothedYSpeed) * .08;
+            smoothedTurningSpeed = smoothedTurningSpeed + (turningSpeed - smoothedTurningSpeed) * .08;
+            //    System.out.println("Raw Joystick Values");
+            //    System.out.println("X: " + String.format("%.3f", xSpeed) 
+            //                    + " Y: " + String.format("%.3f", ySpeed)
+            //                    + " R: " + String.format("%.3f", turningSpeed));
 
-        // if (driverJoytick.getRawButton(OIConstants.BALANCE_AUGMENTER)) {
-        //     double augment = Math.sin(Math.toRadians(pigeon.getPitch()-1));
-        //     //System.out.println(augment);
-        //     smoothedXSpeed+=augment*.036;
-        // }
-        xSpeed = smoothedXSpeed;
-        ySpeed = smoothedYSpeed;
-        turningSpeed = smoothedTurningSpeed;
+            // if (driverJoytick.getRawButton(OIConstants.BALANCE_AUGMENTER)) {
+            //     double augment = Math.sin(Math.toRadians(pigeon.getPitch()-1));
+            //     //System.out.println(augment);
+            //     smoothedXSpeed+=augment*.036;
+            // }
+            xSpeed = smoothedXSpeed;
+            ySpeed = smoothedYSpeed;
+            turningSpeed = smoothedTurningSpeed;
 
-        // 3. Make the driving smoother
-        xSpeed = xLimiter.calculate(xSpeed) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
-        ySpeed = yLimiter.calculate(ySpeed) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
-        turningSpeed = turningLimiter.calculate(turningSpeed)
+            // 3. Make the driving smoother
+            xSpeed = xLimiter.calculate(xSpeed) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
+            ySpeed = yLimiter.calculate(ySpeed) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
+            turningSpeed = turningLimiter.calculate(turningSpeed)
                 * DriveConstants.kTeleDriveMaxAngularSpeedRadiansPerSecond;
-        //System.out.println("Smoothing Applied");
-        //System.out.println("X: " + String.format("%.3f", xSpeed)
-        //                + " Y: " + String.format("%.3f", ySpeed)
-        //                + " R: " + String.format("%.3f", turningSpeed));
+            //System.out.println("Smoothing Applied");
+            //System.out.println("X: " + String.format("%.3f", xSpeed)
+            //                + " Y: " + String.format("%.3f", ySpeed)
+            //                + " R: " + String.format("%.3f", turningSpeed));
 
-        //System.out.println("=====================");
+            //System.out.println("=====================");
 
-        // 4. Construct desired chassis speeds
-        ChassisSpeeds chassisSpeeds;
-        if ( !driverJoytick.getRawButton(OIConstants.kDriverRobotOrientedButtonIdx)) {
-            // Relative to field
-            chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
-                    xSpeed, ySpeed, turningSpeed, swerveSubsystem.getRotation2d());
-        } else {
-            // Relative to robot
-            chassisSpeeds = new ChassisSpeeds(xSpeed, ySpeed, turningSpeed);
-        }
-        //System.out.println("Chassis Speeds");
-        //System.out.println("X: " + String.format("%.3f", xSpeed)
-        //                + " Y: " + String.format("%.3f", ySpeed)
-        //                + " R: " + String.format("%.3f", swerveSubsystem.getRotation2d()));
+            // 4. Construct desired chassis speeds
+            ChassisSpeeds chassisSpeeds;
+            if ( !driverJoytick.getRawButton(OIConstants.kDriverRobotOrientedButtonIdx)) {
+                // Relative to field
+                chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
+                        xSpeed, ySpeed, turningSpeed, swerveSubsystem.getRotation2d());
+            } else {
+                // Relative to robot
+                chassisSpeeds = new ChassisSpeeds(xSpeed, ySpeed, turningSpeed);
+            }
+            //System.out.println("Chassis Speeds");
+            //System.out.println("X: " + String.format("%.3f", xSpeed)
+            //                + " Y: " + String.format("%.3f", ySpeed)
+            //                + " R: " + String.format("%.3f", swerveSubsystem.getRotation2d()));
 
-        //System.out.println("Encoder: " + frontleftsteerencoder.getPosition());
+            //System.out.println("Encoder: " + frontleftsteerencoder.getPosition());
 
-        swerveSubsystem.drive(chassisSpeeds);
+            swerveSubsystem.drive(chassisSpeeds);
 
-        // 5. Convert chassis speeds to individual module states
-        //SwerveModuleState[] moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
-        /* this should be done in the SwerveSubsystem */
-       // SwerveModuleState[] moduleStates = swerveSubsystem.chassis2ModuleStates(chassisSpeeds);
+            // 5. Convert chassis speeds to individual module states
+            //SwerveModuleState[] moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
+            /* this should be done in the SwerveSubsystem */
+            // SwerveModuleState[] moduleStates = swerveSubsystem.chassis2ModuleStates(chassisSpeeds);
 
-        // 6. Output each module states to wheels
-        //swerveSubsystem.setModuleStates(moduleStates);
+            // 6. Output each module states to wheels
+            //swerveSubsystem.setModuleStates(moduleStates);
         
-        // steps 4-6 should be accomplished by the swerve subsystem via a method such as
-        // swerveSubsystem.driveit(xSpeed, ySpeed, turningSpeed, fieldoriented);
-        //}
+            // steps 4-6 should be accomplished by the swerve subsystem via a method such as
+            // swerveSubsystem.driveit(xSpeed, ySpeed, turningSpeed, fieldoriented);
+            //}
     
-        //swerveSubsystem.reportStatesToSmartDashbd(moduleStates);
+            //swerveSubsystem.reportStatesToSmartDashbd(moduleStates);
         }
     }
 
     Handler handler;
     @Override
     public void testInit() {
+        CommandScheduler.getInstance().cancelAll();
+        if (arm == null) arm = m_robotContainer.getArm();
+        arm.setBrakeMode();
+        (new ArmRun(arm, ArmConstants.kElbowPreFloow, ArmConstants.kWristPreFloor, 2)
+            .andThen(new ArmRun(arm, Constants.ArmConstants.kElbowFloor, Constants.ArmConstants.kWristFloor, .25))
+            .andThen(new InstantCommand(()-> arm.stopIt()))).schedule();
+        
         if (buttonbinding == true){
-            double fred = 1/0;
+            m_robotContainer.deconfigureButtonBindings();
         }
         // Cancels all running commands at the start of test mode.
-        CommandScheduler.getInstance().cancelAll();
+
         handler = m_robotContainer.getHandler();
         if (Constants.CLIMB_AVAILABLE){
             climber = m_robotContainer.getClimber();
