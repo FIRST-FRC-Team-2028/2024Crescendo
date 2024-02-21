@@ -36,6 +36,7 @@ import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.Amp;
 import frc.robot.commands.ArmRun;
+import frc.robot.commands.AutoShootAndMove;
 import frc.robot.commands.Climb;
 import frc.robot.commands.ElbowDown;
 //import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
@@ -116,6 +117,7 @@ public class RobotContainer {
                 m_chooser = new SendableChooser<>();
                 m_chooser.setDefaultOption("DoNothing", new Wait(1));
                 m_chooser.addOption("Travel Test", getAutonomousCommand());
+                m_chooser.addOption("Shoot And Move", new AutoShootAndMove(armSubsystem, swerveSubsystem, handlerSubsystem));
                 SmartDashboard.putData(m_chooser);
 
         }
@@ -224,9 +226,9 @@ public class RobotContainer {
         // driverJoytick Buttons
             if (swerveSubsystem!=null){
                 new JoystickButton(driverJoytick, OIConstants.kDriverResetGyroButtonIdx).
-                     onTrue(null); 
+                     onTrue(new WaitCommand(0)); 
                 new JoystickButton(driverJoytick, OIConstants.kDriverResetOdometryButtonIdx).
-                     onTrue(null);
+                     onTrue(new WaitCommand(0));
             }
          /*  new JoystickButton(driverJoytick, 5).
           whileTrue(routine.quasistatic(SysIdRoutine.Direction.kForward));
@@ -241,47 +243,47 @@ public class RobotContainer {
                         //onTrue(new GetAprilTag(camera));
         }*/
         new JoystickButton(driverJoytick, OIConstants.kElbowRearmButton).
-                onTrue(null);
+                onTrue(new WaitCommand(0));
         new JoystickButton(driverJoytick, Constants.OIConstants.kArmDuck).
-                onTrue(null);
+                onTrue(new WaitCommand(0));
 
         /*new JoystickButton(mechJoytick1, 3).
                 whileTrue(new WristUp(armSubsystem,.2));*/
         new JoystickButton(mechJoytick1, OIConstants.kArmAmp).
-                onTrue(null);
+                onTrue(new WaitCommand(0));
         new JoystickButton(mechJoytick1, OIConstants.kArmSubwoofer).
-                onTrue(null);
+                onTrue(new WaitCommand(0));
 
         
         new JoystickButton(mechJoytick2, OIConstants.kIntake).
-                whileTrue(null);
+                whileTrue(new WaitCommand(0));
         new JoystickButton(mechJoytick1, OIConstants.kElbowRearmButton).
-                onTrue(null);
+                onTrue(new WaitCommand(0));
         new JoystickButton(mechJoytick1, OIConstants.kArmFloor).
-                onTrue(null);
+                onTrue(new WaitCommand(0));
         /*new JoystickButton(mechJoytick, 3).
                  onTrue(new ArmRun(armSubsystem, 90, 0));*/
         new JoystickButton(mechJoytick2, Constants.OIConstants.kShootSequenceButton ).
-                onTrue(null);
+                onTrue(new WaitCommand(0));
         new JoystickButton(mechJoytick2, Constants.OIConstants.shootButton).
-                whileTrue(null);
+                whileTrue(new WaitCommand(0));
         new JoystickButton(mechJoytick1, Constants.OIConstants.kArmSource).
-                onTrue(null);
+                onTrue(new WaitCommand(0));
         
         new JoystickButton(mechJoytick2, OIConstants.kNudgeElbowUp).
-                onTrue(null);
+                onTrue(new WaitCommand(0));
         new JoystickButton(mechJoytick2, OIConstants.kNudgeElbowDown).
-                onTrue(null);
+                onTrue(new WaitCommand(0));
         new JoystickButton(mechJoytick2, OIConstants.kNudgeWristUp).
-                onTrue(null);
+                onTrue(new WaitCommand(0));
         new JoystickButton(mechJoytick2, OIConstants.kNudgeWristDown).
-                onTrue(null);
+                onTrue(new WaitCommand(0));
 
         if (Constants.CLIMB_AVAILABLE){
                 new JoystickButton(mechJoytick1, OIConstants.kClimberExtend).
-                        onTrue(null);
+                        onTrue(new WaitCommand(0));
                 new JoystickButton(mechJoytick1, OIConstants.kClimberRetract).
-                        onTrue(null);
+                        onTrue(new WaitCommand(0));
         }
      }
 

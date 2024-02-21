@@ -325,7 +325,6 @@ public class Robot extends TimedRobot {
             climber = m_robotContainer.getClimber();
         }
         arm = m_robotContainer.getArm();
-        arm.setCoastMode();
     }
 
     /** This function is called periodically during test mode. */
@@ -366,13 +365,13 @@ public class Robot extends TimedRobot {
             }
                 climber.getRoll();
                 if (new JoystickButton(mechJoytick1, OIConstants.kClimberExtend).getAsBoolean()) {
-                    climber.extend_left(.1);
+                    climber.extend_left(.5);
                     //System.out.println(String.format("Climber Position = %4.f" , m_robotContainer.getClimber().getPositionDriver()));
                     System.out.println(climber.getPositionDriver());
 
                 }
                 else if (new JoystickButton(mechJoytick1, OIConstants.kClimberRetract).getAsBoolean() ) {
-                    climber.extend_left(-.1);
+                    climber.extend_left(-.5);
                     //System.out.println(String.format("Climber Position = %.4f" , m_robotContainer.getClimber().getPositionDriver()));
                     System.out.println(climber.getPositionDriver());
 
@@ -381,13 +380,13 @@ public class Robot extends TimedRobot {
                     climber.stop_left();
                 }
              if (new JoystickButton(mechJoytick1, OIConstants.kElbowRearmButton).getAsBoolean()) {
-                    climber.extend_right(.1);
+                    climber.extend_right(.5);
                     //System.out.println(String.format("Climber Position = %4.f" , m_robotContainer.getClimber().getPositionDriver()));
                     System.out.println(climber.getPositionLeveler());
 
                 }
                 else if (new JoystickButton(mechJoytick2, OIConstants.kShootSequenceButton).getAsBoolean() ) {
-                    climber.extend_right(-.1);
+                    climber.extend_right(-.5);
                     //System.out.println(String.format("Climber Position = %.4f" , m_robotContainer.getClimber().getPositionDriver()));
                     System.out.println(climber.getPositionLeveler());
                     System.out.println("maddox");
