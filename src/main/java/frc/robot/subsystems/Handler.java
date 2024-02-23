@@ -164,7 +164,7 @@ Move note off of high speed wheels. Low Out, Wait, Stop
 */
   public void spit_Back() {
     low_out();
-    new WaitCommand(.25);
+    new WaitCommand(.5);
     stop();
   }
 
