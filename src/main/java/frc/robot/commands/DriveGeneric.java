@@ -86,6 +86,7 @@ public class DriveGeneric extends Command {
     double whereiam = PhotonUtils.getDistanceToPose(currentpose, startpose);
     double speed = controller.calculate(whereiam, dist);
     driver.driveit(speed*xdist/dist, speed*ydist/dist, 0, true);
+    System.out.println("whereiam= "+ whereiam);
 
     //SmartDashboard.putString("Error", controller.getPositionError() + " < " + tol);
     //SmartDashboard.putString("CurrentPose", currentpose.toString());

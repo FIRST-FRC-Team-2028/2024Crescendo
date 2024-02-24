@@ -38,6 +38,7 @@ import frc.robot.commands.Amp;
 import frc.robot.commands.ArmRun;
 import frc.robot.commands.AutoShootAndMove;
 import frc.robot.commands.Climb;
+import frc.robot.commands.DriveGeneric;
 import frc.robot.commands.ElbowDown;
 //import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.ElbowUp;
@@ -114,7 +115,7 @@ public class RobotContainer {
                 
                 //configureButtonBindings();       
 
-                m_chooser = new SendableChooser<>();
+                m_chooser = new SendableChooser<Command>();
                 m_chooser.setDefaultOption("DoNothing", new Wait(1));
                 //m_chooser.addOption("Travel Test", getAutonomousCommand());
                 //m_chooser.addOption("Shoot And Move", new AutoShootAndMove(armSubsystem, swerveSubsystem, handlerSubsystem));
@@ -133,6 +134,10 @@ public class RobotContainer {
 
         public final Climber getClimber(){
                 return climber;
+        }
+
+        public final SendableChooser getAutoChooser() {
+                return m_chooser;
         }
 
 
