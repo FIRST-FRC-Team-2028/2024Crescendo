@@ -333,12 +333,6 @@ public class Robot extends TimedRobot {
 
     public void testPeriodic() {
 
-
-        //handler.low_out(.4);
-
-
-
-
         if (new JoystickButton(mechJoytick2, OIConstants.kNudgeElbowUp).getAsBoolean()) {
             new InstantCommand(()->arm.elbowUpSlow());  
         } 
@@ -351,10 +345,10 @@ public class Robot extends TimedRobot {
 
         if (new JoystickButton(mechJoytick2,OIConstants.kNudgeWristDown).getAsBoolean()) {
             new InstantCommand(()->arm.moveWrist(-.1));  
-        }
-
-        if (new JoystickButton(mechJoytick2,OIConstants.kNudgeWristUp).getAsBoolean()) {
+        }else if (new JoystickButton(mechJoytick2,OIConstants.kNudgeWristUp).getAsBoolean()) {
             new InstantCommand(()->arm.moveWrist(.1));  
+        } else {
+            arm.moveWrist(0.);
         }
       /*   swerveSubsystem = m_robotContainer.getSwerveSS();
         SmartDashboard.putNumber("FLabs", swerveSubsystem.getModules()[0].getAbsoluteEncoderRad());
@@ -372,7 +366,7 @@ public class Robot extends TimedRobot {
             }else {
                 climber.enableSoftLimit();
             }
-                climber.getRoll();
+                //climber.getRoll();
                 if (new JoystickButton(mechJoytick1, OIConstants.kClimberExtend).getAsBoolean()) {
                     climber.extend_left(.5);
                     //System.out.println(String.format("Climber Position = %4.f" , m_robotContainer.getClimber().getPositionDriver()));
@@ -404,6 +398,18 @@ public class Robot extends TimedRobot {
                     climber.stop_right();
                 }
             
+            if (new JoystickButton(mechJoytick2, OIConstants.kArmSource).getAsBoolean()) {
+                climber.zeroSoftLimit();
+            }
+            
+        }
+        // handler 
+        if (new JoystickButton(mechJoytick2, OIConstants.shootButton).getAsBoolean()) {
+            new InstantCommand(()->handler.high_out());  
+        } else handler.stop(); 
+        if (new JoystickButton(mechJoytick2, OIConstants.kIntake).getAsBoolean()) {
+            new InstantCommand(()->handler.low_PickUp());  
+        } else handler.stop();
+
     }
-}
 }

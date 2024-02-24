@@ -128,7 +128,7 @@ public class Handler extends SubsystemBase {
   }
 
 
-
+  /** set high_side motors to high speed out */
   public void high_out() {
     high_side.set(TalonSRXControlMode.PercentOutput, Constants.HandlerConstants.kHighOutSpeed);
   }
@@ -138,23 +138,28 @@ public class Handler extends SubsystemBase {
     System.out.println(low_side.getStatorCurrent());
   }*/
 
+  /** set low_side motor to pickup speed */
   public void low_PickUp() {
     low_side.set(TalonSRXControlMode.PercentOutput, Constants.HandlerConstants.kLowPickUpSpeed);
     
   }
 
+  /* set low_side mootor to high speed out */
   public void low_ToHigh() {
     low_side.set(TalonSRXControlMode.PercentOutput, Constants.HandlerConstants.kLowToHighSpeed);
   }
 
+  /** set low_side motor low-speed out */
   public void low_out() {
     low_side.set(TalonSRXControlMode.PercentOutput, Constants.HandlerConstants.kLowOutSpeed);
   }
 
+  /** set high_side motor to amp-speed shoot */
   public void shootInAmpHigh() {
     high_side.set(TalonSRXControlMode.PercentOutput, HandlerConstants.kHighAmpSpeed);
   }
 
+  /** set low_side motor to out amp_speed */
   public void shootInAmpLow() {
     low_side.set(TalonSRXControlMode.PercentOutput, HandlerConstants.kLowAmpSpeed);
   }
@@ -168,6 +173,7 @@ Move note off of high speed wheels. Low Out, Wait, Stop
     stop();
   }
 
+  /** stop both low_side and high_side motors */
   public void stop() {
     high_side.set(TalonSRXControlMode.PercentOutput, 0);
     low_side.set(TalonSRXControlMode.PercentOutput, 0);
