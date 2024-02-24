@@ -143,6 +143,7 @@ public class Drivetrain extends SubsystemBase {
           }
       }
 
+  /** If false it wouldn't spew the drive encoder values onto smartdashboard */
   static final boolean SPEWDRIVE = false;
   @Override
   public void periodic() {

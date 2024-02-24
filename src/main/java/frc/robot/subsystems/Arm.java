@@ -119,34 +119,40 @@ public class Arm extends SubsystemBase {
     return Constants.ArmConstants.RelMinW + Constants.ArmConstants.RatioW * (absval - Constants.ArmConstants.AbsMinW);
   }
 
+  /** Sets the arm motors to coast */
   public void setCoastMode() {
     elbow.setIdleMode(IdleMode.kCoast);
     elbow_follower.setIdleMode(IdleMode.kCoast);
     wrist.setIdleMode(IdleMode.kCoast);
   }
-
+  
+  /** Sets the arm motors to brake */
   public void setBrakeMode() {
     elbow.setIdleMode(IdleMode.kBrake);
     elbow_follower.setIdleMode(IdleMode.kBrake);
     wrist.setIdleMode(IdleMode.kBrake);
   }
 
-  /** Elbow up open loop control */
+ 
+  /** Elbow up open loop control higher speed */
   public void elbowUp() {
    if(armSafety)elbow.set(.7);
 
     //SmartDashboard.putNumber("Encoder test", elbow_encoder.getPosition());
     //System.out.println("Insdie elbowup"); 
   }
-  /** Elbow down open loop control */
+
+  /** Elbow down open loop control higher speed */
   public void elbowDown() {
     if(armSafety)elbow.set(-.7);
   }
-  /** Elbow down open loop control */
+
+  /** Elbow down open loop control lower speed */
   public void elbowDownSlow() {
     if(armSafety)elbow.set(-.2);
   }
-  /** Elbow up open loop control */
+  
+  /** Elbow up open loop control  lower speed*/
   public void elbowUpSlow() {
     if(armSafety)elbow.set(.2);
   }
