@@ -141,8 +141,10 @@ public class Drivetrain extends SubsystemBase {
           }
       }*/
 
+  static final boolean SPEWDRIVE = false;
   @Override
   public void periodic() {
+   if(SPEWDRIVE) {
     for (SwerveModule module : modules) {
       SmartDashboard.putNumber(
           module.getName() + "RTurn",
@@ -159,8 +161,9 @@ public class Drivetrain extends SubsystemBase {
           module.getName() + "AMagOff",
           module.getAbsTurningEncoderOffset().getDegrees());
     }
+  }
 
-    SmartDashboard.putNumber("GyroAngle", m_gyro.getRotation2d().getDegrees());
+    SmartDashboard.putNumber("Heading", m_gyro.getRotation2d().getDegrees());
   }
 
 

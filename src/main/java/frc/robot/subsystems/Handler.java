@@ -94,8 +94,8 @@ public class Handler extends SubsystemBase {
                                               (int)(notesensor.green*255), 
                                               (int)(notesensor.blue *255), george);
       double diffHue = (george[0] - Constants.ColorConstants.NoteHue);
-      SmartDashboard.putNumber("Hue", george[0]);
-      SmartDashboard.putBoolean("DiffHue", diffHue<closeHue);
+      //SmartDashboard.putNumber("Hue", george[0]);
+      //SmartDashboard.putBoolean("DiffHue", diffHue<closeHue);
       if ( diffHue < closeHue)return true;
 
       return false;
@@ -171,7 +171,7 @@ Move note off of high speed wheels. Low Out, Wait, Stop
   public void stop() {
     high_side.set(TalonSRXControlMode.PercentOutput, 0);
     low_side.set(TalonSRXControlMode.PercentOutput, 0);
-     System.out.println("Works LowStop");
+    // System.out.println("Works LowStop");
   }
 
   /**ShootIt command

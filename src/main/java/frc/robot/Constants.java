@@ -232,14 +232,14 @@ public final class Constants {
       public static final double kElbowSpeaker = 42;
       public static final double kElbowAmp = 64; //80;
       public static final double kElbowPreFloow = 20;
-      public static final double kElbowFloor = -5;
+      public static final double kElbowFloor = -9;  //-5;
       //Wrist Positions (in degrees from perpendicular to arm)
       public static final double kWristSource = 93;
       public static final double kWristGround = 0;
       public static final double kWristSpeaker = 19 ;  //22;
       public static final double kWristAmp = 24;  //41;
       public static final double kWristPreFloor = 30;
-      public static final double kWristFloor = 68;
+      public static final double kWristFloor = 56;  //68;
       public static final double kRetract = 85;
       // sweet spot where, when disabled, the arm and handler to not sag
       public static final double elbowSweetSpot = 77.;  
@@ -262,14 +262,14 @@ public final class Constants {
       //Encoders
       public static final int ABSENCODERPORT = 0;
       public static final int kAbsoluteEncoder = 0;
-      public static final double elbowEncoderFactor = 90./(80.);  //TODO redo calibration
+      public static final double elbowEncoderFactor = 90./(80.); 
       public static final int RelMin = 0;  //  upright
       public static final int AbsMin = 400;  // parallel to floor
       public static final int RelMax = 90;  // upright
       public static final int AbsMax = 1080; // upright
       public static final double Ratio = 90./(1080.-400.); //(RelMax-RelMin)/(AbsMax-AbsMin);
       public static final int kAbsoluteEncoderW = 1;
-      public static final double wristEncoderFactor = 64.7/16.5;  //TODO redo calibration
+      public static final double wristEncoderFactor = 64.7/16.5;  
       public static final int RelMinW = -32;     //SUBJECT TO CHEANGE
       public static final int AbsMinW = 1345;   //SUBJECT TO CHEANGE
       public static final int RelMaxW = 32;     //SUBJECT TO CHEANGE

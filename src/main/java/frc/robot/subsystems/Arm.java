@@ -184,14 +184,14 @@ public class Arm extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("AbsWrist", wristAbs.getAverageValue());
+    //SmartDashboard.putNumber("AbsWrist", wristAbs.getAverageValue());
     double currentCurrent = getElbowCurrent();
-    SmartDashboard.putNumber("Current", currentCurrent);
+    //SmartDashboard.putNumber("Current", currentCurrent);
     avgCurrent += currentCurrent/5. - currentHist[currP]/5.;
     currentHist[currP] = currentCurrent;
     currP = (currP+1)%5;
     SmartDashboard.putNumber("ElbowRelVal", elbow_encoder.getPosition());
-    SmartDashboard.putNumber("ElbowAbsVal", elbowAbs.getAverageValue());
+    //SmartDashboard.putNumber("ElbowAbsVal", elbowAbs.getAverageValue());
     SmartDashboard.putNumber("WristRelVal", wrist_encoder.getPosition());
     //SmartDashboard.putNumber("WristAbsVal", );
     if(avgCurrent>Constants.ArmConstants.ElbowCurrentLimit) {
@@ -199,18 +199,18 @@ public class Arm extends SubsystemBase {
       //System.out.println(" => avg: "+avgCurrent);
       armSafety = false;
     }
-    SmartDashboard.putBoolean("Elbow Warning", armSafety);
+    //SmartDashboard.putBoolean("Elbow Warning", armSafety);
 
 
     double currentCurrentw = getElbowCurrentw();
-    SmartDashboard.putNumber("WCurrent", currentCurrentw);
+    //SmartDashboard.putNumber("WCurrent", currentCurrentw);
     avgCurrentw += currentCurrentw/5. - currentHistw[currPw]/5.;
     currentHistw[currPw] = currentCurrentw;
     currPw = (currPw+1)%5;
-    SmartDashboard.putNumber("WRelVal", wrist_encoder.getPosition());
+    //SmartDashboard.putNumber("WRelVal", wrist_encoder.getPosition());
     //SmartDashboard.putNumber("AbsVal", boreHolew.getAverageValue());
     if(avgCurrentw>Constants.ArmConstants.ElbowCurrentLimit) armSafetyw = false;
-    SmartDashboard.putBoolean("Wrist Warning", armSafetyw);
+    //SmartDashboard.putBoolean("Wrist Warning", armSafetyw);
 
     //System.out.println("TEST");
     // This method will be called once per scheduler run

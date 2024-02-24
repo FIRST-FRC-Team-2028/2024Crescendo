@@ -398,7 +398,6 @@ public class Robot extends TimedRobot {
                     climber.extend_right(-.5);
                     //System.out.println(String.format("Climber Position = %.4f" , m_robotContainer.getClimber().getPositionDriver()));
                     System.out.println(climber.getPositionLeveler());
-                    System.out.println("maddox");
 
                 }
                 else{
