@@ -116,8 +116,8 @@ public class RobotContainer {
 
                 m_chooser = new SendableChooser<>();
                 m_chooser.setDefaultOption("DoNothing", new Wait(1));
-                m_chooser.addOption("Travel Test", getAutonomousCommand());
-                m_chooser.addOption("Shoot And Move", new AutoShootAndMove(armSubsystem, swerveSubsystem, handlerSubsystem));
+                //m_chooser.addOption("Travel Test", getAutonomousCommand());
+                //m_chooser.addOption("Shoot And Move", new AutoShootAndMove(armSubsystem, swerveSubsystem, handlerSubsystem));
                 SmartDashboard.putData(m_chooser);
 
         }
@@ -323,12 +323,12 @@ public class RobotContainer {
                    new Pose2d(0, 0, Rotation2d.fromDegrees(0)),
             // Pass through these two interior waypoints, making an 's' curve path
                         List.of(//new Translation2d(1, 0),
-                                new Translation2d(1, 0),
-                                new Translation2d(2, 0)
+                                new Translation2d(1, 0)
+                                //,new Translation2d(2, 0)
             //          ,  new Translation2d(1, 0)
                          ),
             // End 3 meters straight ahead of where we started, facing forward
-                        new Pose2d(3, 0, Rotation2d.fromDegrees(0)), //90
+                        new Pose2d(2., 0, Rotation2d.fromDegrees(0)), //90
                                 trajectoryConfig);
 
                 Trajectory LeftHalfMeter =
@@ -401,7 +401,7 @@ public class RobotContainer {
            //     swerveSubsystem);
 
                         final SwerveControllerCommand swerveControllerCommand =
-                        new SwerveControllerCommand( exampleTrajectory,
+                        new SwerveControllerCommand( TwoMeterDrive,
                                 swerveSubsystem::getPose,
                                 Constants.DriveConstants.kDriveKinematics,
                                 xController,
