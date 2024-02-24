@@ -328,7 +328,7 @@ public class RobotContainer {
             //          ,  new Translation2d(1, 0)
                          ),
             // End 3 meters straight ahead of where we started, facing forward
-                        new Pose2d(0, 0, Rotation2d.fromDegrees(0)), //90
+                        new Pose2d(3, 0, Rotation2d.fromDegrees(0)), //90
                                 trajectoryConfig);
 
                 Trajectory LeftHalfMeter =

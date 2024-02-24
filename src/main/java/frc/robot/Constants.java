@@ -383,25 +383,18 @@ public final class Constants {
         public static final int kElbowRearmButton             = 8; // in test it moves the right climber up
 
         //Mech controller buttons right region
-        public static final int kShootSequenceButton = 1;          // in test it moves the right climber down
-        public static final int kNudgeElbowUp = 3;
-        public static final int kNudgeElbowDown = 2;
-        public static final int kIntake = 4;
-        public static final int shootButton = 5;
-        public static final int kNudgeWristUp = 6;
-        public static final int kNudgeWristDown = 7;
+        public static final int kShootSequenceButton          = 1;          // in test it moves the right climber down
+        public static final int kNudgeElbowUp                 = 3;
+        public static final int kNudgeElbowDown               = 2;
+        public static final int kIntake                       = 4;
+        public static final int shootButton                   = 5;
+        public static final int kNudgeWristUp                 = 6;
+        public static final int kNudgeWristDown               = 7;
 
         
         public static final double kDeadband = 0.075;
         //public static final int kRetract = 1;
         public static final int kSwitch = 12;
-
-
-
-
-        
-
-      
 
     }
 
