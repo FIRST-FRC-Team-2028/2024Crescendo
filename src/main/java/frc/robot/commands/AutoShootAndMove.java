@@ -15,7 +15,7 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Handler;
 
 public class AutoShootAndMove extends SequentialCommandGroup {
-  /** Creates a new AutoShootAndMove. */
+  /** Shoots into the speaker then drives two meters in the x direction */
   public AutoShootAndMove(Arm arm, Drivetrain drive, Handler handler) {
 
     addCommands(Commands.race(

@@ -103,6 +103,7 @@ public class Climber extends SubsystemBase {
     climberRight.stopMotor();
   }
 
+  /** Sets the encoders to zero */
   public void zeroSoftLimit() {
     encoderLeft.setPosition(0.); 
     encoderRight.setPosition(0.);
