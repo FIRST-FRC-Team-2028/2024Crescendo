@@ -27,21 +27,21 @@ public class InHandler extends Command {
  //   handler.iHaveIt();                                           COLOR SENSOR STUFF
  // } else handler.iDontHaveIt();                                  COLOR SENSOR STUFF
   
-     if (handler.useSensor()) {
-      handler.stop();
-    }
-    else {
+     //if (handler.useSensor()) {
+      //handler.stop();
+    //}
+    //else {
       handler.low_PickUp();
-    }
+    //}
 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (handler.useSensor()) {
+    /*if (handler.useSensor()) {
       handler.iHaveIt(); 
-    }else {handler.iDontHaveIt();}
+    }else {handler.iDontHaveIt();}*/
 
   // if (/*Color sensor reads if there is a note*/) {              COLOR SENSOR STUFF
   //   handler.iHaveIt();                                           COLOR SENSOR STUFF
@@ -61,5 +61,6 @@ public class InHandler extends Command {
     //COLOR SENSOR STUFF GOES HERE TO MAKE IT STOP
     //NOT SETUP FOR A STOP BUTTON
     return handler.doIHaveIt();
+    
   }
 }

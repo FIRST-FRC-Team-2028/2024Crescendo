@@ -187,7 +187,7 @@ public class RobotContainer {
         new JoystickButton(mechJoytick1, OIConstants.kElbowRearmButton).
                 onTrue(Commands.runOnce( armSubsystem::rearmArm, armSubsystem));
         new JoystickButton(mechJoytick1, OIConstants.kArmFloor).
-                onTrue(new ArmRun(armSubsystem, ArmConstants.kElbowPreFloow, ArmConstants.kWristPreFloor, 2)
+                onTrue(new ArmRun(armSubsystem, ArmConstants.kElbowPreFloow, ArmConstants.kWristPreFloor, 1)
                 .andThen(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowFloor, Constants.ArmConstants.kWristFloor, .25)));
         /*new JoystickButton(mechJoytick, 3).
                  onTrue(new ArmRun(armSubsystem, 90, 0));*/

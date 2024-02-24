@@ -43,6 +43,7 @@ public class Speaker extends Command {
     handler.stop();
     timer.stop();
     timer.reset();
+    handler.iDontHaveIt();
   }
 
   // Returns true when the command should end.
