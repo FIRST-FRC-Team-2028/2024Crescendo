@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -141,9 +142,10 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         //lights.setSpeed(0.93);
-        arm.setBrakeMode();
-        m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+        SendableChooser<Command> slector = m_robotContainer.getAutoChooser();
+        m_autonomousCommand = slector.getSelected();
         if (arm == null) arm = m_robotContainer.getArm();
+        arm.setBrakeMode();
         (new TravelPosition(arm)).schedule();// MRG thinks this will never run. Should it? Will it impede autonomous commands?
         //pigeon.setYaw(180);  Do we need to initialize the gyro?
         // schedule the autonomous command (example)
@@ -334,31 +336,25 @@ public class Robot extends TimedRobot {
     public void testPeriodic() {
 
         if (new JoystickButton(mechJoytick2, OIConstants.kNudgeElbowUp).getAsBoolean()) {
-            new InstantCommand(()->arm.elbowUpSlow());  
+            arm.elbowUpSlow();  
         } 
         else if (new JoystickButton(mechJoytick2, OIConstants.kNudgeElbowDown).getAsBoolean() ) {
-            new InstantCommand(()-> arm.elbowDownSlow());  
+            arm.elbowDownSlow();  
         }
         else {
             arm.stopElbow();
+            System.out.println("Stopped Elbow");
         }
 
         if (new JoystickButton(mechJoytick2,OIConstants.kNudgeWristDown).getAsBoolean()) {
-            new InstantCommand(()->arm.moveWrist(-.1));  
+            arm.moveWrist(-.1);  
         }else if (new JoystickButton(mechJoytick2,OIConstants.kNudgeWristUp).getAsBoolean()) {
-            new InstantCommand(()->arm.moveWrist(.1));  
+            arm.moveWrist(.1);  
         } else {
             arm.moveWrist(0.);
+            System.out.println("Stopped Wrist");
         }
-      /*   swerveSubsystem = m_robotContainer.getSwerveSS();
-        SmartDashboard.putNumber("FLabs", swerveSubsystem.getModules()[0].getAbsoluteEncoderRad());
-        SmartDashboard.putNumber("FL Turn", swerveSubsystem.getModules()[0].getTurningPosition());
-        SmartDashboard.putNumber("FRabs", swerveSubsystem.getModules()[1].getAbsoluteEncoderRa d());
-        SmartDashboard.putNumber("FR Turn", swerveSubsystem.getModules()[1].getTurningPosition());
-        SmartDashboard.putNumber("BRabs", swerveSubsystem.getModules()[2].getAbsoluteEncoderRad());
-        SmartDashboard.putNumber("BR Turn", swerveSubsystem.getModules()[2].getTurningPosition());
-        SmartDashboard.putNumber("BLabs", swerveSubsystem.getModules()[3].getAbsoluteEncoderRad());
-        SmartDashboard.putNumber("BL Turn", swerveSubsystem.getModules()[3].getTurningPosition()); */
+      
         if (Constants.CLIMB_AVAILABLE){
 
             if (new JoystickButton(mechJoytick2, OIConstants.kSwitch).getAsBoolean()) {
@@ -405,10 +401,10 @@ public class Robot extends TimedRobot {
         }
         // handler 
         if (new JoystickButton(mechJoytick2, OIConstants.shootButton).getAsBoolean()) {
-            new InstantCommand(()->handler.high_out());  
+            handler.high_out();  
         } else handler.stop(); 
         if (new JoystickButton(mechJoytick2, OIConstants.kIntake).getAsBoolean()) {
-            new InstantCommand(()->handler.low_PickUp());  
+            handler.low_PickUp();  
         } else handler.stop();
 
     }

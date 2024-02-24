@@ -31,6 +31,7 @@ public class InHandler extends Command {
       handler.stop();
     }
     else {
+      handler.iDontHaveIt();
       handler.low_PickUp();
     }
 
@@ -41,7 +42,7 @@ public class InHandler extends Command {
   public void execute() {
     if (handler.useSensor()) {
       handler.iHaveIt(); 
-    }else {handler.iDontHaveIt();}
+    }
 
   // if (/*Color sensor reads if there is a note*/) {              COLOR SENSOR STUFF
   //   handler.iHaveIt();                                           COLOR SENSOR STUFF

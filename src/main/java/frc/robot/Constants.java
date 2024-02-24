@@ -160,8 +160,8 @@ public final class Constants {
         public static final boolean kBackRightDriveAbsoluteEncoderReversed  = true;
 
 // Speed Limits
-        public static final double kPhysicalMaxSpeedMetersPerSecond = 1.5;
-        public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = 2 * 2 * Math.PI;
+        public static final double kPhysicalMaxSpeedMetersPerSecond = 3;
+        public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = 3 * 2 * Math.PI;
 
         public static final double kTeleDriveMaxSpeedMetersPerSecond = kPhysicalMaxSpeedMetersPerSecond /1.5;
         public static final double kTeleDriveMaxAngularSpeedRadiansPerSecond = 
@@ -245,11 +245,11 @@ public final class Constants {
       public static final double elbowSweetSpot = 77.;  
       public static final double wristSweetSpot = 6.4;
       // arm and wrist position to drive under stage
-      public static final double elbowDuck = 15.;  
-      public static final double wristDuck = 75;
+      public static final double elbowDuck = 68.;  
+      public static final double wristDuck = -1;
       // arm and wrist position to drive under stage
-      public static final double elbowTravel = 68;  //57.;  
-      public static final double wristTravel = -1;  //0;
+      public static final double elbowTravel = 15;  //57.;  
+      public static final double wristTravel = 50;  //0;
 
       //Tolerances
       public static final double elbowTolerance = .1;
@@ -310,9 +310,9 @@ public final class Constants {
 
     public static final class ClimberConstants {
         public static final double ExtendSpeed = 0.5;
-        public static final double ExtendPosition = 8.9;
+        public static final double ExtendPosition = 9.2;
         public static final double RetractPosition = 0;
-        public static final float extendLimit = 9f;
+        public static final float extendLimit = 9.2f;
         public static final float retractLimit = 0.f;
         public static final double encoderConversionFactor = 4.0625/(522-398);
     }
