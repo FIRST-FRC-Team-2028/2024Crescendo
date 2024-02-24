@@ -34,11 +34,11 @@ public class AprilCamera extends SubsystemBase {
   double distanceToTarget;
   Transform3d robotToCam;
   PhotonPoseEstimator photonPoseEstimator;
+  private Drivetrain drivetrain;
   
   //private PhotonPipelineResult result;
   /** Creates a new AprilTags. */
   public AprilCamera() {
-    camera = new PhotonCamera("Microsoft_LifeCam_HD-3000");
 
     aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
      //Cam mounted facing forward, 0.3302 meters in front of the center, 0 meters left/right of center, 
@@ -58,6 +58,9 @@ public class AprilCamera extends SubsystemBase {
   }
   public void print() {
     System.out.println(getRobotPosition());
+  }
+  public PhotonPoseEstimator camPose() {
+    return photonPoseEstimator;
   }
 
   //public void showYaw() {

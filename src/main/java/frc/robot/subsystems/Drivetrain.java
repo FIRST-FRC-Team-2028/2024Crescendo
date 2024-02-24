@@ -3,8 +3,16 @@
 package frc.robot.subsystems;
 
 
-import com.ctre.phoenix6.hardware.Pigeon2;
+import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
 
+import com.ctre.phoenix6.hardware.Pigeon2;
+import com.revrobotics.RelativeEncoder;
+
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 // auto imports
 //import com.pathplanner.lib.auto.AutoBuilder;
 //import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
@@ -12,11 +20,13 @@ import com.ctre.phoenix6.hardware.Pigeon2;
 //import com.pathplanner.lib.util.ReplanningConfig;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Voltage;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -35,8 +45,12 @@ public class Drivetrain extends SubsystemBase {
   boolean iShouldStop;
   static double kMaxSpeed = Constants.DriveConstants.kMaxTranslationalVelocity;
   static double kMaxAngularSpeed = Constants.DriveConstants.kMaxRotationalVelocity;
+  private PhotonCamera camera = new PhotonCamera("Microsoft_LifeCam_HD-3000");
+   AprilTagFieldLayout aprilTagFieldLayout;
+   AprilCamera aprilSubsystem;
 
   private final SwerveDriveKinematics m_kinematics = DriveConstants.kDriveKinematics;
+
 
   private final SwerveModule m_frontLeft =
       new SwerveModule(
@@ -67,6 +81,7 @@ public class Drivetrain extends SubsystemBase {
 
   private final Pigeon2 m_gyro = new Pigeon2(0);
 
+  
 
   private final SwerveDriveOdometry m_odometry =
       new SwerveDriveOdometry(
@@ -92,6 +107,39 @@ public class Drivetrain extends SubsystemBase {
   public void resetGyro() {
     m_gyro.reset();
   }
+  
+  /*private final SwerveDrivePoseEstimator m_poseEstimator =
+    new SwerveDrivePoseEstimator(
+        m_kinematics,
+        m_gyro.getRotation2d(),
+        new SwerveModulePosition[] {
+          m_frontLeft.getPosition(),
+          m_frontRight.getPosition(),
+          m_backLeft.getPosition(),                                                                 CM
+          m_backRight.getPosition()
+         },
+        new Pose2d(),
+        VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5)),
+        VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30)));
+
+    public void update(double leftDist, double rightDist) {
+      m_poseEstimator.update(m_gyro.getRotation2d(),
+                            new SwerveModulePosition[] {                                  CM
+                              m_frontLeft.getPosition(),
+                              m_frontRight.getPosition(),
+                              m_backLeft.getPosition(),
+                              m_backRight.getPosition()
+          });
+                                                                                                  CM
+      var res = camera.getLatestResult();
+      if (res.hasTargets()) {
+        var imageCaptureTime = res.getTimestampSeconds();
+              var camToTargetTrans = res.getBestTarget().getBestCameraToTarget();
+              var camPose = aprilTagFieldLayout.getTagPose(4).transformBy(camToTargetTrans.inverse());
+              m_poseEstimator.addVisionMeasurement(
+                      aprilSubsystem.camPose().toPose2d(), imageCaptureTime);
+          }
+      }*/
 
   @Override
   public void periodic() {
@@ -114,6 +162,8 @@ public class Drivetrain extends SubsystemBase {
 
     SmartDashboard.putNumber("GyroAngle", m_gyro.getRotation2d().getDegrees());
   }
+
+
 
   /**
    * @param chassisSpeeds x, y, and theta speeds
@@ -147,6 +197,8 @@ public class Drivetrain extends SubsystemBase {
       module.zeroAbsTurningEncoderOffset();
     }
   } */
+
+
 
   /**
    * @return The heading of the robot
