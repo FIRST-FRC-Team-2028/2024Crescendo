@@ -229,15 +229,15 @@ public final class Constants {
       //Elbow Position  (in degrees up from parallel to the floor)
       public static final double kElbowGround = 10;
       public static final double kElbowSource = 52;
-      public static final double kElbowSpeaker = 43;
-      public static final double kElbowAmp = 80;
+      public static final double kElbowSpeaker = 42;
+      public static final double kElbowAmp = 64; //80;
       public static final double kElbowPreFloow = 20;
       public static final double kElbowFloor = -5;
       //Wrist Positions (in degrees from perpendicular to arm)
       public static final double kWristSource = 93;
       public static final double kWristGround = 0;
-      public static final double kWristSpeaker = 22;
-      public static final double kWristAmp = 41;
+      public static final double kWristSpeaker = 19 ;  //22;
+      public static final double kWristAmp = 24;  //41;
       public static final double kWristPreFloor = 30;
       public static final double kWristFloor = 68;
       public static final double kRetract = 85;
@@ -248,8 +248,8 @@ public final class Constants {
       public static final double elbowDuck = 15.;  
       public static final double wristDuck = 75;
       // arm and wrist position to drive under stage
-      public static final double elbowTravel = 57.;  
-      public static final double wristTravel = 0;
+      public static final double elbowTravel = 68;  //57.;  
+      public static final double wristTravel = -1;  //0;
 
       //Tolerances
       public static final double elbowTolerance = .1;
@@ -300,11 +300,11 @@ public final class Constants {
       public static final double kLowPickUpSpeed = .5;
       public static final double kLowToHighSpeed = 1;
       public static final double kHighOutSpeed = 1;
-      public static final double kLowOutSpeed = -.5;
+      public static final double kLowOutSpeed = -.6;
       public static final double HighSpinTime = 1.5;
       public static final double TotalShootTime = 2.5;
       public static final double kHighAmpSpeed = 0.5;
-    public static final double kLowAmpSpeed = .5;
+      public static final double kLowAmpSpeed = .5;
       
     }
 

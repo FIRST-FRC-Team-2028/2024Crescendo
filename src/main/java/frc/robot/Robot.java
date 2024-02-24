@@ -311,6 +311,7 @@ public class Robot extends TimedRobot {
         CommandScheduler.getInstance().cancelAll();
         if (arm == null) arm = m_robotContainer.getArm();
         arm.setBrakeMode();
+        // immediately move the arm to the floor and end the PID control
         (new ArmRun(arm, ArmConstants.kElbowPreFloow, ArmConstants.kWristPreFloor, 2)
             .andThen(new ArmRun(arm, Constants.ArmConstants.kElbowFloor, Constants.ArmConstants.kWristFloor, .25))
             .andThen(new InstantCommand(()-> arm.stopIt()))).schedule();
@@ -346,6 +347,14 @@ public class Robot extends TimedRobot {
         }
         else {
             arm.stopElbow();
+        }
+
+        if (new JoystickButton(mechJoytick2,OIConstants.kNudgeWristDown).getAsBoolean()) {
+            new InstantCommand(()->arm.moveWrist(-.1));  
+        }
+
+        if (new JoystickButton(mechJoytick2,OIConstants.kNudgeWristUp).getAsBoolean()) {
+            new InstantCommand(()->arm.moveWrist(.1));  
         }
       /*   swerveSubsystem = m_robotContainer.getSwerveSS();
         SmartDashboard.putNumber("FLabs", swerveSubsystem.getModules()[0].getAbsoluteEncoderRad());
