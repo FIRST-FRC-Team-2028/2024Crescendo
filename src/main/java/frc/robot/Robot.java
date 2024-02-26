@@ -311,18 +311,17 @@ public class Robot extends TimedRobot {
     @Override
     public void testInit() {
         CommandScheduler.getInstance().cancelAll();
-        if (arm == null) arm = m_robotContainer.getArm();
-        arm.setBrakeMode();
-        // immediately move the arm to the floor and end the PID control
-        (new ArmRun(arm, ArmConstants.kElbowPreFloow, ArmConstants.kWristPreFloor, 2)
-            .andThen(new ArmRun(arm, Constants.ArmConstants.kElbowFloor, Constants.ArmConstants.kWristFloor, .25))
-            .andThen(new InstantCommand(()-> arm.stopIt()))).schedule();
-        
-        if (buttonbinding == true){
-            CommandScheduler.getInstance().getActiveButtonLoop().clear();   
-              //m_robotcontainer.deconfigureButtonBindings();
-        }
         // Cancels all running commands at the start of test mode.
+        CommandScheduler.getInstance().getActiveButtonLoop().clear();
+        // Gets rid of all button bindings
+        
+        //if (arm == null) arm = m_robotContainer.getArm();
+        //arm.setBrakeMode();
+        // immediately move the arm to the floor and end the PID control
+        /*(new ArmRun(arm, ArmConstants.kElbowPreFloow, ArmConstants.kWristPreFloor, 2)
+            .andThen(new ArmRun(arm, Constants.ArmConstants.kElbowFloor, Constants.ArmConstants.kWristFloor, .25))
+            .andThen(new InstantCommand(()-> arm.stopIt()))).schedule();*/
+    
 
         handler = m_robotContainer.getHandler();
         if (Constants.CLIMB_AVAILABLE){
