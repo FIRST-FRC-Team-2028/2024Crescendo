@@ -36,6 +36,7 @@ import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.Amp;
 import frc.robot.commands.ArmRun;
+import frc.robot.commands.AutoShoot;
 import frc.robot.commands.AutoShootAndMove;
 import frc.robot.commands.Climb;
 import frc.robot.commands.DriveGeneric;
@@ -117,8 +118,13 @@ public class RobotContainer {
 
                 m_chooser = new SendableChooser<Command>();
                 m_chooser.setDefaultOption("DoNothing", new Wait(1));
-                //m_chooser.addOption("Travel Test", getAutonomousCommand());
-                //m_chooser.addOption("Shoot And Move", new AutoShootAndMove(armSubsystem, swerveSubsystem, handlerSubsystem));
+                m_chooser.addOption("Travel Test", getAutonomousCommand());
+                m_chooser.addOption("Shoot And Move Center", new AutoShootAndMove(armSubsystem, swerveSubsystem, handlerSubsystem));
+                m_chooser.addOption("Auto Shoot", new AutoShoot(armSubsystem, handlerSubsystem));
+                m_chooser.addOption("Shoot and Move Right", new InstantCommand(() -> gyro.setYaw(-60))
+                        .andThen(new AutoShootAndMove(armSubsystem, swerveSubsystem, handlerSubsystem)));
+                m_chooser.addOption("Shoot and Move Left", new InstantCommand(() -> gyro.setYaw(60))
+                        .andThen(new AutoShootAndMove(armSubsystem, swerveSubsystem, handlerSubsystem)));
                 SmartDashboard.putData(m_chooser);
                 
 
@@ -176,6 +182,8 @@ public class RobotContainer {
 
         /*new JoystickButton(mechJoytick1, 3).
                 whileTrue(new WristUp(armSubsystem,.2));*/
+        new JoystickButton(mechJoytick1, OIConstants.kArmTravel).
+                onTrue(new TravelPosition(armSubsystem));
         new JoystickButton(mechJoytick1, OIConstants.kArmAmp).
                 onTrue(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowAmp, ArmConstants.kWristAmp, .25)
                 );
@@ -192,7 +200,7 @@ public class RobotContainer {
         new JoystickButton(mechJoytick1, OIConstants.kElbowRearmButton).
                 onTrue(Commands.runOnce( armSubsystem::rearmArm, armSubsystem));
         new JoystickButton(mechJoytick1, OIConstants.kArmFloor).
-                onTrue(new ArmRun(armSubsystem, ArmConstants.kElbowPreFloow, ArmConstants.kWristPreFloor, 1)
+                onTrue(new ArmRun(armSubsystem, ArmConstants.kElbowPreFloow, ArmConstants.kWristPreFloor, 0.5)
                 .andThen(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowFloor, Constants.ArmConstants.kWristFloor, .25)));
         /*new JoystickButton(mechJoytick, 3).
                  onTrue(new ArmRun(armSubsystem, 90, 0));*/

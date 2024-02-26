@@ -228,16 +228,18 @@ public final class Constants {
 
       //Elbow Position  (in degrees up from parallel to the floor)
       public static final double kElbowGround = 10;
+      public static final double kElbowHighSpeaker = 80;
       public static final double kElbowSource = 52;
-      public static final double kElbowSpeaker = 42;
-      public static final double kElbowAmp = 64; //80;
+      public static final double kElbowSpeaker = 51;
+      public static final double kElbowAmp = 58; //80;
       public static final double kElbowPreFloow = 20;
       public static final double kElbowFloor = -9;  //-5;
       //Wrist Positions (in degrees from perpendicular to arm)
       public static final double kWristSource = 93;
+      public static final double kWristHighSpeaker = -41;
       public static final double kWristGround = 0;
-      public static final double kWristSpeaker = 19 ;  //22;
-      public static final double kWristAmp = 24;  //41;
+      public static final double kWristSpeaker = 20 ;  //22;
+      public static final double kWristAmp = 15;  //41;
       public static final double kWristPreFloor = 30;
       public static final double kWristFloor = 56;  //68;
       public static final double kRetract = 85;
@@ -300,8 +302,8 @@ public final class Constants {
       public static final double kLowPickUpSpeed = .5;
       public static final double kLowToHighSpeed = 1;
       public static final double kHighOutSpeed = 1;
-      public static final double kLowOutSpeed = -.6;
-      public static final double HighSpinTime = 1.5;
+      public static final double kLowOutSpeed = -.4;
+      public static final double HighSpinTime = 1;
       public static final double TotalShootTime = 2.5;
       public static final double kHighAmpSpeed = 0.5;
       public static final double kLowAmpSpeed = .5;
@@ -371,10 +373,11 @@ public final class Constants {
         public static final int kDriverResetGyroButtonIdx     = 4; // driverJoystick button A
         public static final int kDriverResetOdometryButtonIdx = 5; // driverJoystick button X
         public static final int kDriverRobotOrientedButtonIdx = 6; // driverJoystick button left-bumper
+        public static final int kArmDuck                     = 2; 
 
         //Mech contoller buttons left region
         public static final int kArmSubwoofer                 = 1;
-        public static final int kArmDuck                     = 2;
+        public static final int kArmTravel                    = 2;
         public static final int kArmAmp                       = 3;
         public static final int kArmFloor                     = 4; // button Y
         public static final int kArmSource                    = 5; // Left Bumper
