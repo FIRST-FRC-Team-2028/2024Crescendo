@@ -14,23 +14,24 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Handler;
 
-public class AutoShootAndMove extends SequentialCommandGroup {
+public class AutoShoot extends SequentialCommandGroup {
   /** Shoots into the speaker then drives two meters in the x direction */
-  public AutoShootAndMove(Arm arm, Drivetrain drive, Handler handler) {
+  public AutoShoot(Arm arm, Handler handler) {
 
-    addCommands(Commands.race(
-                            new ArmRun(arm, ArmConstants.kElbowHighSpeaker, ArmConstants.kWristHighSpeaker, 2.5),
-                            new WaitCommand(2.5)), 
-                            new InstantCommand(()-> arm.rearmArm()),
+    addCommands(/*Commands.race(
+                            new TravelPosition(arm),
+                            new WaitCommand(3)
+                          ),*/
                           
+                          Commands.race(
+                            new ArmRun(arm, ArmConstants.kElbowHighSpeaker, ArmConstants.kWristHighSpeaker, 2),
+                            new WaitCommand(2)), 
+                          new InstantCommand(() -> arm.rearmArm()),
                           Commands.race(
                             new Speaker(handler),
                             new WaitCommand(3.5)
-                          ),
-                          Commands.race(
-                            new DriveGeneric(drive, -2, 0),
-                            new WaitCommand(2)
                           )
+                          //new DriveGeneric(drive, 2, 0)
     );
 
 

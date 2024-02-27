@@ -42,7 +42,7 @@ import frc.robot.Constants.RobotConstants;
 
 /** Constructs a swerve drive style drivetrain. */
 public class Drivetrain extends SubsystemBase {
-  boolean iShouldStop;
+  boolean iShouldStop;  // logical mechanism to stop moving when other reasons are not met
   static double kMaxSpeed = Constants.DriveConstants.kMaxTranslationalVelocity;
   static double kMaxAngularSpeed = Constants.DriveConstants.kMaxRotationalVelocity;
   private PhotonCamera camera = new PhotonCamera("Microsoft_LifeCam_HD-3000");
@@ -181,6 +181,7 @@ public class Drivetrain extends SubsystemBase {
         DriveConstants.kDriveKinematics.toSwerveModuleStates(
             ChassisSpeeds.discretize(chassisSpeeds, RobotConstants.kPeriod));
     SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, kMaxSpeed);
+    //setModuleStates(swerveModuleStates);  // MrG thinks we should use this instead of the last four lines TODO
     m_frontLeft.setDesiredState(swerveModuleStates[0]);
     m_frontRight.setDesiredState(swerveModuleStates[1]);
     m_backLeft.setDesiredState(swerveModuleStates[2]);
@@ -316,20 +317,31 @@ public class Drivetrain extends SubsystemBase {
       else{
           chassisSpeeds = new ChassisSpeeds(-xhowfast, yhowfast, turnSpeed);
       }
+
+      //drive(chassisSpeeds);  // MrG thinks we should use this instead of the next two lines TODO
       
       SwerveModuleState[] moduleStates = chassis2ModuleStates(chassisSpeeds);
       setModuleStates(moduleStates);
   }
 
+  /** test for premature stop criterion */
   public boolean shouldistop() {
     return iShouldStop;
   }
 
+  /** set premature stop criterion to false
+   *  ie, go as directed
+   */
   public void makemefalse() {
     iShouldStop = false;
   } 
 
-  
+  /** set premature stop criterion to true
+   *  ie, stop right now
+   */
+  public void makeMeStop() {
+    iShouldStop = true;
+  }
 
   /* public void configurePathPlanner() {
     AutoBuilder.configureHolonomic(

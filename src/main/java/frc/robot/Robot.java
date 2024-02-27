@@ -65,8 +65,7 @@ public class Robot extends TimedRobot {
 
     private PowerDistribution PDH;
     //private AnalogInput pixyCam;
-    private PWM lights;
-    //private boolean choice;  // choose which robot to control, true is competion bot
+    //private PWM lights;
     // private Timer timer = new Timer();
 
     /**
@@ -82,18 +81,10 @@ public class Robot extends TimedRobot {
         //      o perform all our button bindings,
         //      o put our autonomous chooser on the dashboard.
 
-        //choice = Preferences.containsKey("Swerve");
-        //systemChooser = new AnalogInput(Constants.SYSTEMCHOOSER);
-        //choice = systemChooser.getValue() == Constants.COMPBOT;
-        //if (choice) {
         PDH = new PowerDistribution(1, ModuleType.kRev);
-        //} else {
-        //    PDH = new PowerDistribution(1, ModuleType.kCTRE);
-        //}
        
         m_robotContainer = new RobotContainer();
-        // System.out.println("PDP = " + PDP.getType());  // a quick death for Comp Bot
-     //   pigeon = m_robotContainer.getGyro();
+        //pigeon = m_robotContainer.getGyro();
         //PortForwarder.add(1182, "photonvision.local",5800 );
 
         //DataLogManager.start();   //MEE
@@ -122,8 +113,6 @@ public class Robot extends TimedRobot {
         CommandScheduler.getInstance().run();
 
         // Maddox: Color sensor
-
-
     }
 
     /** This function is called once each time the robot enters Disabled mode. */
@@ -146,7 +135,7 @@ public class Robot extends TimedRobot {
         m_autonomousCommand = slector.getSelected();
         if (arm == null) arm = m_robotContainer.getArm();
         arm.setBrakeMode();
-        (new TravelPosition(arm)).schedule();// MRG thinks this will never run. Should it? Will it impede autonomous commands?
+        (new TravelPosition(arm)).schedule();
         //pigeon.setYaw(180);  Do we need to initialize the gyro?
         // schedule the autonomous command (example)
         if (m_autonomousCommand != null) {
@@ -158,6 +147,7 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousPeriodic() {
     }
+
     boolean buttonbinding = false;
 
     @Override
@@ -178,7 +168,6 @@ public class Robot extends TimedRobot {
         //MjpegServer mjpegServer2 = new MjpegServer("serve_Blur", 1182);
         //mjpegServer2.setSource(outputStream);
 
-
         // This makes sure that the autonomous stops running when
         // teleop starts running. If you want the autonomous to
         // continue until interrupted by another command, remove
@@ -186,15 +175,15 @@ public class Robot extends TimedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
-        
 
-        // start up arm PID controller to Travel position
         if (climber == null) climber = m_robotContainer.getClimber();
         climber.zeroSoftLimit();
         if (arm == null) arm = m_robotContainer.getArm();
         arm.setBrakeMode();
+        // start up arm PID controller; move to Travel position
         (new TravelPosition(arm)).schedule();
-        // CRG added stuff to drive in teleopPeriodic rather than defaultCommand {
+        
+        // to drive in teleopPeriodic rather than defaultCommand {
         this.swerveSubsystem = m_robotContainer.getSwerveSS();
         this.xLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
         this.yLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
@@ -209,7 +198,6 @@ public class Robot extends TimedRobot {
     /** This function is called periodically during operator control. */
     @Override
     public void teleopPeriodic() {
-        
 
         /* if (driverJoytick.getRawButton(3)) {
                 System.out.println("Button Pressed");
@@ -218,9 +206,9 @@ public class Robot extends TimedRobot {
         //SmartDashboard.putNumber("BotA", pigeon.getAngle());
         SmartDashboard.putNumber("BatV", PDH.getVoltage());
 
-     //   SmartDashboard.putNumber("Pitch", pigeon.getPitch().getValue().doubleValue());
-      //  SmartDashboard.putNumber("Yaw", pigeon.getYaw().getValue().doubleValue());
-      //  SmartDashboard.putNumber("Angle", pigeon.getAngle());
+        //   SmartDashboard.putNumber("Pitch", pigeon.getPitch().getValue().doubleValue());
+        //  SmartDashboard.putNumber("Yaw", pigeon.getYaw().getValue().doubleValue());
+        //  SmartDashboard.putNumber("Angle", pigeon.getAngle());
 
         //SmartDashboard.putNumber()
 
@@ -290,6 +278,7 @@ public class Robot extends TimedRobot {
             //System.out.println("Encoder: " + frontleftsteerencoder.getPosition());
 
             swerveSubsystem.drive(chassisSpeeds);
+            // MrG recommends looking at swerveSubsystem.driveIt  TODO
 
             // 5. Convert chassis speeds to individual module states
             //SwerveModuleState[] moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
@@ -311,18 +300,17 @@ public class Robot extends TimedRobot {
     @Override
     public void testInit() {
         CommandScheduler.getInstance().cancelAll();
-        if (arm == null) arm = m_robotContainer.getArm();
-        arm.setBrakeMode();
-        // immediately move the arm to the floor and end the PID control
-        (new ArmRun(arm, ArmConstants.kElbowPreFloow, ArmConstants.kWristPreFloor, 2)
-            .andThen(new ArmRun(arm, Constants.ArmConstants.kElbowFloor, Constants.ArmConstants.kWristFloor, .25))
-            .andThen(new InstantCommand(()-> arm.stopIt()))).schedule();
-        
-        if (buttonbinding == true){
-            //m_robotContainer.deconfigureButtonBindings();
-            CommandScheduler.getInstance().getActiveButtonLoop().clear();
-        }
         // Cancels all running commands at the start of test mode.
+        CommandScheduler.getInstance().getActiveButtonLoop().clear();
+        // Gets rid of all button bindings
+        
+        //if (arm == null) arm = m_robotContainer.getArm();
+        //arm.setBrakeMode();
+        // immediately move the arm to the floor and end the PID control
+        /*(new ArmRun(arm, ArmConstants.kElbowPreFloow, ArmConstants.kWristPreFloor, 2)
+            .andThen(new ArmRun(arm, Constants.ArmConstants.kElbowFloor, Constants.ArmConstants.kWristFloor, .25))
+            .andThen(new InstantCommand(()-> arm.stopIt()))).schedule();*/
+    
 
         handler = m_robotContainer.getHandler();
         if (Constants.CLIMB_AVAILABLE){
@@ -379,6 +367,7 @@ public class Robot extends TimedRobot {
                 else{
                     climber.stop_left();
                 }
+            // reuse buttons in test mode for other than they were designated in teleop
              if (new JoystickButton(mechJoytick1, OIConstants.kElbowRearmButton).getAsBoolean()) {
                     climber.extend_right(.5);
                     //System.out.println(String.format("Climber Position = %4.f" , m_robotContainer.getClimber().getPositionDriver()));
@@ -403,8 +392,7 @@ public class Robot extends TimedRobot {
         // handler 
         if (new JoystickButton(mechJoytick2, OIConstants.shootButton).getAsBoolean()) {
             handler.high_out();  
-        } else handler.stop(); 
-        if (new JoystickButton(mechJoytick2, OIConstants.kIntake).getAsBoolean()) {
+        } else if (new JoystickButton(mechJoytick2, OIConstants.kIntake).getAsBoolean()) {
             handler.low_PickUp();  
         } else handler.stop();
 
