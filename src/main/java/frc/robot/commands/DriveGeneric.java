@@ -52,6 +52,12 @@ public class DriveGeneric extends Command {
   public DriveGeneric(Drivetrain driveon, double xdist, double ydist) {
     this(driveon, xdist, ydist, true);
   }
+  /** Drive a given distance in any direction in field coordinates.
+   * 
+   * @param xdist and
+   * @param ydist are component distances in meters
+   * @param varP overrides default kP of PIDcontroller
+   */
   public DriveGeneric(Drivetrain driveon, double xdist, double ydist, double varP) {
     this(driveon, xdist, ydist, true);
     this.variableP=varP;
@@ -60,6 +66,7 @@ public class DriveGeneric extends Command {
   /** stop DriveGeneric Command whether accomplished or not */
   public void endDriveGeneric() {
     iShouldStop = true;
+    // MrG this should use the Drivetrain method to stop
   }
 
   // Called when the command is initially scheduled.
@@ -75,8 +82,8 @@ public class DriveGeneric extends Command {
     Transform2d transform = new Transform2d(new Translation2d(xdist, ydist), new Rotation2d(0));
     targetpose = startpose.plus(new Transform2d(new Translation2d(xdist, ydist), new Rotation2d(0)));
     //SmartDashboard.putString("Transform", transform.toString());
-    //SmartDashboard.putString("TargetPose", targetpose.toString());
-    //SmartDashboard.putString("StartPose", startpose.toString());
+    SmartDashboard.putString("TargetPose", targetpose.toString());
+    SmartDashboard.putString("StartPose", startpose.toString());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -88,8 +95,8 @@ public class DriveGeneric extends Command {
     driver.driveit(speed*xdist/dist, speed*ydist/dist, 0, true);
     System.out.println("whereiam= "+ whereiam);
 
-    //SmartDashboard.putString("Error", controller.getPositionError() + " < " + tol);
-    //SmartDashboard.putString("CurrentPose", currentpose.toString());
+    SmartDashboard.putString("Error", controller.getPositionError() + " < " + tol);
+    SmartDashboard.putString("CurrentPose", currentpose.toString());
   }
 
   // Called once the command ends or is interrupted.

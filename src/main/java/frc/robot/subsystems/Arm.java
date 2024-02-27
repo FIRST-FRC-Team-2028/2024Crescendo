@@ -46,7 +46,12 @@ public class Arm extends SubsystemBase {
   boolean armSafety = true;   // true for arm motion enabled
   boolean armSafetyw = true;   // true for wrist motion enabled
   
-  /** Creates a new Arm. */
+  /** The Arm:
+   *    o moves the handler (relative to the robot)
+   *    o actuates at the base (called elbow)
+   *       and the tip (called the wrist)
+   *    o uses absolute encoders to calibrate relative encoders for each actuator
+   */
   public Arm() {
     elbow = new CANSparkMax(Constants.CANIDs.elbow, MotorType.kBrushless);
     elbow_follower = new CANSparkMax(Constants.CANIDs.elbow_follower, MotorType.kBrushless);
@@ -239,7 +244,7 @@ public class Arm extends SubsystemBase {
   }
 
   /** closed loop control arm to target
-   * @param target
+   * @param target angle from floor, degrees
    */
   public void positionArm(double target) {
     elbow_PidController.setReference(target, CANSparkMax.ControlType.kPosition);
@@ -247,20 +252,24 @@ public class Arm extends SubsystemBase {
   }
 
   /** closed loop control wrist to target
-   * @param target
+   * @param target angle trom perpendicular, degrees positive in same axis as elbow
    */
   public void positionWrist(double target) {
     wrist_PidController.setReference(target, CANSparkMax.ControlType.kPosition);
     latestTargetW = target;
   }
 
-  /** Adjust elbow PID target */
+  /** Adjust elbow PID target 
+   * @see positionArm
+  */
   public void retargetElbow(double Adjustment) {
      latestTarget += Adjustment;
     elbow_PidController.setReference(latestTarget, CANSparkMax.ControlType.kPosition);
   }
 
-  /** Adjust wrist PID target */
+  /** Adjust wrist PID target 
+   * @see positionWrist
+  */
   public void retargetWrist(double Adjustment) {
     latestTargetW += Adjustment;
     wrist_PidController.setReference(latestTargetW, CANSparkMax.ControlType.kPosition);
@@ -303,7 +312,9 @@ public class Arm extends SubsystemBase {
     elbow.stopMotor();
   }
 
-  /** set closed loop position of both elbow and wrist */
+  /** set closed loop position of both elbow and wrist 
+   * @see positionArm, positionWrist
+  */
   public void run(double targetW, double target) {
     positionArm(target);
     positionWrist(targetW);

@@ -206,7 +206,7 @@ public class RobotContainer {
                  onTrue(new ArmRun(armSubsystem, 90, 0));*/
         new JoystickButton(mechJoytick2, Constants.OIConstants.kShootSequenceButton ).
                 onTrue(new Speaker(handlerSubsystem)
-                // and return arm/wrist to travelling position  TODO
+                // and return arm/wrist to travelling position 
                 .andThen(new TravelPosition(armSubsystem))
                 );
         new JoystickButton(mechJoytick2, Constants.OIConstants.shootButton).

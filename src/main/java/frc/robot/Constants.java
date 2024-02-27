@@ -306,7 +306,7 @@ public final class Constants {
       public static final double HighSpinTime = 1;
       public static final double TotalShootTime = 2.5;
       public static final double kHighAmpSpeed = 0.5;
-      public static final double kLowAmpSpeed = .5;
+      public static final double kLowAmpSpeed = -.5;
       
     }
 
@@ -414,10 +414,8 @@ public final class Constants {
     }
 
     public static final class FieldConstants {
-      public static final double chargingstationwidth = Units.inchesToMeters(48.+13.11*2); // Width of the charging station.
-      public static final double leaveCommunityDist = Units.inchesToMeters(140.+5);  // distance from Grid to farthest edge of Community
+      public static final double leaveWing = Units.inchesToMeters(0.);  // distance from Speaker to farthest edge of Wing
       public static final double Halflength = Units.feetToMeters(11);
-      public static final double Gridtostation = Units.feetToMeters(6.);
 
     }
 

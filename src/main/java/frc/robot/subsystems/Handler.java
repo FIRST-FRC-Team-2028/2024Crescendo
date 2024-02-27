@@ -85,7 +85,6 @@ public class Handler extends SubsystemBase {
 
   /** return true if sensor sees a note */
   public boolean useSensor() {
-    // return sensor.get();  TODO
     if (Constants.COLOR_AVALIBLE){
       Color notesensor = sensor.getColor();
       //SmartDashboard.putString("Sensor", notesensor.toHexString());
@@ -127,7 +126,6 @@ public class Handler extends SubsystemBase {
     doIHaveIt = false;
   }
 
-
   /** set high_side motors to high speed out */
   public void high_out() {
     high_side.set(TalonSRXControlMode.PercentOutput, Constants.HandlerConstants.kHighOutSpeed);
@@ -141,10 +139,9 @@ public class Handler extends SubsystemBase {
   /** set low_side motor to pickup speed */
   public void low_PickUp() {
     low_side.set(TalonSRXControlMode.PercentOutput, Constants.HandlerConstants.kLowPickUpSpeed);
-    
   }
 
-  /* set low_side mootor to high speed out */
+  /** set low_side motor to push note into high_side */
   public void low_ToHigh() {
     low_side.set(TalonSRXControlMode.PercentOutput, Constants.HandlerConstants.kLowToHighSpeed);
   }
@@ -164,12 +161,12 @@ public class Handler extends SubsystemBase {
     low_side.set(TalonSRXControlMode.PercentOutput, HandlerConstants.kLowAmpSpeed);
   }
 
-/**
-Move note off of high speed wheels. Low Out, Wait, Stop
+/** Move note off of high speed wheels. Low Out, Wait, Stop
 */
   public void spit_Back() {
     low_out();
-    new WaitCommand(.75);
+    new WaitCommand(.75); // MrG this schedules a WaitCommand; it does not wait here TODO
+                                  // see shootIt()
     stop();
   }
 
