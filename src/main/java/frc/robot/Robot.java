@@ -402,8 +402,7 @@ public class Robot extends TimedRobot {
         // handler 
         if (new JoystickButton(mechJoytick2, OIConstants.shootButton).getAsBoolean()) {
             handler.high_out();  
-        } else handler.stop(); 
-        if (new JoystickButton(mechJoytick2, OIConstants.kIntake).getAsBoolean()) {
+        } else if (new JoystickButton(mechJoytick2, OIConstants.kIntake).getAsBoolean()) {
             handler.low_PickUp();  
         } else handler.stop();
 
