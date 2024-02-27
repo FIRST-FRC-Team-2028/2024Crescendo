@@ -319,7 +319,8 @@ public class Robot extends TimedRobot {
             .andThen(new InstantCommand(()-> arm.stopIt()))).schedule();
         
         if (buttonbinding == true){
-            m_robotContainer.deconfigureButtonBindings();
+            //m_robotContainer.deconfigureButtonBindings();
+            CommandScheduler.getInstance().getActiveButtonLoop().clear();
         }
         // Cancels all running commands at the start of test mode.
 
