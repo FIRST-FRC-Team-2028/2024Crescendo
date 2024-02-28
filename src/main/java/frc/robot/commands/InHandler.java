@@ -53,7 +53,7 @@ public class InHandler extends Command {
   @Override
   public void end(boolean interrupted) {
     handler.stop();
-    handler.spit_Back();
+    //handler.spit_Back();
   }
 
   // Returns true when the command should end.

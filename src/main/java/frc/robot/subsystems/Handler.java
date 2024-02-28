@@ -163,11 +163,14 @@ public class Handler extends SubsystemBase {
 
 /** Move note off of high speed wheels. Low Out, Wait, Stop
 */
-  public void spit_Back() {
-    low_out();
-    new WaitCommand(.75); // MrG this schedules a WaitCommand; it does not wait here TODO
+  public Command spit_Back() {
+    return runOnce( ()-> {low_out(); })
+          .andThen(new WaitCommand(.75))
+          .andThen( () -> { stop(); })
+      ;
+                   // MrG this schedules a WaitCommand; it does not wait here TODO
                                   // see shootIt()
-    stop();
+
   }
 
   /** stop both low_side and high_side motors */

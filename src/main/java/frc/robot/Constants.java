@@ -307,6 +307,7 @@ public final class Constants {
       public static final double TotalShootTime = 2.5;
       public static final double kHighAmpSpeed = 0.5;
       public static final double kLowAmpSpeed = -.5;
+      public static final double kSpitBackWaitTime = .75;
       
     }
 
