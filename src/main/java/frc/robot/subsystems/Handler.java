@@ -149,17 +149,8 @@ public class Handler extends SubsystemBase {
     low_side.set(TalonSRXControlMode.PercentOutput, HandlerConstants.kLowAmpSpeed);
   }
 
-/** Move note off of high speed wheels. Low Out, Wait, Stop
-*/
-  public Command spit_Back() {
-    return runOnce( ()-> {low_out(); })
-          .andThen(new WaitCommand(.75))
-          .andThen( () -> { stop(); })
-      ;
-                   // MrG this schedules a WaitCommand; it does not wait here TODO
-                                  // see shootIt()
 
-  }
+
 
   /** stop both low_side and high_side motors */
   public void stop() {

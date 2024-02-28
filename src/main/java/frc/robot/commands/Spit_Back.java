@@ -12,10 +12,11 @@ import frc.robot.subsystems.Handler;
 public class Spit_Back extends Command {
   Handler m_handler;
   Timer time;
-  /** Spits the wheels back after it picks up a note*/
+  /** Move note off of high speed wheels. Low Out, Wait, Stop*/
   public Spit_Back(Handler handler) {
     addRequirements(handler);
     this.m_handler = handler;
+    time = new Timer();
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -34,12 +35,14 @@ public class Spit_Back extends Command {
   @Override
   public void end(boolean interrupted) {
     m_handler.stop();
+    time.stop();
+    time.reset();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(time.hasElapsed(2 )) {
+    if(time.hasElapsed(.75 )) {
       return true;}
     else 
   {return false;
