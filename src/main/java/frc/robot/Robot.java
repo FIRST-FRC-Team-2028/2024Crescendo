@@ -332,7 +332,7 @@ public class Robot extends TimedRobot {
         }
         else {
             arm.stopElbow();
-            System.out.println("Stopped Elbow");
+            //System.out.println("Stopped Elbow");
         }
 
         if (new JoystickButton(mechJoytick2,OIConstants.kNudgeWristDown).getAsBoolean()) {
@@ -341,7 +341,7 @@ public class Robot extends TimedRobot {
             arm.moveWrist(.1);  
         } else {
             arm.moveWrist(0.);
-            System.out.println("Stopped Wrist");
+            //System.out.println("Stopped Wrist");
         }
       
         if (Constants.CLIMB_AVAILABLE){
@@ -391,9 +391,10 @@ public class Robot extends TimedRobot {
         }
         // handler 
         if (new JoystickButton(mechJoytick2, OIConstants.shootButton).getAsBoolean()) {
-            handler.high_out();  
-        } else if (new JoystickButton(mechJoytick2, OIConstants.kIntake).getAsBoolean()) {
+            handler.low_out();  
+        } else if (new JoystickButton(mechJoytick2, OIConstants.kIntake).getAsBoolean() && !handler.useSensor() ) {
             handler.low_PickUp();  
+            System.out.println(handler.useSensor());
         } else handler.stop();
 
     }

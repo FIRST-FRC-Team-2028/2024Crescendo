@@ -303,8 +303,8 @@ public final class Constants {
       public static final double kLowToHighSpeed = 1;
       public static final double kHighOutSpeed = 1;
       public static final double kLowOutSpeed = -.4;
-      public static final double HighSpinTime = 1;
-      public static final double TotalShootTime = 2.5;
+      public static final double HighSpinTime = 2;
+      public static final double TotalShootTime = 3.5;
       public static final double kHighAmpSpeed = 0.5;
       public static final double kLowAmpSpeed = -.5;
       public static final double kSpitBackWaitTime = .75;
@@ -321,8 +321,9 @@ public final class Constants {
     }
 
     public static final class ColorConstants {
-      public static final I2C.Port sensorPort = I2C.Port.kOnboard;
-      public static final double NoteHue = 0.2;
+      //public static final I2C.Port sensorPort = I2C.Port.kOnboard;
+      //public static final double NoteHue = 0.2;
+      public static final int sensordPort = 9;
     }
 
     public static final class CANIDs {

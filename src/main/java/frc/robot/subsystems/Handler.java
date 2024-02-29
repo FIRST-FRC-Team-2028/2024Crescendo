@@ -80,7 +80,7 @@ public class Handler extends SubsystemBase {
     //high_PidController.setD(Constants.IntakeConstants.kHighD);
 
       //sensor = new ColorSensorV3(Constants.ColorConstants.sensorPort);
-      sensord = new DigitalInput(0);
+      sensord = new DigitalInput(Constants.ColorConstants.sensordPort);
     
   }
   
