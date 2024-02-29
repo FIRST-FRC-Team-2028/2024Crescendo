@@ -181,11 +181,11 @@ public class Drivetrain extends SubsystemBase {
         DriveConstants.kDriveKinematics.toSwerveModuleStates(
             ChassisSpeeds.discretize(chassisSpeeds, RobotConstants.kPeriod));
     SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, kMaxSpeed);
-    //setModuleStates(swerveModuleStates);  // MrG thinks we should use this instead of the last four lines TODO
-    m_frontLeft.setDesiredState(swerveModuleStates[0]);
+    setModuleStates(swerveModuleStates);
+    /*m_frontLeft.setDesiredState(swerveModuleStates[0]);
     m_frontRight.setDesiredState(swerveModuleStates[1]);
     m_backLeft.setDesiredState(swerveModuleStates[2]);
-    m_backRight.setDesiredState(swerveModuleStates[3]);
+    m_backRight.setDesiredState(swerveModuleStates[3]);*/
   }
 
   /** Updates the field relative position of the robot. */
@@ -318,10 +318,10 @@ public class Drivetrain extends SubsystemBase {
           chassisSpeeds = new ChassisSpeeds(-xhowfast, yhowfast, turnSpeed);
       }
 
-      //drive(chassisSpeeds);  // MrG thinks we should use this instead of the next two lines TODO
+      drive(chassisSpeeds);
       
-      SwerveModuleState[] moduleStates = chassis2ModuleStates(chassisSpeeds);
-      setModuleStates(moduleStates);
+      /*SwerveModuleState[] moduleStates = chassis2ModuleStates(chassisSpeeds);
+      setModuleStates(moduleStates);*/
   }
 
   /** test for premature stop criterion */

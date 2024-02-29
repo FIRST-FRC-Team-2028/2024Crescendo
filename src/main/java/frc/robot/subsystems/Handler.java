@@ -21,6 +21,7 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -39,7 +40,8 @@ public class Handler extends SubsystemBase {
   private final TalonSRX low_side;
   private final TalonSRX high_side_follower;
   private final TalonSRX high_side;
-  private final ColorSensorV3 sensor;
+  //private final ColorSensorV3 sensor;
+  private final DigitalInput sensord;
   boolean doIHaveIt;
 
   //private final RelativeEncoder low_encoder;
@@ -77,7 +79,8 @@ public class Handler extends SubsystemBase {
     //high_PidController.setI(Constants.IntakeConstants.kHighI);
     //high_PidController.setD(Constants.IntakeConstants.kHighD);
 
-      sensor = new ColorSensorV3(Constants.ColorConstants.sensorPort);
+      //sensor = new ColorSensorV3(Constants.ColorConstants.sensorPort);
+      sensord = new DigitalInput(Constants.ColorConstants.sensordPort);
     
   }
   
@@ -85,22 +88,7 @@ public class Handler extends SubsystemBase {
 
   /** return true if sensor sees a note */
   public boolean useSensor() {
-    if (Constants.COLOR_AVALIBLE){
-      Color notesensor = sensor.getColor();
-      //SmartDashboard.putString("Sensor", notesensor.toHexString());
-      float[] george={0.f,0.f,0.f};
-      george = java.awt.Color.RGBtoHSB((int)(notesensor.red  *255), 
-                                              (int)(notesensor.green*255), 
-                                              (int)(notesensor.blue *255), george);
-      double diffHue = (george[0] - Constants.ColorConstants.NoteHue);
-      SmartDashboard.putNumber("Hue", george[0]);
-      SmartDashboard.putBoolean("DiffHue", diffHue<closeHue);
-      if ( diffHue < closeHue)return true;
-
-      return false;
-    } else{                     
-      return false;
-    }
+    return sensord.get();
   }
 
   @Override
@@ -162,14 +150,8 @@ public class Handler extends SubsystemBase {
     low_side.set(TalonSRXControlMode.PercentOutput, HandlerConstants.kLowAmpSpeed);
   }
 
-/** Move note off of high speed wheels. Low Out, Wait, Stop
-*/
-  public void spit_Back() {
-    low_out();
-    new WaitCommand(.75); // MrG this schedules a WaitCommand; it does not wait here TODO
-                                  // see shootIt()
-    stop();
-  }
+
+
 
   /** stop both low_side and high_side motors */
   public void stop() {

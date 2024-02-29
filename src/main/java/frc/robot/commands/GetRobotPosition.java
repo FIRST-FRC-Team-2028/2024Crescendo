@@ -28,7 +28,6 @@ public class GetRobotPosition extends Command {
     //robotposition = camera.getRobotPosition();
     //SmartDashboard.putString("Robot Positon", robotposition.toString());
     System.out.println("Robot pos from Apr Tag:"+robotposition.toString());
-    // TODO: do something useful with the info
     
   }
 

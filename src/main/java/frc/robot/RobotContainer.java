@@ -46,6 +46,7 @@ import frc.robot.commands.ElbowUp;
 import frc.robot.commands.ExtendClimber;
 import frc.robot.commands.InHandler;
 import frc.robot.commands.Speaker;
+import frc.robot.commands.Spit_Back;
 //import frc.robot.commands.DriveGeneric;
 import frc.robot.commands.SwerveJoystickCmd;
 import frc.robot.commands.TravelPosition;
@@ -194,7 +195,8 @@ public class RobotContainer {
 
         
         new JoystickButton(mechJoytick2, OIConstants.kIntake).
-                whileTrue(new InHandler(handlerSubsystem)
+                onTrue(new InHandler(handlerSubsystem)
+                .andThen(new Spit_Back(handlerSubsystem))
                 .andThen(new TravelPosition(armSubsystem).onlyIf(handlerSubsystem::doIHaveIt))
                 );
         new JoystickButton(mechJoytick1, OIConstants.kElbowRearmButton).
