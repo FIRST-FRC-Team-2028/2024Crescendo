@@ -105,6 +105,7 @@ public class Handler extends SubsystemBase {
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("High Amps", high_side.getStatorCurrent());
 
     // This method will be called once per scheduler run
   }
