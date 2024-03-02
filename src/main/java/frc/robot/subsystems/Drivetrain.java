@@ -80,6 +80,8 @@ public class Drivetrain extends SubsystemBase {
   private SwerveModule[] modules = {m_frontLeft, m_frontRight, m_backLeft, m_backRight};
 
   private final Pigeon2 m_gyro = new Pigeon2(0);
+  
+                        
 
   
 
@@ -142,6 +144,8 @@ public class Drivetrain extends SubsystemBase {
           SmartDashboard.putNumber("Robot Y Pos", m_poseEstimator.getEstimatedPosition().getY());
           }
       }
+  
+
 
   /** If false it wouldn't spew the drive encoder values onto smartdashboard */
   static final boolean SPEWDRIVE = false;
@@ -248,6 +252,7 @@ public class Drivetrain extends SubsystemBase {
     return DriveConstants.kDriveKinematics.toSwerveModuleStates(speeds);
   }
   public Pose2d getPose() {
+    updateOdometry();
     System.out.println("robot Pose = "+m_odometry.getPoseMeters().toString());
     return m_odometry.getPoseMeters();
   }

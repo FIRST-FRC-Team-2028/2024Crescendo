@@ -35,7 +35,7 @@ public final class Constants {
   public static final boolean HANDLER_AVAILABLE = true;
   public static final boolean CLIMB_AVAILABLE = true;
   public static final boolean APRIL_AVAILABLE = false;
-  public static final boolean COLOR_AVALIBLE = true;
+  public static final boolean COLOR_AVALIBLE = false;
 
 
   public static final class ModuleConstants {
@@ -74,6 +74,7 @@ public final class Constants {
     // Convert to meters per second at the wheel
     public static final double kDriveVelocityConversionFactor =
         kDrivePositionConversionFactor / 60.0;
+    public static final double kRampRate = 1;
   }
 
     public static final class DriveConstants {
@@ -265,11 +266,11 @@ public final class Constants {
       public static final int ABSENCODERPORT = 0;
       public static final int kAbsoluteEncoder = 0;
       public static final double elbowEncoderFactor = 90./(80.); 
-      public static final int RelMin = 0;  //  upright
-      public static final int AbsMin = 400;  // parallel to floor
-      public static final int RelMax = 90;  // upright
-      public static final int AbsMax = 1080; // upright
-      public static final double Ratio = 90./(1080.-400.); //(RelMax-RelMin)/(AbsMax-AbsMin);
+      public static final int RelMin = 6;  //  upright
+      public static final int AbsMin = 584;  // parallel to floor
+      public static final int RelMax = 45;  // upright
+      public static final int AbsMax = 860; // upright
+      public static final double Ratio = 39./(860.-584.); //(RelMax-RelMin)/(AbsMax-AbsMin);
       public static final int kAbsoluteEncoderW = 1;
       public static final double wristEncoderFactor = 64.7/16.5;  
       public static final int RelMinW = -32;     //SUBJECT TO CHEANGE
@@ -372,10 +373,10 @@ public final class Constants {
         public static final int kDriverXAxis                  = 1;
         public static final int kDriverRotAxis                = 4;
         public static final int fineControlAxis               = 2;
-        public static final int kDriverResetGyroButtonIdx     = 4; // driverJoystick button A
-        public static final int kDriverResetOdometryButtonIdx = 5; // driverJoystick button X
-        public static final int kDriverRobotOrientedButtonIdx = 6; // driverJoystick button left-bumper
-        public static final int kArmDuck                     = 2; 
+        public static final int kDriverResetGyroButtonIdx     = 1; // driverJoystick button A
+        public static final int kDriverResetOdometryButtonIdx = 3; // driverJoystick button X
+        public static final int kDriverRobotOrientedButtonIdx = 5; // driverJoystick button left-bumper
+        public static final int kArmDuck                      = 2; // driverJoystick B button
 
         //Mech contoller buttons left region
         public static final int kArmSubwoofer                 = 1;

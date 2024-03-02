@@ -88,7 +88,11 @@ public class Handler extends SubsystemBase {
 
   /** return true if sensor sees a note */
   public boolean useSensor() {
-    return sensord.get();
+    if (Constants.COLOR_AVALIBLE){
+      return sensord.get();
+    } else {
+      return false;
+    }
   }
 
   @Override
@@ -100,11 +104,6 @@ public class Handler extends SubsystemBase {
 
   public boolean doIHaveIt() {
     return doIHaveIt;
-  }
- 
-  /**Returns true if we sense one */
-  public boolean sense() {
-    return false;
   }
 
   public void iHaveIt() {

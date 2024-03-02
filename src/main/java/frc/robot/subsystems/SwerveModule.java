@@ -113,6 +113,10 @@ public class SwerveModule {
 
     // m_driveMotor.burnFlash();
     // m_turningMotor.burnFlash();
+    m_turningMotor.setClosedLoopRampRate(ModuleConstants.kRampRate);
+    m_driveMotor.setClosedLoopRampRate(ModuleConstants.kRampRate);
+    m_turningMotor.setOpenLoopRampRate(ModuleConstants.kRampRate);
+    m_driveMotor.setOpenLoopRampRate(ModuleConstants.kRampRate);
   }
 
   

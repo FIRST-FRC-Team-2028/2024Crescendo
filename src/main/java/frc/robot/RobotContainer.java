@@ -40,6 +40,7 @@ import frc.robot.commands.AutoShoot;
 import frc.robot.commands.AutoShootAndMove;
 import frc.robot.commands.Climb;
 import frc.robot.commands.DriveGeneric;
+import frc.robot.commands.DriveGenericHeadTest;
 import frc.robot.commands.ElbowDown;
 //import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.ElbowUp;
@@ -127,6 +128,9 @@ public class RobotContainer {
                 m_chooser.addOption("Shoot and Move Left", new InstantCommand(() -> gyro.setYaw(60))
                         .andThen(new AutoShootAndMove(armSubsystem, swerveSubsystem, handlerSubsystem)));
                 //m_chooser.addOption("Shoot, Move, pickup", );
+                m_chooser.addOption("HeadingTest", new TravelPosition(armSubsystem)
+                        .andThen(new InstantCommand(()-> gyro.setYaw(60)))
+                        .andThen(new DriveGenericHeadTest(swerveSubsystem, armSubsystem, handlerSubsystem)));
                 SmartDashboard.putData(m_chooser);
                 
 
@@ -194,12 +198,19 @@ public class RobotContainer {
                 .andThen(new InstantCommand(() -> this.rumble()))
                 );
 
-        
-        new JoystickButton(mechJoytick2, OIConstants.kIntake).
-                onTrue(new InHandler(handlerSubsystem)
-                .andThen(new Spit_Back(handlerSubsystem))
-                .andThen(new TravelPosition(armSubsystem).onlyIf(handlerSubsystem::doIHaveIt))
-                );
+        if (Constants.COLOR_AVALIBLE){
+                new JoystickButton(mechJoytick2, OIConstants.kIntake)
+                        .onTrue(new InHandler(handlerSubsystem)
+                        .andThen(new Spit_Back(handlerSubsystem))
+                        .andThen(new TravelPosition(armSubsystem).onlyIf(handlerSubsystem::doIHaveIt))
+                        );
+        } else {
+                new JoystickButton(mechJoytick2, OIConstants.kIntake)
+                .whileTrue(new InHandler(handlerSubsystem));
+                new JoystickButton(mechJoytick2, OIConstants.kIntake)
+                .onFalse(new Spit_Back(handlerSubsystem)
+                .andThen(new TravelPosition(armSubsystem)));
+        }
         new JoystickButton(mechJoytick1, OIConstants.kElbowRearmButton).
                 onTrue(Commands.runOnce( armSubsystem::rearmArm, armSubsystem));
         new JoystickButton(mechJoytick1, OIConstants.kArmFloor).
