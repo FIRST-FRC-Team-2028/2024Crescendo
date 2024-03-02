@@ -23,14 +23,14 @@ public class AutoShootAndMove extends SequentialCommandGroup {
                             new WaitCommand(2.5)), 
                             new InstantCommand(()-> arm.rearmArm()),
                           
-                          Commands.race(
-                            new Speaker(handler),
-                            new WaitCommand(3.5)
-                          ),
-                          Commands.race(
-                            new DriveGeneric(drive, -2, 0),
-                            new WaitCommand(2)
-                          )
+                          //Commands.race(
+                            //new Speaker(handler),
+                            //new WaitCommand(3.5)
+                          //),
+                          new WaitCommand(0.5),
+                          new DriveGenericHead(drive, -2, 0, 60, true)
+                            //new WaitCommand(2)
+                          
     );
 
 

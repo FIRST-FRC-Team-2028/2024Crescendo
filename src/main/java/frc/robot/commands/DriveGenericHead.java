@@ -46,7 +46,7 @@ public class DriveGenericHead extends Command {
     this.stopwhendone = stopwhendone;
     controller = new PIDController(0, 0, 0);  // set p in init
     variableP=2;
-    headingController = new PIDController(0.9/45., 0., 0.);
+    headingController = new PIDController(1./Math.abs(heading-driver.getHeading().getDegrees()), 0., 0.);
     headingController.enableContinuousInput(-180., 180.);
     headingController.setTolerance(3.);
   }
@@ -99,8 +99,8 @@ public class DriveGenericHead extends Command {
     SmartDashboard.putString("Position", driver.getPose().toString());
     driver.driveit(speed*xdist/dist, speed*ydist/dist, omega, true);
 
-    //SmartDashboard.putString("Error", controller.getPositionError() + " < " + tol);
-    //SmartDashboard.putString("CurrentPose", currentpose.toString());
+    SmartDashboard.putString("Error", controller.getPositionError() + " < " + tol);
+    SmartDashboard.putString("CurrentPose", currentpose.toString());
   }
 
   // Called once the command ends or is interrupted.
@@ -115,7 +115,7 @@ public class DriveGenericHead extends Command {
   @Override
   public boolean isFinished() {
     return Math.abs(controller.getPositionError()) < tol &&
-    Math.abs(headingController.getPositionError()) < 1;
+    Math.abs(headingController.getPositionError()) < 2;
     //iShouldStop;
       //driver.shouldistop();
   }
