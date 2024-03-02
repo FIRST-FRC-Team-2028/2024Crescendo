@@ -16,7 +16,7 @@ import frc.robot.subsystems.Handler;
 
 public class AutoShootAndMove extends SequentialCommandGroup {
   /** Shoots into the speaker then drives two meters in the x direction */
-  public AutoShootAndMove(Arm arm, Drivetrain drive, Handler handler) {
+  public AutoShootAndMove(Arm arm, Drivetrain drive, Handler handler, double xdist, double ydist) {
 
     addCommands(Commands.race(
                             new ArmRun(arm, ArmConstants.kElbowHighSpeaker, ArmConstants.kWristHighSpeaker, 2.5),
@@ -28,12 +28,14 @@ public class AutoShootAndMove extends SequentialCommandGroup {
                             new WaitCommand(3.5)
                           ),
                           Commands.race(
-                            new DriveGeneric(drive, -2, 0),
+                            new DriveGeneric(drive, xdist, ydist),
                             new WaitCommand(2)
                           )
     );
+  }
 
 
-
+  public AutoShootAndMove(Arm arm, Drivetrain drivetrain, Handler handler){
+                          this(arm, drivetrain, handler, 2., 0.);
   }
 }

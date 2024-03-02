@@ -413,12 +413,17 @@ public final class Constants {
       public static final double xcg = Units.inchesToMeters(0);
       public static final double kNominalVoltage = 12.0;
       public static final double kPeriod = TimedRobot.kDefaultPeriod;
+      public static final double robotLength = 34.5; //inches
+      public static final double robotWidth = 29.25; //inches
+      public static final double handlerThickness = 6.; //inches
     }
 
     public static final class FieldConstants {
       public static final double leaveWing = Units.inchesToMeters(0.);  // distance from Speaker to farthest edge of Wing
       public static final double Halflength = Units.feetToMeters(11);
-
+      public static final double SpeakerfaceX = 36.37; //inches
+      public static final double noteRadius = 7.; //inches
+      public static final double StageX = 121.; //inches
     }
 
     public static int COMPBOT;

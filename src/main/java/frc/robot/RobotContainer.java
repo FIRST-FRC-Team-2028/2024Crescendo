@@ -126,6 +126,7 @@ public class RobotContainer {
                         .andThen(new AutoShootAndMove(armSubsystem, swerveSubsystem, handlerSubsystem)));
                 m_chooser.addOption("Shoot and Move Left", new InstantCommand(() -> gyro.setYaw(60))
                         .andThen(new AutoShootAndMove(armSubsystem, swerveSubsystem, handlerSubsystem)));
+                //m_chooser.addOption("Shoot, Move, pickup", );
                 SmartDashboard.putData(m_chooser);
                 
 
