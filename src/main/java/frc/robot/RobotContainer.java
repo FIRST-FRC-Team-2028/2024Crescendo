@@ -116,7 +116,7 @@ public class RobotContainer {
                         climber = new Climber(gyro);
                 }
                 
-                //configureButtonBindings();       
+                //configureButtonBindings();   // postponed until telopInit    
 
                 m_chooser = new SendableChooser<Command>();
                 m_chooser.setDefaultOption("DoNothing", new Wait(1));
@@ -132,8 +132,6 @@ public class RobotContainer {
                         .andThen(new InstantCommand(()-> gyro.setYaw(60)))
                         .andThen(new DriveGenericHeadTest(swerveSubsystem, armSubsystem, handlerSubsystem)));
                 SmartDashboard.putData(m_chooser);
-                
-
         }
     
         public final Arm getArm() {

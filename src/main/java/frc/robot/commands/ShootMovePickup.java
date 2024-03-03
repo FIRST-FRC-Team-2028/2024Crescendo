@@ -24,13 +24,11 @@ public class ShootMovePickup extends SequentialCommandGroup {
   public ShootMovePickup(Handler handler, Drivetrain drivetrain, Arm arm) {
     // Use addRequirements() here to declare subsystem dependencies.
     addCommands(new AutoShootAndMove(arm, drivetrain, handler, 
-       Constants.FieldConstants.StageX-Constants.FieldConstants.noteRadius-(Constants.FieldConstants.SpeakerfaceX+Constants.RobotConstants.robotLength+Constants.RobotConstants.handlerThickness), 
-       0.), 
-       new ArmRun(arm, Constants.ArmConstants.kElbowFloor, Constants.ArmConstants.kWristFloor),
-       new InHandler(handler));
-    
-
+                      Constants.FieldConstants.StageX-Constants.FieldConstants.noteRadius -
+                      (Constants.FieldConstants.SpeakerfaceX+Constants.RobotConstants.robotLength+Constants.RobotConstants.handlerThickness), 
+                0.),   // TODO  are these distances in the correct units?
+                new ArmRun(arm, Constants.ArmConstants.kElbowFloor, Constants.ArmConstants.kWristFloor),
+                new InHandler(handler));
+                // TODO move arm back up?
   }
-
-  
 }

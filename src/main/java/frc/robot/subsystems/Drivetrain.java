@@ -81,10 +81,6 @@ public class Drivetrain extends SubsystemBase {
 
   private final Pigeon2 m_gyro = new Pigeon2(0);
   
-                        
-
-  
-
   private final SwerveDriveOdometry m_odometry =
       new SwerveDriveOdometry(
           DriveConstants.kDriveKinematics1,
@@ -96,6 +92,7 @@ public class Drivetrain extends SubsystemBase {
             m_backRight.getPosition()
           });
 
+/** Constructs a swerve drive style drivetrain. */
   public Drivetrain() {
     resetGyro();
 
@@ -124,7 +121,7 @@ public class Drivetrain extends SubsystemBase {
         VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5)),
         VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30)));
 
-    public void update() {
+  public void update() {
         m_poseEstimator.update(m_gyro.getRotation2d(),
                             new SwerveModulePosition[] {                                  
                               m_frontLeft.getPosition(),
@@ -143,7 +140,7 @@ public class Drivetrain extends SubsystemBase {
           SmartDashboard.putNumber("Robot X Pos", m_poseEstimator.getEstimatedPosition().getX());
           SmartDashboard.putNumber("Robot Y Pos", m_poseEstimator.getEstimatedPosition().getY());
           }
-      }
+  }
   
 
 
@@ -192,6 +189,7 @@ public class Drivetrain extends SubsystemBase {
     m_backRight.setDesiredState(swerveModuleStates[3]);*/
   }
 
+  // TODO: see also this.update() method; do we need both?
   /** Updates the field relative position of the robot. */
   public void updateOdometry() {
     m_odometry.update(

@@ -422,7 +422,7 @@ public final class Constants {
     public static final class FieldConstants {
       public static final double leaveWing = Units.inchesToMeters(0.);  // distance from Speaker to farthest edge of Wing
       public static final double Halflength = Units.feetToMeters(11);
-      public static final double SpeakerfaceX = 36.37; //inches
+      public static final double SpeakerfaceX = Units.inchesToMeters(36.37); //inches
       public static final double noteRadius = 7.; //inches
       public static final double StageX = 121.; //inches
     }
