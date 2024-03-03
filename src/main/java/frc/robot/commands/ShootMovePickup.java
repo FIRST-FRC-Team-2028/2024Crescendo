@@ -26,9 +26,9 @@ public class ShootMovePickup extends SequentialCommandGroup {
     addCommands(new AutoShootAndMove(arm, drivetrain, handler, 
                       Constants.FieldConstants.StageX-Constants.FieldConstants.noteRadius -
                       (Constants.FieldConstants.SpeakerfaceX+Constants.RobotConstants.robotLength+Constants.RobotConstants.handlerThickness), 
-                0.),   // TODO  are these distances in the correct units?
+                    0.),   // TODO  are these distances in the correct units?
                 new ArmRun(arm, Constants.ArmConstants.kElbowFloor, Constants.ArmConstants.kWristFloor),
                 new InHandler(handler));
-                // TODO move arm back up?
+                // TODO use Spit_back? move arm back up?
   }
 }
