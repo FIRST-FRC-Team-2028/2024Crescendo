@@ -288,7 +288,7 @@ public final class Constants {
         //49.7 = -28
         // 16.5 = -64.7
       public static final double elbowNudgeAmount = 2.5;
-      public static final double elbowWristAmount = 5;
+      public static final double elbowWristAmount = 2.5;
 
 
     }
@@ -426,6 +426,21 @@ public final class Constants {
       public static final double noteRadius = 7.; //inches
       public static final double StageX = 121.; //inches
     }
+
+    public static enum Stations {
+      Right(0.,0.,60.), 
+      Center(FieldConstants.SpeakerfaceX,0.,0.), 
+      Left(0.,0.,-60.);
+
+      public final double x;
+      public final double y;
+      public final double heading;
+      Stations(double x, double y, double heading) {
+        this.x = x;
+        this.y = y;
+        this.heading = heading;
+      }
+    };
 
     public static int COMPBOT;
 
