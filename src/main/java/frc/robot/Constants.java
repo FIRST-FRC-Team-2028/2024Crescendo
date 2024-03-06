@@ -384,28 +384,36 @@ public final class Constants {
         public static final int kArmDuck                      = 2; // driverJoystick B button
 
         //Mech contoller buttons left region
-        public static final int kArmSubwoofer                 = 1;
-        public static final int kArmTravel                    = 2;
-        public static final int kArmAmp                       = 3;
-        public static final int kArmFloor                     = 4; // button Y
-        public static final int kArmSource                    = 5; // Left Bumper
-        public static final int kClimberExtend                = 6;
-        public static final int kClimberRetract               = 7;
-        public static final int kElbowRearmButton             = 8; // in test it moves the right climber up
+        public static final int kArmTravel                    = 1;
+        public static final int kArmFloor                     = 2; 
+        public static final int kArmSubwoofer                 = 3;
+        public static final int kStage                        = 4;
+        public static final int kArmAmp                       = 5;
+        public static final int kDuck                         = 6;
+        public static final int kArmSource                    = 7; 
+        public static final int kSwitch                       = 8;
+        public static final int kNudgeElbowUp                 = 9;
+        public static final int kNudgeElbowDown               = 10;
+        public static final int kElbowRearmButton             = 12; 
 
         //Mech controller buttons right region
-        public static final int kShootSequenceButton          = 1;          // in test it moves the right climber down
-        public static final int kNudgeElbowUp                 = 3;
-        public static final int kNudgeElbowDown               = 2;
-        public static final int kIntake                       = 4;
+        public static final int kNudgeWristUp                 = 1;
+        public static final int kNudgeWristDown               = 2;
+        public static final int kTestLeftExtend               = 3;
+        public static final int kClimberExtend                = 4;
         public static final int shootButton                   = 5;
-        public static final int kNudgeWristUp                 = 6;
-        public static final int kNudgeWristDown               = 7;
+        public static final int kIntake                       = 6;
+        public static final int kTestRightExtend              = 7;
+        public static final int kClimberRetract               = 8;
+        public static final int kShootSequenceButton          = 10;
+        
+       
+       
+        
 
         
         public static final double kDeadband = 0.075;
         //public static final int kRetract = 1;
-        public static final int kSwitch = 12;
 
     }
 
