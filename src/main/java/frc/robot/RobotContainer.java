@@ -128,8 +128,7 @@ public class RobotContainer {
                 m_chooser.addOption("Shoot and Move Left", new InstantCommand(() -> gyro.setYaw(60))
                         .andThen(new AutoShootAndMove(armSubsystem, swerveSubsystem, handlerSubsystem)));
                 //m_chooser.addOption("Shoot, Move, pickup", );
-                m_chooser.addOption("HeadingTest", new TravelPosition(armSubsystem)
-                        .andThen(new InstantCommand(()-> gyro.setYaw(60)))
+                m_chooser.addOption("HeadingTest", new InstantCommand(()-> gyro.setYaw(60))
                         .andThen(new DriveGenericHeadTest(swerveSubsystem, armSubsystem, handlerSubsystem)));
                 SmartDashboard.putData(m_chooser);
         }
@@ -182,12 +181,14 @@ public class RobotContainer {
         new JoystickButton(driverJoytick, OIConstants.kElbowRearmButton).
                 onTrue(Commands.runOnce( armSubsystem::rearmArm, armSubsystem));
         new JoystickButton(driverJoytick, Constants.OIConstants.kArmDuck).
-                onTrue(new ArmRun(armSubsystem, ArmConstants.elbowDuck, ArmConstants.wristDuck, 0.25));
+                onTrue(new ArmRun(armSubsystem, ArmConstants.elbowDuck, ArmConstants.wristDuck, 0.25).
+                andThen(new InstantCommand(() -> armSubsystem.IamDucked(true))));
 
         /*new JoystickButton(mechJoytick1, 3).
                 whileTrue(new WristUp(armSubsystem,.2));*/
         new JoystickButton(mechJoytick1, OIConstants.kArmTravel).
-                onTrue(new TravelPosition(armSubsystem));
+                onTrue(new TravelPosition(armSubsystem)
+                .andThen(new InstantCommand(()-> armSubsystem.IamDucked(false))));
         new JoystickButton(mechJoytick1, OIConstants.kArmAmp).
                 onTrue(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowAmp, ArmConstants.kWristAmp, .25)
                 );

@@ -122,24 +122,25 @@ public class Drivetrain extends SubsystemBase {
         VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30)));
 
   public void update() {
-        m_poseEstimator.update(m_gyro.getRotation2d(),
-                            new SwerveModulePosition[] {                                  
-                              m_frontLeft.getPosition(),
-                              m_frontRight.getPosition(),
-                              m_backLeft.getPosition(),
-                              m_backRight.getPosition()
-        });
-      
-        var res = camera.getLatestResult();
-        if (res.hasTargets()) {
-          var imageCaptureTime = res.getTimestampSeconds();
-          //var camToTargetTrans = res.getBestTarget().getBestCameraToTarget();
-          //var camPose = aprilTagFieldLayout.getTagPose(4).transformBy(camToTargetTrans.inverse());
-          m_poseEstimator.addVisionMeasurement(
-                    aprilSubsystem.camPose().getReferencePose().toPose2d(), imageCaptureTime);
-          SmartDashboard.putNumber("Robot X Pos", m_poseEstimator.getEstimatedPosition().getX());
-          SmartDashboard.putNumber("Robot Y Pos", m_poseEstimator.getEstimatedPosition().getY());
+    m_poseEstimator.update(m_gyro.getRotation2d(),
+                          new SwerveModulePosition[] {                                  
+                          m_frontLeft.getPosition(),
+                          m_frontRight.getPosition(),
+                          m_backLeft.getPosition(),
+                          m_backRight.getPosition()
+    });
+    if(Constants.APRIL_AVAILABLE){
+      var res = camera.getLatestResult();
+      if (res.hasTargets()) {
+        var imageCaptureTime = res.getTimestampSeconds();
+        //var camToTargetTrans = res.getBestTarget().getBestCameraToTarget();
+        //var camPose = aprilTagFieldLayout.getTagPose(4).transformBy(camToTargetTrans.inverse());
+        m_poseEstimator.addVisionMeasurement(
+                  aprilSubsystem.camPose().getReferencePose().toPose2d(), imageCaptureTime);
+        SmartDashboard.putNumber("Robot X Pos", m_poseEstimator.getEstimatedPosition().getX());
+        SmartDashboard.putNumber("Robot Y Pos", m_poseEstimator.getEstimatedPosition().getY());
           }
+    }
   }
   
 
@@ -148,8 +149,8 @@ public class Drivetrain extends SubsystemBase {
   static final boolean SPEWDRIVE = false;
   @Override
   public void periodic() {
-   if(SPEWDRIVE) {
     update();
+    if(SPEWDRIVE) {
     for (SwerveModule module : modules) {
       SmartDashboard.putNumber(
           module.getName() + "RTurn",
@@ -250,9 +251,9 @@ public class Drivetrain extends SubsystemBase {
     return DriveConstants.kDriveKinematics.toSwerveModuleStates(speeds);
   }
   public Pose2d getPose() {
-    updateOdometry();
+    //updateOdometry();
     System.out.println("robot Pose = "+m_odometry.getPoseMeters().toString());
-    return m_odometry.getPoseMeters();
+    return m_poseEstimator.getEstimatedPosition();
   }
 
   public void resetOdometry(Pose2d pose) {

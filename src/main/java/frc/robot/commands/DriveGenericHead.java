@@ -46,9 +46,9 @@ public class DriveGenericHead extends Command {
     this.stopwhendone = stopwhendone;
     controller = new PIDController(0, 0, 0);  // set p in init
     variableP=2;
-    headingController = new PIDController(1./Math.abs(heading-driver.getHeading().getDegrees()), 0., 0.);
+    headingController = new PIDController(0.2/Math.abs(heading-driver.getHeading().getDegrees()), 0., 0.);
     headingController.enableContinuousInput(-180., 180.);
-    headingController.setTolerance(3.);
+    //headingController.setTolerance(2.);
   }
 
   /** Drive a given distance in any direction in field coordinates.
@@ -75,7 +75,7 @@ public class DriveGenericHead extends Command {
   public void initialize() {
     //driver.makemefalse();
     // encS = driver.returnEncode()[2];
-    dist = Math.sqrt(xdist*xdist+ydist*ydist);
+    dist = Math.sqrt(xdist*xdist+ydist*ydist) +0.001;
     // target = encS+dist;
     tol = 0.04*dist;
     controller.setP(variableP/dist);
@@ -94,6 +94,8 @@ public class DriveGenericHead extends Command {
     double whereiam = PhotonUtils.getDistanceToPose(currentpose, startpose);
     double speed = controller.calculate(whereiam, dist);
     double omega = headingController.calculate(driver.getHeading().getDegrees(), target);
+    SmartDashboard.putNumber("Heading", driver.getHeading().getDegrees());
+    SmartDashboard.putNumber("target", target);
     SmartDashboard.putNumber("Omega", omega);
     SmartDashboard.putNumber("Controller error", headingController.getPositionError());
     SmartDashboard.putString("Position", driver.getPose().toString());
