@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.ArmConstants;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Handler;
@@ -30,9 +31,11 @@ public class AutoShootAndMove extends SequentialCommandGroup {
                       new Speaker(handler),
                       new WaitCommand(3.5)
                           ),
-                Commands.race(
-                      new DriveGeneric(drive, xdist, ydist),
-                      new WaitCommand(2)
+                Commands.parallel(
+                      new WaitCommand(1).
+                      andThen(new DriveGenericHead(drive, xdist, ydist, DriveConstants.kRotateToZero)),
+                      new ArmRun(arm, ArmConstants.kElbowPreFloow, ArmConstants.kWristPreFloor, 1).
+                        andThen(new ArmRun(arm, ArmConstants.kElbowFloor, ArmConstants.kWristFloor))
                           )
     );  // TODO this process takes 8 seconds; must be quicker to shoot two notes in auto
   }

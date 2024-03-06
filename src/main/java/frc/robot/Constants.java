@@ -214,6 +214,7 @@ public final class Constants {
 
     // Units are radians per second
     public static final double kMaxRotationalVelocity = 5.0; // 2023 Competion Robot // max 5.0
+    public static final double kRotateToZero = 2;
 
 
     }

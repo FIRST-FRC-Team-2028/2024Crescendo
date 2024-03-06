@@ -34,18 +34,20 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.Constants.Stations;
 import frc.robot.commands.Amp;
 import frc.robot.commands.ArmRun;
 import frc.robot.commands.AutoShoot;
 import frc.robot.commands.AutoShootAndMove;
 import frc.robot.commands.Climb;
 import frc.robot.commands.DriveGeneric;
-import frc.robot.commands.DriveGenericHeadTest;
+//import frc.robot.commands.DriveGenericHeadTest;
 import frc.robot.commands.ElbowDown;
 //import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.ElbowUp;
 import frc.robot.commands.ExtendClimber;
 import frc.robot.commands.InHandler;
+import frc.robot.commands.ShootMovePickup;
 import frc.robot.commands.Speaker;
 import frc.robot.commands.Spit_Back;
 //import frc.robot.commands.DriveGeneric;
@@ -121,15 +123,16 @@ public class RobotContainer {
                 m_chooser = new SendableChooser<Command>();
                 m_chooser.setDefaultOption("DoNothing", new Wait(1));
                 m_chooser.addOption("Travel Test", getAutonomousCommand());
-                m_chooser.addOption("Shoot And Move Center", new AutoShootAndMove(armSubsystem, swerveSubsystem, handlerSubsystem));
+                m_chooser.addOption("Shoot And Move Center", new ShootMovePickup(handlerSubsystem, swerveSubsystem, armSubsystem, Stations.Center));
                 m_chooser.addOption("Auto Shoot", new AutoShoot(armSubsystem, handlerSubsystem));
                 m_chooser.addOption("Shoot and Move Right", new InstantCommand(() -> gyro.setYaw(-60))
-                        .andThen(new AutoShootAndMove(armSubsystem, swerveSubsystem, handlerSubsystem)));
+                        .andThen(new ShootMovePickup(handlerSubsystem, swerveSubsystem, armSubsystem, Stations.Right)));
                 m_chooser.addOption("Shoot and Move Left", new InstantCommand(() -> gyro.setYaw(60))
-                        .andThen(new AutoShootAndMove(armSubsystem, swerveSubsystem, handlerSubsystem)));
+                        .andThen(new ShootMovePickup(handlerSubsystem, swerveSubsystem, armSubsystem, Stations.Left)));
+        
                 //m_chooser.addOption("Shoot, Move, pickup", );
-                m_chooser.addOption("HeadingTest", new InstantCommand(()-> gyro.setYaw(60))
-                        .andThen(new DriveGenericHeadTest(swerveSubsystem, armSubsystem, handlerSubsystem)));
+                /*m_chooser.addOption("HeadingTest", new InstantCommand(()-> gyro.setYaw(60))
+                        .andThen(new DriveGenericHeadTest(swerveSubsystem, armSubsystem, handlerSubsystem)));*/
                 SmartDashboard.putData(m_chooser);
         }
     

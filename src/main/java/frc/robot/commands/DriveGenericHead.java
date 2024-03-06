@@ -98,7 +98,7 @@ public class DriveGenericHead extends Command {
     SmartDashboard.putNumber("Omega", omega);
     SmartDashboard.putNumber("Controller error", headingController.getPositionError());
     SmartDashboard.putString("Position", driver.getPose().toString());
-    driver.driveit(speed*xdist/dist, speed*ydist/dist, omega, true);
+    driver.driveit(-speed*xdist/dist, -speed*ydist/dist, omega, true);
 
     SmartDashboard.putString("Error", controller.getPositionError() + " < " + tol);
     SmartDashboard.putString("CurrentPose", currentpose.toString());

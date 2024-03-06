@@ -305,7 +305,7 @@ public class Robot extends TimedRobot {
         // Gets rid of all button bindings
         
         //if (arm == null) arm = m_robotContainer.getArm();
-        //arm.setBrakeMode();
+        arm.setCoastMode();
         // immediately move the arm to the floor and end the PID control
         /*(new ArmRun(arm, ArmConstants.kElbowPreFloow, ArmConstants.kWristPreFloor, 2)
             .andThen(new ArmRun(arm, Constants.ArmConstants.kElbowFloor, Constants.ArmConstants.kWristFloor, .25))
