@@ -35,11 +35,7 @@ public class ShootMovePickup extends SequentialCommandGroup {
                         Constants.RobotConstants.robotLength*.5*Math.cos(Math.toRadians(Stations.Left.heading)));
       ydist = Constants.FieldConstants.StageY+FieldConstants.noteDistance - 
                        (Constants.Stations.Left.y+Constants.RobotConstants.robotLength*.5*Math.sin(Math.toRadians(60.)));
-    }
-    //else if (station ==Stations.Right){
-
-    //}
-    else {
+    }else {  // station Right
       xdist = Constants.FieldConstants.StageX-Constants.FieldConstants.noteRadius-Constants.RobotConstants.robotLength*.5 -
                        (Constants.Stations.Right.x +
                         Constants.RobotConstants.robotLength*.5*Math.cos(Math.toRadians(Stations.Right.heading)));
@@ -47,6 +43,7 @@ public class ShootMovePickup extends SequentialCommandGroup {
                        (Constants.Stations.Right.y-Constants.RobotConstants.robotLength*.5*Math.sin(Math.toRadians(60.)));}
     
     // Use addRequirements() here to declare subsystem dependencies.
+    System.out.println("xdist, ydist = "+xdist+" "+ydist);
     addCommands(new AutoShootAndMove(arm, drivetrain, handler, 
                       xdist, 
                     ydist),   // TODO  are these distances in the correct units?

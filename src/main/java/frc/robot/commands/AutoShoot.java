@@ -33,7 +33,7 @@ public class AutoShoot extends SequentialCommandGroup {
                           )
                           //new DriveGeneric(drive, 2, 0)
     );
-
+    // TODO 5.5 seconds to shoot
 
 
   }
