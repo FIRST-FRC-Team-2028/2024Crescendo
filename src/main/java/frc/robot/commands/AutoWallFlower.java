@@ -21,10 +21,13 @@ import frc.robot.subsystems.Drivetrain;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class AutoWallFlower extends SequentialCommandGroup {
   Drivetrain drive;
-  /** If we are allied with a robot that wants to do it all, we can just shoot our preloaded note and then move out of the way.
+  /** If we are allied with a robot that wants to do it all, 
+   *    we can just shoot our preloaded note and then move out of the way.
    *  A good place to move to prepare for Teleop would be the field centerline.
-   *  If the robot is initially positioned at the side of the Speaker near the Amp, there is an unobstructed path to midfield.
+   *  If the robot is initially positioned at the side of the Speaker near the Amp, 
+   *     there is an unobstructed path to midfield.
    *  Otherwise a slightly more complicated trajectory is necessary.
+   *  This command presumes we have shot and waited some appropriate time; it just drives.
    */
   public AutoWallFlower(Drivetrain drive, Stations station) {
     this.drive = drive;
@@ -32,9 +35,12 @@ public class AutoWallFlower extends SequentialCommandGroup {
     
     if ((station == Stations.Right && ally.get() == Alliance.Red) ||
         (station == Stations.Left && ally.get() == Alliance.Blue)) {
-        addCommands(new DriveGeneric(drive, Constants.FieldConstants.Halflength-Constants.RobotConstants.robotLength*1.5 -
-                                            station.x+Constants.RobotConstants.robotLength*.5*Math.cos(Math.toRadians(station.heading))
-                                          , 0));
+        addCommands(
+	    //new DriveGeneric(drive, (xto - xfrom), (yto - yfrom))
+	      new DriveGeneric(drive, FieldConstants.Halflength-RobotConstants.robotLength*1.5 -
+                                            (station.x+RobotConstants.robotLength*.5*Math.cos(Math.toRadians(station.heading)))
+                                    , 0.)
+	      );
     } else if (station == Stations.Center) {
       if (ally.get() == Alliance.Red) {
         addCommands(
@@ -42,30 +48,36 @@ public class AutoWallFlower extends SequentialCommandGroup {
                                     , FieldConstants.Speaker2StageY + FieldConstants.StageWidth*.5 + RobotConstants.robotLength*1.5),
               new DriveGeneric(drive, FieldConstants.Halflength-RobotConstants.robotLength*1.5 -
                                             (station.x+RobotConstants.robotLength+Units.inchesToMeters(6.))
-                                    , 0));
+                                    , 0.)
+	      );
       }else{
         addCommands(
               new DriveGeneric(drive, Units.inchesToMeters(6.), 
                                       -FieldConstants.Speaker2StageY - FieldConstants.StageWidth*.5 - RobotConstants.robotLength*1.5),
               new DriveGeneric(drive, FieldConstants.Halflength-RobotConstants.robotLength*1.5 -
                                       station.x+RobotConstants.robotLength+Units.inchesToMeters(6.)
-                                    , 0));
+                                    , 0.)
+	      );
       }
     } else {   // from the side nearer the Source
       if (ally.get() == Alliance.Red) {
-        addCommands(new DriveGeneric(drive, 0
-                                          , FieldConstants.Speaker2StageY + FieldConstants.StageWidth*.5 + RobotConstants.robotLength*1.5
+        addCommands(
+	      new DriveGeneric(drive, 0.
+                                    , FieldConstants.Speaker2StageY + FieldConstants.StageWidth*.5 + RobotConstants.robotLength*1.5
                                              - (station.y+RobotConstants.robotLength*.5)),
-                    new DriveGeneric(drive, FieldConstants.Halflength-RobotConstants.robotLength*1.5 -
+              new DriveGeneric(drive, FieldConstants.Halflength-RobotConstants.robotLength*1.5 -
                                             (station.y+RobotConstants.robotLength*.5)
-                                          , 0));
+                                    , 0.)
+	      );
       }else{
-        addCommands(new DriveGeneric(drive, 0
-                                          , -FieldConstants.Speaker2StageY - FieldConstants.StageWidth*.5 - RobotConstants.robotLength*1.5
+        addCommands(
+	      new DriveGeneric(drive, 0.
+                                    , -FieldConstants.Speaker2StageY - FieldConstants.StageWidth*.5 - RobotConstants.robotLength*1.5
                                              + (station.y+RobotConstants.robotLength*.5)),
-                    new DriveGeneric(drive, FieldConstants.Halflength-RobotConstants.robotLength*1.5 -
+	      new DriveGeneric(drive, FieldConstants.Halflength-RobotConstants.robotLength*1.5 -
                                             (station.y+RobotConstants.robotLength*.5)
-                                          , 0));
+                                    , 0.)
+	      );
       }
     }
         
