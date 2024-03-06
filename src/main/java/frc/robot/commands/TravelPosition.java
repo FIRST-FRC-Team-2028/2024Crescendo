@@ -26,7 +26,11 @@ public class TravelPosition extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    arm.run(arm.getWristPos(), ArmConstants.elbowTravel);
+    if(arm.amIDucked()){
+      arm.run(arm.getWristPos(), ArmConstants.elbowDuck);
+    } else {
+      arm.run(arm.getWristPos(), ArmConstants.elbowTravel);
+    }
     timer.start();
   }
 
@@ -38,7 +42,12 @@ public class TravelPosition extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    arm.positionWrist(ArmConstants.wristTravel);
+    
+    if(arm.amIDucked()){
+      arm.positionWrist(ArmConstants.wristDuck);
+    } else{
+      arm.positionWrist(ArmConstants.wristTravel);
+    }
     timer.stop();
     timer.reset();
   }
@@ -46,7 +55,7 @@ public class TravelPosition extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return timer.hasElapsed(1);
+    return timer.hasElapsed(0.75);
 
   }
 }

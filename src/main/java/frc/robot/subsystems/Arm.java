@@ -45,6 +45,7 @@ public class Arm extends SubsystemBase {
   boolean IamDone;
   boolean armSafety = true;   // true for arm motion enabled
   boolean armSafetyw = true;   // true for wrist motion enabled
+  boolean amIDucked = false;
   
   /** The Arm:
    *    o moves the handler (relative to the robot)
@@ -227,7 +228,12 @@ public class Arm extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-
+  public boolean amIDucked() {
+    return amIDucked;
+  }
+  public void IamDucked(boolean ducked) {
+    amIDucked = ducked;
+  }
 
   /** Allow the arm to move  (after safety shutdown)*/
   public void rearmArm() {

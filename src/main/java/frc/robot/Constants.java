@@ -75,6 +75,7 @@ public final class Constants {
     public static final double kDriveVelocityConversionFactor =
         kDrivePositionConversionFactor / 60.0;
     public static final double kRampRate = 1;
+    public static final double kRampRateT = 0.75;
   }
 
     public static final class DriveConstants {
@@ -248,11 +249,14 @@ public final class Constants {
       public static final double elbowSweetSpot = 77.;  
       public static final double wristSweetSpot = 6.4;
       // arm and wrist position to drive under stage
-      public static final double elbowDuck = 68.;  
-      public static final double wristDuck = -1;
+      public static final double elbowDuck = 10.;  
+      public static final double wristDuck = 80;
       // arm and wrist position to drive under stage
       public static final double elbowTravel = 15;  //57.;  
       public static final double wristTravel = 50;  //0;
+      // arm and wrist position when getting hit
+      public static final double elbowHitPosition = 68;
+      public static final double wristHitPosition = -1;
 
       //Tolerances
       public static final double elbowTolerance = .1;
