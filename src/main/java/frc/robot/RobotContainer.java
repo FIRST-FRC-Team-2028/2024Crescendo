@@ -181,17 +181,20 @@ public class RobotContainer {
                 //new JoystickButton(buttonBox1, OIConstants.kgetAprilTagButton).
                         //onTrue(new GetAprilTag(camera));
         }*/
-        new JoystickButton(driverJoytick, OIConstants.kElbowRearmButton).
-                onTrue(Commands.runOnce( armSubsystem::rearmArm, armSubsystem));
+        /*new JoystickButton(driverJoytick, OIConstants.kElbowRearmButton).
+                onTrue(Commands.runOnce( armSubsystem::rearmArm, armSubsystem));*/
         new JoystickButton(driverJoytick, Constants.OIConstants.kArmDuck).
                 onTrue(new ArmRun(armSubsystem, ArmConstants.elbowDuck, ArmConstants.wristDuck, 0.25).
                 andThen(new InstantCommand(() -> armSubsystem.IamDucked(true))));
-
+        
+        
+        new JoystickButton(mechJoytick1, OIConstants.kDuck).
+                toggleOnTrue(new InstantCommand(() -> armSubsystem.Toggleducked()));
         /*new JoystickButton(mechJoytick1, 3).
                 whileTrue(new WristUp(armSubsystem,.2));*/
         new JoystickButton(mechJoytick1, OIConstants.kArmTravel).
-                onTrue(new TravelPosition(armSubsystem)
-                .andThen(new InstantCommand(()-> armSubsystem.IamDucked(false))));
+                onTrue(new TravelPosition(armSubsystem));
+                //.andThen(new InstantCommand(()-> armSubsystem.IamDucked(false))));
         new JoystickButton(mechJoytick1, OIConstants.kArmAmp).
                 onTrue(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowAmp, ArmConstants.kWristAmp, .25)
                 );
@@ -233,9 +236,9 @@ public class RobotContainer {
         new JoystickButton(mechJoytick1, Constants.OIConstants.kArmSource).
                 onTrue(new ArmRun(armSubsystem, ArmConstants.kElbowSource, ArmConstants.kWristSource, 0.25));
         
-        new JoystickButton(mechJoytick2, OIConstants.kNudgeElbowUp).
+        new JoystickButton(mechJoytick1, OIConstants.kNudgeElbowUp).
                 onTrue(new InstantCommand(() -> armSubsystem.retargetElbow(ArmConstants.elbowNudgeAmount)));
-        new JoystickButton(mechJoytick2, OIConstants.kNudgeElbowDown).
+        new JoystickButton(mechJoytick1, OIConstants.kNudgeElbowDown).
                 onTrue(new InstantCommand(() -> armSubsystem.retargetElbow(-ArmConstants.elbowNudgeAmount)));
         new JoystickButton(mechJoytick2, OIConstants.kNudgeWristUp).
                 onTrue(new InstantCommand(() -> armSubsystem.retargetWrist(ArmConstants.elbowWristAmount)));
@@ -243,9 +246,9 @@ public class RobotContainer {
                 onTrue(new InstantCommand(() -> armSubsystem.retargetWrist(-ArmConstants.elbowWristAmount)));
 
         if (Constants.CLIMB_AVAILABLE){
-                new JoystickButton(mechJoytick1, OIConstants.kClimberExtend).
+                new JoystickButton(mechJoytick2, OIConstants.kClimberExtend).
                         onTrue(new ExtendClimber(climber));
-                new JoystickButton(mechJoytick1, OIConstants.kClimberRetract).
+                new JoystickButton(mechJoytick2, OIConstants.kClimberRetract).
                         onTrue(new Climb(climber, gyro, armSubsystem));
         }
      }

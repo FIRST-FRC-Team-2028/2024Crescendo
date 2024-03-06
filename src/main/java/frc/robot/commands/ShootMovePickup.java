@@ -59,7 +59,10 @@ public class ShootMovePickup extends SequentialCommandGroup {
                       new InHandler(handler),
                       new WaitCommand(1) //can't go in forever
                     ).andThen(new Spit_Back(handler)),
-                    new DriveGeneric(drivetrain, 0.5, 0)
+                    Commands.race(
+                      new WaitCommand(1),
+                      new DriveGeneric(drivetrain, 0.5, 0)
+                    )
                   ),
                   Commands.parallel(
                     new DriveGenericHead(drivetrain, -xdist, -ydist, heading),

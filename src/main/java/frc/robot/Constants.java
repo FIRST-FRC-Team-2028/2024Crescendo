@@ -321,7 +321,7 @@ public final class Constants {
         public static final double ExtendSpeed = 0.5;
         public static final double ExtendPosition = 9.2;
         public static final double RetractPosition = 0;
-        public static final float extendLimit = 9.2f;
+        public static final float extendLimit = 10.1f;
         public static final float retractLimit = 0.f;
         public static final double encoderConversionFactor = 4.0625/(522-398);
     }

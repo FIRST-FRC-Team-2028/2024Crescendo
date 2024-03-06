@@ -32,7 +32,7 @@ public class AutoShootAndMove extends SequentialCommandGroup {
                       new WaitCommand(3.5)
                           ),
                 Commands.parallel(
-                      new WaitCommand(1).
+                      new WaitCommand(1.25).
                       andThen(new DriveGenericHead(drive, xdist, ydist, DriveConstants.kRotateToZero)),
                       new ArmRun(arm, ArmConstants.kElbowPreFloow, ArmConstants.kWristPreFloor, 1).
                         andThen(new ArmRun(arm, ArmConstants.kElbowFloor, ArmConstants.kWristFloor))

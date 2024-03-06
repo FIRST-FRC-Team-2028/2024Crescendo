@@ -234,6 +234,9 @@ public class Arm extends SubsystemBase {
   public void IamDucked(boolean ducked) {
     amIDucked = ducked;
   }
+  public void Toggleducked() {
+    amIDucked = !amIDucked;
+  }
 
   /** Allow the arm to move  (after safety shutdown)*/
   public void rearmArm() {
