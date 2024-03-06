@@ -1,6 +1,6 @@
 package frc.robot;
 
-import com.revrobotics.AbsoluteEncoder;
+//import com.revrobotics.AbsoluteEncoder;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -431,6 +431,8 @@ public final class Constants {
       public static final double StageX = Units.inchesToMeters(121.); //inches
       public static final double StageY = 0.;
       public static final double noteDistance = Units.inchesToMeters(57.);//inches
+      public static final int Speaker2StageY = 0;
+    public static final double StageWidth = 0;
     }
 
     public static enum Stations {

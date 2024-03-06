@@ -15,7 +15,7 @@ public class Wait extends Command {
     // Use addRequirements() here to declare subsystem dependencies.
     this.msecs = msecs;
     timer = new Timer();
-    long randNum = Math.floorMod(System.currentTimeMillis(),1000);
+    //long randNum = Math.floorMod(System.currentTimeMillis(),1000);
   }
 
   // Called when the command is initially scheduled.

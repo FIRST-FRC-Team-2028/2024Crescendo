@@ -13,12 +13,7 @@ import com.ctre.phoenix.motorcontrol.can.MotControllerJNI;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.fasterxml.jackson.databind.deser.std.ContainerDeserializerBase;
 //import com.ctre.phoenix6.hardware.TalonFX;
-import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorSensorV3;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkPIDController;
-import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -44,12 +39,7 @@ public class Handler extends SubsystemBase {
   private final DigitalInput sensord;
   boolean doIHaveIt;
 
-  //private final RelativeEncoder low_encoder;
-  //private final RelativeEncoder high_encoder;
-
-  //private final SparkPIDController low_PidController;
-  //private final SparkPIDController high_PidController;
-  /** Creates a new Handlerhandler. */
+  /** Creates a new Handler. */
   public Handler() {
     low_side = new TalonSRX(Constants.CANIDs.low_side);
     high_side = new TalonSRX(Constants.CANIDs.high_side);
