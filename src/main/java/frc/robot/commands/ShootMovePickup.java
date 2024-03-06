@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
+import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.Stations;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
@@ -29,12 +30,21 @@ public class ShootMovePickup extends SequentialCommandGroup {
       ydist = 0.;
     }
     else if (station ==Stations.Left){
-      xdist =0; //Constants.FieldConstants.StageX-Constants.FieldConstants.noteRadius -
-                 //     (Constants.FieldConstants.SpeakerfaceX+Constants.RobotConstants.robotLength+Constants.RobotConstants.handlerThickness);
-      ydist = 0.;
+      xdist = Constants.FieldConstants.StageX-Constants.FieldConstants.noteRadius-Constants.RobotConstants.robotLength*.5 -
+                       (Constants.Stations.Left.x +
+                        Constants.RobotConstants.robotLength*.5*Math.cos(Math.toRadians(Stations.Left.heading)));
+      ydist = Constants.FieldConstants.StageY+FieldConstants.noteDistance - 
+                       (Constants.Stations.Left.y+Constants.RobotConstants.robotLength*.5*Math.cos(Math.toRadians(60.)));
     }
-    else {xdist = 0;
-    ydist=0.;}
+    //else if (station ==Stations.Right){
+
+    //}
+    else {
+      xdist = Constants.FieldConstants.StageX-Constants.FieldConstants.noteRadius-Constants.RobotConstants.robotLength*.5 -
+                       (Constants.Stations.Right.x +
+                        Constants.RobotConstants.robotLength*.5*Math.cos(Math.toRadians(Stations.Right.heading)));
+      ydist = Constants.FieldConstants.StageY-FieldConstants.noteDistance - 
+                       (Constants.Stations.Right.y-Constants.RobotConstants.robotLength*.5*Math.cos(Math.toRadians(60.)));}
     
     // Use addRequirements() here to declare subsystem dependencies.
     addCommands(new AutoShootAndMove(arm, drivetrain, handler, 

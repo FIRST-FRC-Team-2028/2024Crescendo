@@ -418,23 +418,25 @@ public final class Constants {
       public static final double xcg = Units.inchesToMeters(0);
       public static final double kNominalVoltage = 12.0;
       public static final double kPeriod = TimedRobot.kDefaultPeriod;
-      public static final double robotLength = 34.5; //inches
-      public static final double robotWidth = 29.25; //inches
-      public static final double handlerThickness = 6.; //inches
+      public static final double robotLength = Units.inchesToMeters(34.5); //inches
+      public static final double robotWidth = Units.inchesToMeters(29.25) ; //inches
+      public static final double handlerThickness = Units.inchesToMeters(6.); //inches
     }
 
     public static final class FieldConstants {
       public static final double leaveWing = Units.inchesToMeters(0.);  // distance from Speaker to farthest edge of Wing
       public static final double Halflength = Units.feetToMeters(11);
       public static final double SpeakerfaceX = Units.inchesToMeters(36.37); //inches
-      public static final double noteRadius = 7.; //inches
-      public static final double StageX = 121.; //inches
+      public static final double noteRadius = Units.inchesToMeters(7.); //inches
+      public static final double StageX = Units.inchesToMeters(121.); //inches
+      public static final double StageY = 0.;
+      public static final double noteDistance = Units.inchesToMeters(57.);//inches
     }
 
     public static enum Stations {
-      Right(0.,0.,60.), 
+      Right(FieldConstants.SpeakerfaceX*0.5,FieldConstants.SpeakerfaceX*0.866,60.), 
       Center(FieldConstants.SpeakerfaceX,0.,0.), 
-      Left(0.,0.,-60.);
+      Left(FieldConstants.SpeakerfaceX*0.5,-FieldConstants.SpeakerfaceX*0.866,-60.);
 
       public final double x;
       public final double y;
