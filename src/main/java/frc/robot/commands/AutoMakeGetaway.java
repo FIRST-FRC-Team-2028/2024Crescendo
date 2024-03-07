@@ -34,6 +34,9 @@ import frc.robot.subsystems.Drivetrain;
        *     there is an unobstructed path to midfield.
        *  Otherwise a slightly more complicated trajectory is necessary.
        *  This command presumes we have shot and waited some appropriate time; it just drives.
+       * 
+       * @param station  the starting point
+       * @param drive    the swerve subsystem
        */
       public Command getAwayCommand(Stations station, Drivetrain drive) {
 	  Pose2d initial, destination;
