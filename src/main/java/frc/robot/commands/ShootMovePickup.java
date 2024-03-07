@@ -26,19 +26,26 @@ public class ShootMovePickup extends SequentialCommandGroup {
    *  move to near note,
    *  and picks up a note. */
   public ShootMovePickup(Handler handler, Drivetrain drivetrain, Arm arm, Stations station) {
+    String xp,yp;
     double xdist, ydist, heading;
     if (station == Stations.Center) {
       xdist = Constants.FieldConstants.StageX-Constants.FieldConstants.noteRadius -
                       (Constants.FieldConstants.SpeakerfaceX+Constants.RobotConstants.robotLength+Constants.RobotConstants.handlerThickness);
       ydist = 0.;
-      heading = 0;
+      heading = 2;
+      xp="";
+      yp="";
     }
     else if (station ==Stations.Left){
       xdist = Constants.FieldConstants.StageX-Constants.FieldConstants.noteRadius-Constants.RobotConstants.robotLength*.5 -
                        (Constants.Stations.Left.x +
                         Constants.RobotConstants.robotLength*.5*Math.cos(Math.toRadians(Stations.Left.heading)));
+      xp=String.format("to-from = %f - 5%f", Constants.FieldConstants.StageX-Constants.FieldConstants.noteRadius-Constants.RobotConstants.robotLength*.5,
+                  Constants.Stations.Left.x +Constants.RobotConstants.robotLength*.5*Math.cos(Math.toRadians(Stations.Left.heading)));
       ydist = Constants.FieldConstants.StageY+FieldConstants.noteDistance - 
                        (Constants.Stations.Left.y+Constants.RobotConstants.robotLength*.5*Math.sin(Math.toRadians(60.)));
+      yp=String.format("to-from = %f,%f", Constants.FieldConstants.StageY+FieldConstants.noteDistance,
+                           Constants.Stations.Left.y+Constants.RobotConstants.robotLength*.5*Math.sin(Math.toRadians(60.)) );
       heading = Stations.Left.heading;
     }else {  // station Right
       xdist = Constants.FieldConstants.StageX-Constants.FieldConstants.noteRadius-Constants.RobotConstants.robotLength*.5 -
@@ -46,12 +53,20 @@ public class ShootMovePickup extends SequentialCommandGroup {
                         Constants.RobotConstants.robotLength*.5*Math.cos(Math.toRadians(Stations.Right.heading)));
       ydist = Constants.FieldConstants.StageY-FieldConstants.noteDistance - 
                        (Constants.Stations.Right.y-Constants.RobotConstants.robotLength*.5*Math.sin(Math.toRadians(60.)));
-      heading = Stations.Right.heading;                  
+      heading = Stations.Right.heading;  
+      xp="";
+      yp="";
+                      
     }
     
     // Use addRequirements() here to declare subsystem dependencies.
-    System.out.println("xdist, ydist = "+xdist+" "+ydist);
-    addCommands(new AutoShootAndMove(arm, drivetrain, handler, 
+    
+    addCommands( new InstantCommand(()->{
+                                         System.out.println("xdist: = "+xp+"="+xdist);
+                                         System.out.println("ydist: = "+yp+"="+ydist);
+                                         
+                                         }),
+                    new AutoShootAndMove(arm, drivetrain, handler, 
                       xdist, 
                     ydist),   // TODO  are these distances in the correct units?
                   Commands.parallel(
@@ -65,7 +80,10 @@ public class ShootMovePickup extends SequentialCommandGroup {
                     )
                   ),
                   Commands.parallel(
-                    new DriveGenericHead(drivetrain, -xdist, -ydist, heading),
+                    Commands.race(
+                      new DriveGenericHead(drivetrain, -xdist-0.4, -ydist, heading),
+                      new WaitCommand(2)
+                    ),
                     new TravelPosition(arm).
                     andThen(new ArmRun(arm, ArmConstants.kElbowSpeaker, ArmConstants.kWristSpeaker)).
                     andThen(new InstantCommand(()-> arm.rearmArm()))
