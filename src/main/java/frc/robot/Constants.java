@@ -364,8 +364,6 @@ public final class Constants {
                 new TrapezoidProfile.Constraints(
                         kMaxAngularSpeedRadiansPerSecond,
                         kMaxAngularAccelerationRadiansPerSecondSquared);
-        public static final double kPBalancer = .6;  // sin -> Vbus
-        public static final double Balancemultiplier = .55;
     }
 
     public static final class OIConstants {
@@ -379,9 +377,9 @@ public final class Constants {
         public static final int kDriverRotAxis                = 4;
         public static final int fineControlAxis               = 2;
         public static final int kDriverResetGyroButtonIdx     = 1; // driverJoystick button A
+        public static final int kArmDuck                      = 2; // driverJoystick B button
         public static final int kDriverResetOdometryButtonIdx = 3; // driverJoystick button X
         public static final int kDriverRobotOrientedButtonIdx = 5; // driverJoystick button left-bumper
-        public static final int kArmDuck                      = 2; // driverJoystick B button
 
         //Mech contoller buttons left region
         public static final int kArmTravel                    = 1;
@@ -407,24 +405,19 @@ public final class Constants {
         public static final int kClimberRetract               = 8;
         public static final int kShootSequenceButton          = 10;
         
-       
-       
-        
-
-        
         public static final double kDeadband = 0.075;
         //public static final int kRetract = 1;
 
     }
 
     public static final class CamConstant {
-      public static final double camera_Height_Meters = Units.inchesToMeters(7);
-      public static final double target_Height_Meters = Units.inchesToMeters(78);
+      public static final double camera_Height_Meters = Units.inchesToMeters(7.);
+      public static final double target_Height_Meters = Units.inchesToMeters(78.);
 
     }
 
     public static final class RobotConstants {
-      public static final double xcg = Units.inchesToMeters(0);
+      public static final double xcg = Units.inchesToMeters(0);  // from the geometric centroid
       public static final double kNominalVoltage = 12.0;
       public static final double kPeriod = TimedRobot.kDefaultPeriod;
       public static final double robotLength = Units.inchesToMeters(34.5); //inches
@@ -433,21 +426,21 @@ public final class Constants {
     }
 
     public static final class FieldConstants {
-      public static final double leaveWing = Units.inchesToMeters(0.);  // distance from Speaker to farthest edge of Wing
-      public static final double Halflength = Units.feetToMeters(11);
-      public static final double SpeakerfaceX = Units.inchesToMeters(36.37); //inches
-      public static final double noteRadius = Units.inchesToMeters(7.); //inches
-      public static final double StageX = Units.inchesToMeters(121.); //inches
-      public static final double StageY = 0.;
-      public static final double noteDistance = Units.inchesToMeters(57.);//inches
-      public static final int Speaker2StageY = 0;
-    public static final double StageWidth = 0;
+      public static final double leaveWing = Units.inchesToMeters(231.2);    // distance to farthest edge of Wing
+      public static final double Halflength = Units.inchesToMeters(250.5+76.1);     // half length of field
+      public static final double SpeakerfaceX = Units.inchesToMeters(36.37); // radius of the faces of the speaker
+      public static final double noteRadius = Units.inchesToMeters(7.);
+      public static final double StageX = Units.inchesToMeters(121.);        // location of the corner of the stage
+      public static final double StageY = 0.;                                       // nearest the speaker
+      public static final double noteDistance = Units.inchesToMeters(57.);   // distance between notes in wing
+      public static final double Speaker2StageY = Units.inchesToMeters(57.); // distance from center face of speaker to nearest Stage
+      public static final double StageWidth = Units.inchesToMeters(122.62);
     }
 
-    public static enum Stations {
-      Right(FieldConstants.SpeakerfaceX*0.5,FieldConstants.SpeakerfaceX*0.866,60.), 
-      Center(FieldConstants.SpeakerfaceX,0.,0.), 
-      Left(FieldConstants.SpeakerfaceX*0.5,-FieldConstants.SpeakerfaceX*0.866,-60.);
+    public static enum Stations {  // center of faces of the speaker base (subwoofer?)
+      Right (FieldConstants.SpeakerfaceX*0.5, FieldConstants.SpeakerfaceX*0.866, 60.), 
+      Center(FieldConstants.SpeakerfaceX    , 0.,  0.), 
+      Left  (FieldConstants.SpeakerfaceX*0.5, -FieldConstants.SpeakerfaceX*0.866, -60.);
 
       public final double x;
       public final double y;
