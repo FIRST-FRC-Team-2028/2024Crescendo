@@ -269,6 +269,12 @@ public class Arm extends SubsystemBase {
     latestTargetW = target;
   }
 
+  public void switchtoFineNudge(){
+    fineNudge = true;
+  }
+  public void switchtoStandardNudge(){
+    fineNudge = false;
+  }
 
   /** Adjust elbow PID target 
    * @see positionArm
@@ -278,7 +284,7 @@ public class Arm extends SubsystemBase {
     elbow_PidController.setReference(latestTarget, CANSparkMax.ControlType.kPosition);
   }
   /** Adjust elbow target
-   * @param Adjustment 1 for standard, 2 for Fine
+   * @param Adjustment 1 up, -1 down
    */
   public void retargetElbow(int Adjustment) {
      //latestTarget += Adjustment;
@@ -291,6 +297,13 @@ public class Arm extends SubsystemBase {
   */
   public void retargetWrist(double Adjustment) {
     latestTargetW += Adjustment;
+    wrist_PidController.setReference(latestTargetW, CANSparkMax.ControlType.kPosition);
+  }
+  /** Adjust wrist target
+   * @param Adjustment 1 up, -1 down
+   */
+  public void retargetWrist(int Adjustment) {
+    latestTargetW += (fineNudge?Constants.ArmConstants.wristNudgeAmountFine:Constants.ArmConstants.elbowWristAmount)*Math.signum(Adjustment);
     wrist_PidController.setReference(latestTargetW, CANSparkMax.ControlType.kPosition);
   }
   

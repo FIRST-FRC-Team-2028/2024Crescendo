@@ -206,7 +206,7 @@ public class RobotContainer {
                 );
         new JoystickButton(mechJoytick1, OIConstants.kArmSubwoofer).
                 onTrue(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowSpeaker, ArmConstants.kWristSpeaker, .25)
-                .andThen(new InstantCommand(() -> this.rumble()))
+                //.andThen(new InstantCommand(() -> this.rumble()))
                 );
 
         if (Constants.COLOR_AVALIBLE){
@@ -242,14 +242,25 @@ public class RobotContainer {
         new JoystickButton(mechJoytick1, Constants.OIConstants.kArmSource).
                 onTrue(new ArmRun(armSubsystem, ArmConstants.kElbowSource, ArmConstants.kWristSource, 0.25));
         
+        /*
+        new JoystickButton(mechJoytick1, OIConstants.kSwitch).
+                onTrue(new InstantCommand(() -> armSubsystem.switchtoFineNudge()));
+        new JoystickButton(mechJoytick1, OIConstants.kSwitch).
+                onFalse(new InstantCommand(() -> armSubsystem.switchtoStandardNudge()));
+        // and switch to the retargetElbow(int) and retargetWrist(int) methods
+        */
         new JoystickButton(mechJoytick1, OIConstants.kNudgeElbowUp).
                 onTrue(new InstantCommand(() -> armSubsystem.retargetElbow(ArmConstants.elbowNudgeAmount)));
+                //onTrue(new InstantCommand(() -> armSubsystem.retargetElbow(ArmConstants.nudgeUp)));
         new JoystickButton(mechJoytick1, OIConstants.kNudgeElbowDown).
                 onTrue(new InstantCommand(() -> armSubsystem.retargetElbow(-ArmConstants.elbowNudgeAmount)));
+                //onTrue(new InstantCommand(() -> armSubsystem.retargetElbow(ArmConstants.nudgeDown)));
         new JoystickButton(mechJoytick2, OIConstants.kNudgeWristUp).
                 onTrue(new InstantCommand(() -> armSubsystem.retargetWrist(ArmConstants.elbowWristAmount)));
+                //onTrue(new InstantCommand(() -> armSubsystem.retargetWrist(ArmConstants.nudgeUp)));
         new JoystickButton(mechJoytick2, OIConstants.kNudgeWristDown).
                 onTrue(new InstantCommand(() -> armSubsystem.retargetWrist(-ArmConstants.elbowWristAmount)));
+                //onTrue(new InstantCommand(() -> armSubsystem.retargetWrist(ArmConstants.nudgeDown)));
 
         if (Constants.CLIMB_AVAILABLE){
                 new JoystickButton(mechJoytick2, OIConstants.kClimberExtend).
