@@ -22,9 +22,9 @@ public class AutoShootAndMove extends SequentialCommandGroup {
    */
   public AutoShootAndMove(Arm arm, Drivetrain drive, Handler handler, double xdist, double ydist) {
 
-    addCommands(Commands.race(
+    addCommands(
                       new ArmRun(arm, ArmConstants.kElbowHighSpeaker, ArmConstants.kWristHighSpeaker, 2.5),
-                      new WaitCommand(2.5)), 
+                      
                 new InstantCommand(()-> arm.rearmArm()),
                           
                 Commands.race(
@@ -32,9 +32,9 @@ public class AutoShootAndMove extends SequentialCommandGroup {
                       new WaitCommand(3.5)
                           ),
                 Commands.parallel(
-                      new WaitCommand(1.25).
+                      new WaitCommand(1.15).
                       andThen(new DriveGenericHead(drive, xdist, ydist, DriveConstants.kRotateToZero)),
-                      new ArmRun(arm, ArmConstants.kElbowPreFloow, ArmConstants.kWristPreFloor, 1).
+                      new ArmRun(arm, ArmConstants.kElbowPreFloow, ArmConstants.kWristPreFloor, 0.75).
                         andThen(new ArmRun(arm, ArmConstants.kElbowFloor, ArmConstants.kWristFloor))
                           )
     );  // TODO this process takes 8 seconds; must be quicker to shoot two notes in auto

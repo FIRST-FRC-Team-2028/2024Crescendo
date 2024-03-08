@@ -35,7 +35,7 @@ public final class Constants {
   public static final boolean HANDLER_AVAILABLE = true;
   public static final boolean CLIMB_AVAILABLE = true;
   public static final boolean APRIL_AVAILABLE = false;
-  public static final boolean COLOR_AVALIBLE = false;
+  public static final boolean COLOR_AVALIBLE = true;
 
 
   public static final class ModuleConstants {
@@ -241,8 +241,8 @@ public final class Constants {
       public static final double kWristSource = 93;
       public static final double kWristHighSpeaker = -41;
       public static final double kWristGround = 0;
-      public static final double kWristSpeaker = 20 ;  //22;
-      public static final double kWristAmp = 15;  //41;
+      public static final double kWristSpeaker = 3 ;  //22;
+      public static final double kWristAmp = 19;  //41;
       public static final double kWristPreFloor = 30;
       public static final double kWristFloor = 56;  //68;
       public static final double kRetract = 85;
@@ -292,8 +292,10 @@ public final class Constants {
         //33.2 = 38.7
         //49.7 = -28
         // 16.5 = -64.7
-      public static final double elbowNudgeAmount = 2.5;
-      public static final double elbowWristAmount = 2.5;
+      public static final double elbowNudgeAmount = 2.;
+      public static final double elbowWristAmount = 2.;
+      public static final double elbowNudgeAmountFine = 1.;
+      public static final double elbowWristAmountFine = 1.;
 
 
     }
@@ -308,9 +310,9 @@ public final class Constants {
       public static final double kLowPickUpSpeed = .5;
       public static final double kLowToHighSpeed = 1;
       public static final double kHighOutSpeed = 1;
-      public static final double kLowOutSpeed = -.4;
-      public static final double HighSpinTime = 2;
-      public static final double TotalShootTime = 3.5;
+      public static final double kLowOutSpeed = -.7;
+      public static final double HighSpinTime = 1.75;
+      public static final double TotalShootTime = 3.;
       public static final double kHighAmpSpeed = 0.5;
       public static final double kLowAmpSpeed = -.5;
       public static final double kSpitBackWaitTime = .75;
@@ -329,7 +331,7 @@ public final class Constants {
     public static final class ColorConstants {
       //public static final I2C.Port sensorPort = I2C.Port.kOnboard;
       //public static final double NoteHue = 0.2;
-      public static final int sensordPort = 9;
+      public static final int sensordPort = 8;
     }
 
     public static final class CANIDs {
@@ -438,9 +440,9 @@ public final class Constants {
     }
 
     public static enum Stations {  // center of faces of the speaker base (subwoofer?)
-      Right (FieldConstants.SpeakerfaceX*0.5, FieldConstants.SpeakerfaceX*0.866, 60.), 
+      Right (FieldConstants.SpeakerfaceX*0.5, -FieldConstants.SpeakerfaceX*0.866, -60.), 
       Center(FieldConstants.SpeakerfaceX    , 0.,  0.), 
-      Left  (FieldConstants.SpeakerfaceX*0.5, -FieldConstants.SpeakerfaceX*0.866, -60.);
+      Left  (FieldConstants.SpeakerfaceX*0.5, FieldConstants.SpeakerfaceX*0.866, 60.);
 
       public final double x;
       public final double y;

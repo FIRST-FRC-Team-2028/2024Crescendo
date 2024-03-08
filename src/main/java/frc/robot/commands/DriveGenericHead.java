@@ -45,8 +45,9 @@ public class DriveGenericHead extends Command {
     this.stopwhendone = stopwhendone;
     controller = new PIDController(0, 0, 0);  // set p in init
     variableP=2;
-    headingController = new PIDController(0.2/Math.abs(heading-driver.getHeading().getDegrees()), 0., 0.);
+    headingController = new PIDController(0.1/Math.abs(heading-driver.getHeading().getDegrees()), 0., 0.);
     headingController.enableContinuousInput(-180., 180.);
+    
     //headingController.setTolerance(2.);
   }
 
@@ -76,7 +77,7 @@ public class DriveGenericHead extends Command {
     // encS = driver.returnEncode()[2];
     dist = Math.sqrt(xdist*xdist+ydist*ydist) +0.001;
     // target = encS+dist;
-    tol = 0.04*dist;
+    tol = 0.05*dist;
     controller.setP(variableP/dist);
     startpose = driver.getPose();
     Transform2d transform = new Transform2d(new Translation2d(xdist, ydist), new Rotation2d(0));
@@ -116,7 +117,7 @@ public class DriveGenericHead extends Command {
   @Override
   public boolean isFinished() {
     return Math.abs(controller.getPositionError()) < tol &&
-    Math.abs(headingController.getPositionError()) < 2;
+    Math.abs(headingController.getPositionError()) < 3;
     //iShouldStop;
       //driver.shouldistop();
   }

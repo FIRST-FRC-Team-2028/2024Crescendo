@@ -41,7 +41,7 @@ public class Spit_Back extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(time.hasElapsed(.15 )) {
+    if(time.hasElapsed(.025 )) {
       return true;}
     else 
   {return false;

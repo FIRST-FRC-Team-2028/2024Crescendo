@@ -324,10 +324,10 @@ public class Robot extends TimedRobot {
 
     public void testPeriodic() {
 
-        if (new JoystickButton(mechJoytick2, OIConstants.kNudgeElbowUp).getAsBoolean()) {
+        if (new JoystickButton(mechJoytick1, OIConstants.kNudgeElbowUp).getAsBoolean()) {
             arm.elbowUpSlow();  
         } 
-        else if (new JoystickButton(mechJoytick2, OIConstants.kNudgeElbowDown).getAsBoolean() ) {
+        else if (new JoystickButton(mechJoytick1, OIConstants.kNudgeElbowDown).getAsBoolean() ) {
             arm.elbowDownSlow();  
         }
         else {

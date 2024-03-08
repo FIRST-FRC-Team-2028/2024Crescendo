@@ -46,6 +46,7 @@ public class Arm extends SubsystemBase {
   boolean armSafety = true;   // true for arm motion enabled
   boolean armSafetyw = true;   // true for wrist motion enabled
   boolean amIDucked = false;
+  boolean fineNudge=false;
   
   /** The Arm:
    *    o moves the handler (relative to the robot)
@@ -268,12 +269,21 @@ public class Arm extends SubsystemBase {
     latestTargetW = target;
   }
 
+
   /** Adjust elbow PID target 
    * @see positionArm
   */
   public void retargetElbow(double Adjustment) {
      latestTarget += Adjustment;
     elbow_PidController.setReference(latestTarget, CANSparkMax.ControlType.kPosition);
+  }
+  /** Adjust elbow target
+   * @param Adjustment 1 for standard, 2 for Fine
+   */
+  public void retargetElbow(int Adjustment) {
+     //latestTarget += Adjustment;
+     latestTarget += (fineNudge?Constants.ArmConstants.elbowNudgeAmountFine:Constants.ArmConstants.elbowNudgeAmount)*Math.signum(Adjustment);
+     elbow_PidController.setReference(latestTarget, CANSparkMax.ControlType.kPosition);
   }
 
   /** Adjust wrist PID target 

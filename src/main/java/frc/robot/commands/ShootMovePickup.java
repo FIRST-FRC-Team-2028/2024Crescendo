@@ -40,14 +40,14 @@ public class ShootMovePickup extends SequentialCommandGroup {
       yp="";
     }
     else if (station ==Stations.Left){
-      xdist = Constants.FieldConstants.StageX-Constants.FieldConstants.noteRadius-Constants.RobotConstants.robotLength*.5 -
+      xdist = Constants.FieldConstants.StageX-Constants.FieldConstants.noteRadius-Constants.RobotConstants.robotLength*.7 - //went form .5 to .7 to account for handler length
                        (Constants.Stations.Left.x +
                         Constants.RobotConstants.robotLength*.5*Math.cos(Math.toRadians(Stations.Left.heading)));
       xp=String.format("to-from = %4f - %4f", 
                   Constants.FieldConstants.StageX-Constants.FieldConstants.noteRadius-Constants.RobotConstants.robotLength*.5,
                   Constants.Stations.Left.x +Constants.RobotConstants.robotLength*.5*Math.cos(Math.toRadians(Stations.Left.heading)));
       ydist = /*Constants.FieldConstants.Speaker2StageY+*/FieldConstants.noteDistance - 
-                       (Constants.Stations.Left.y+Constants.RobotConstants.robotLength*.5*Math.sin(Math.toRadians(60.)));
+                       (Constants.Stations.Left.y+Constants.RobotConstants.robotLength*.5*Math.sin(Math.toRadians(station.heading)));
       yp=String.format("to-from = %4f - %4f", 
                        /*Constants.FieldConstants.StageY+*/FieldConstants.noteDistance,
                        Constants.Stations.Left.y+Constants.RobotConstants.robotLength*.5*Math.sin(Math.toRadians(60.)) );
@@ -85,11 +85,11 @@ public class ShootMovePickup extends SequentialCommandGroup {
                   ),
                   Commands.parallel(
                     Commands.race(
-                      new DriveGenericHead(drivetrain, -xdist-0.4, -ydist, heading),
-                      new WaitCommand(2)
+                      new DriveGenericHead(drivetrain, -xdist-0.45, -ydist,  60. ),// heading),
+                      new WaitCommand(5)
                     ),
                     new TravelPosition(arm)
-                       .andThen(new ArmRun(arm, ArmConstants.kElbowSpeaker, ArmConstants.kWristSpeaker))
+                       .andThen(new ArmRun(arm, ArmConstants.kElbowSpeaker, ArmConstants.kWristSpeaker-5., 1))
                        .andThen(new InstantCommand(()-> arm.rearmArm()))
                   ),
                   new Speaker(handler)

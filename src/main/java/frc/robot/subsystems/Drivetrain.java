@@ -252,7 +252,7 @@ public class Drivetrain extends SubsystemBase {
   }
   public Pose2d getPose() {
     //updateOdometry();
-    System.out.println("robot Pose = "+m_odometry.getPoseMeters().toString());
+    //System.out.println("robot Pose = "+m_poseEstimator.getEstimatedPosition());
     return m_poseEstimator.getEstimatedPosition();
   }
 
