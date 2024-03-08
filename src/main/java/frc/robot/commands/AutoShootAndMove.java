@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.ArmConstants;
+import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
@@ -23,7 +24,7 @@ public class AutoShootAndMove extends SequentialCommandGroup {
   public AutoShootAndMove(Arm arm, Drivetrain drive, Handler handler, double xdist, double ydist) {
 
     addCommands(
-                      new ArmRun(arm, ArmConstants.kElbowHighSpeaker, ArmConstants.kWristHighSpeaker, 2.5),
+                      new ArmRun(arm, ArmConstants.kElbowHighSpeaker, ArmConstants.kWristHighSpeaker, 1.5),
                       
                 new InstantCommand(()-> arm.rearmArm()),
                           
@@ -33,7 +34,7 @@ public class AutoShootAndMove extends SequentialCommandGroup {
                           ),
                 Commands.parallel(
                       new WaitCommand(1.15).
-                      andThen(new DriveGenericHead(drive, xdist, ydist, DriveConstants.kRotateToZero)),
+                      andThen(new DriveGenericHead(drive, xdist, ydist, DriveConstants.kRotateToZero, AutoConstants.kToNoteTurnP)),
                       new ArmRun(arm, ArmConstants.kElbowPreFloow, ArmConstants.kWristPreFloor, 0.75).
                         andThen(new ArmRun(arm, ArmConstants.kElbowFloor, ArmConstants.kWristFloor))
                           )

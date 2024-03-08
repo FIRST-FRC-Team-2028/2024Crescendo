@@ -19,7 +19,7 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Handler;
 
 
-public class ShootMovePickup extends SequentialCommandGroup {
+public class ShootPickup extends SequentialCommandGroup {
   Handler handler;
   Drivetrain drivetrain;
   Arm arm;
@@ -29,7 +29,7 @@ public class ShootMovePickup extends SequentialCommandGroup {
    *  drives back to speaker,
    *  shoots.
    */
-  public ShootMovePickup(Handler handler, Drivetrain drivetrain, Arm arm, Stations station) {
+  public ShootPickup(Handler handler, Drivetrain drivetrain, Arm arm, Stations station) {
     String xp,yp;
     double xdist, ydist, heading;
     if (station == Stations.Center) {
@@ -83,7 +83,7 @@ public class ShootMovePickup extends SequentialCommandGroup {
                       new WaitCommand(1),
                       new DriveGeneric(drivetrain, 0.5, 0)
                     )
-                  ),
+                  )/*,
                   
                   Commands.parallel(
                     Commands.race(
@@ -94,7 +94,7 @@ public class ShootMovePickup extends SequentialCommandGroup {
                        .andThen(new ArmRun(arm, ArmConstants.kElbowSpeaker, ArmConstants.kWristSpeaker-5., 1))
                        .andThen(new InstantCommand(()-> arm.rearmArm()))
                   ),
-                  new Speaker(handler)
+                  new Speaker(handler)*/
                 );
   }
 
@@ -102,7 +102,7 @@ public class ShootMovePickup extends SequentialCommandGroup {
    *  moves from central position to note straight behind it,
    *  pick up a note.
    */
-  public ShootMovePickup(Handler handler, Drivetrain drivetrain, Arm arm) {
+  public ShootPickup(Handler handler, Drivetrain drivetrain, Arm arm) {
     this(handler, drivetrain, arm, Stations.Center);
   }
 }

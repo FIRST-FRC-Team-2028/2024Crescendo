@@ -28,7 +28,7 @@ public class DriveGenericHead extends Command {
   double tol;
   boolean stopwhendone = true;
   boolean iShouldStop = false;
-  private double variableP;
+  private double variableP, variableOmegaP;
   /** Drive a given distance in any direction in field coordinates and attain/maintain heading.
    * 
    * @param xdist and
@@ -36,16 +36,17 @@ public class DriveGenericHead extends Command {
    * @param heading  is the desired heading in degrees
    * @param stopwhendone
    */
-  public DriveGenericHead(Drivetrain driveon, double xdist, double ydist, double heading, boolean stopwhendone) {
+  public DriveGenericHead(Drivetrain driveon, double xdist, double ydist, double heading, boolean stopwhendone, double variableOmegaP) {
     addRequirements(driveon);
     this.driver = driveon;
     this.xdist = xdist;
     this.ydist = ydist;
     this.target = heading;
+    this.variableOmegaP = variableOmegaP;
     this.stopwhendone = stopwhendone;
     controller = new PIDController(0, 0, 0);  // set p in init
     variableP=2;
-    headingController = new PIDController(0.1/Math.abs(heading-driver.getHeading().getDegrees()), 0., 0.);
+    headingController = new PIDController(variableOmegaP/Math.abs(heading-driver.getHeading().getDegrees()), 0., 0.);
     headingController.enableContinuousInput(-180., 180.);
     
     //headingController.setTolerance(2.);
@@ -57,11 +58,11 @@ public class DriveGenericHead extends Command {
    * @param ydist are component distances in meters
    * @param heading  is the desired heading in degrees
    */
-  public DriveGenericHead(Drivetrain driveon, double xdist, double ydist, double heading) {
-    this(driveon, xdist, ydist, heading, true);
+  public DriveGenericHead(Drivetrain driveon, double xdist, double ydist, double heading, double variableOmegaP) {
+    this(driveon, xdist, ydist, heading, true, variableOmegaP);
   }
-  public DriveGenericHead(Drivetrain driveon, double xdist, double ydist, double heading, double varP) {
-    this(driveon, xdist, ydist, heading, true);
+  public DriveGenericHead(Drivetrain driveon, double xdist, double ydist, double heading, double varP, double variableOmegaP) {
+    this(driveon, xdist, ydist, heading, true, variableOmegaP);
     this.variableP=varP;
   }
 

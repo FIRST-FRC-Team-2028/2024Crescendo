@@ -36,6 +36,8 @@ public final class Constants {
   public static final boolean CLIMB_AVAILABLE = true;
   public static final boolean APRIL_AVAILABLE = false;
   public static final boolean COLOR_AVALIBLE = true;
+  public static final boolean PID_CLIMB = false;
+  public static final boolean Shoot_Pickup_Shoot = true;
 
 
   public static final class ModuleConstants {
@@ -173,6 +175,7 @@ public final class Constants {
         public static final double kptwist = .5;
 
         public static final double kFineControlSpeed = .5;
+        public static final double kFasterSpeed = .2;
   
     //    CAN_Number = new int[10];
     //    CAN_Name   = new string[30];
@@ -215,6 +218,7 @@ public final class Constants {
     // Units are radians per second
     public static final double kMaxRotationalVelocity = 5.0; // 2023 Competion Robot // max 5.0
     public static final double kRotateToZero = 2;
+   
 
 
     }
@@ -366,6 +370,8 @@ public final class Constants {
                 new TrapezoidProfile.Constraints(
                         kMaxAngularSpeedRadiansPerSecond,
                         kMaxAngularAccelerationRadiansPerSecondSquared);
+        public static final double kToNoteTurnP = 0.1;
+        public static final double kToShootTurnP = 1.4;
     }
 
     public static final class OIConstants {
@@ -378,6 +384,7 @@ public final class Constants {
         public static final int kDriverXAxis                  = 1;
         public static final int kDriverRotAxis                = 4;
         public static final int fineControlAxis               = 2;
+        public static final int fasterSpeedAxis               = 3;
         public static final int kDriverResetGyroButtonIdx     = 1; // driverJoystick button A
         public static final int kArmDuck                      = 2; // driverJoystick B button
         public static final int kDriverResetOdometryButtonIdx = 3; // driverJoystick button X
@@ -409,6 +416,7 @@ public final class Constants {
         
         public static final double kDeadband = 0.075;
         //public static final int kRetract = 1;
+
 
     }
 

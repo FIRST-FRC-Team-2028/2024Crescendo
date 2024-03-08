@@ -40,6 +40,7 @@ import frc.robot.commands.ArmRun;
 import frc.robot.commands.AutoShoot;
 import frc.robot.commands.AutoShootAndMove;
 import frc.robot.commands.Climb;
+import frc.robot.commands.ClimbWithoutPID;
 import frc.robot.commands.DriveGeneric;
 //import frc.robot.commands.DriveGenericHeadTest;
 import frc.robot.commands.ElbowDown;
@@ -48,6 +49,7 @@ import frc.robot.commands.ElbowUp;
 import frc.robot.commands.ExtendClimber;
 import frc.robot.commands.InHandler;
 import frc.robot.commands.ShootMovePickup;
+import frc.robot.commands.ShootPickup;
 import frc.robot.commands.Speaker;
 import frc.robot.commands.Spit_Back;
 //import frc.robot.commands.DriveGeneric;
@@ -122,13 +124,17 @@ public class RobotContainer {
 
                 m_chooser = new SendableChooser<Command>();
                 m_chooser.setDefaultOption("DoNothing", new Wait(1));
-                m_chooser.addOption("Travel Test", getAutonomousCommand());
-                m_chooser.addOption("Shoot And Move Center", new ShootMovePickup(handlerSubsystem, swerveSubsystem, armSubsystem, Stations.Center));
+                //m_chooser.addOption("Travel Test", getAutonomousCommand());
+                m_chooser.addOption("2 Note Center", new ShootMovePickup(handlerSubsystem, swerveSubsystem, armSubsystem, Stations.Center));
                 m_chooser.addOption("Auto Shoot", new AutoShoot(armSubsystem, handlerSubsystem));
-                m_chooser.addOption("Shoot and Move Right", new InstantCommand(() -> gyro.setYaw(-60))
+                m_chooser.addOption("2 Note Right", new InstantCommand(() -> gyro.setYaw(-60))
                         .andThen(new ShootMovePickup(handlerSubsystem, swerveSubsystem, armSubsystem, Stations.Right)));
-                m_chooser.addOption("Shoot and Move Left", new InstantCommand(() -> gyro.setYaw(60))
+                m_chooser.addOption("2 Note Left", new InstantCommand(() -> gyro.setYaw(60))
                         .andThen(new ShootMovePickup(handlerSubsystem, swerveSubsystem, armSubsystem, Stations.Left)));
+                m_chooser.addOption("Shoot 1 Pickup 1 Right", new InstantCommand(() -> gyro.setYaw(-60))
+                        .andThen(new ShootPickup(handlerSubsystem, swerveSubsystem, armSubsystem, Stations.Right)));
+                m_chooser.addOption("Shoot 1 Pickup 1 Left", new InstantCommand(() -> gyro.setYaw(60))
+                        .andThen(new ShootPickup(handlerSubsystem, swerveSubsystem, armSubsystem, Stations.Left)));
         
                 //m_chooser.addOption("Shoot, Move, pickup", );
                 /*m_chooser.addOption("HeadingTest", new InstantCommand(()-> gyro.setYaw(60))
@@ -248,8 +254,13 @@ public class RobotContainer {
         if (Constants.CLIMB_AVAILABLE){
                 new JoystickButton(mechJoytick2, OIConstants.kClimberExtend).
                         onTrue(new ExtendClimber(climber));
-                new JoystickButton(mechJoytick2, OIConstants.kClimberRetract).
-                        onTrue(new Climb(climber, gyro, armSubsystem));
+                if(Constants.PID_CLIMB){
+                        new JoystickButton(mechJoytick2, OIConstants.kClimberRetract).
+                                onTrue(new Climb(climber, gyro, armSubsystem));
+                } else {
+                        new JoystickButton(mechJoytick2, OIConstants.kClimberRetract).
+                                whileTrue(new ClimbWithoutPID(climber));
+                }
         }
      }
 

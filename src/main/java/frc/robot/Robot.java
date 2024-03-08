@@ -227,9 +227,9 @@ public class Robot extends TimedRobot {
             //System.out.println("X: " + String.format("%.3f", xSpeed)
             //                + " Y: " + String.format("%.3f", ySpeed)
             //                + " R: " + String.format("%.3f", turningSpeed));
-            xSpeed*=1.-DriveConstants.kFineControlSpeed*driverJoytick.getRawAxis(OIConstants.fineControlAxis);
-            ySpeed*=1.-DriveConstants.kFineControlSpeed*driverJoytick.getRawAxis(OIConstants.fineControlAxis);
-            turningSpeed*=1.-DriveConstants.kFineControlSpeed*driverJoytick.getRawAxis(OIConstants.fineControlAxis);
+            xSpeed*=1.-(DriveConstants.kFineControlSpeed*driverJoytick.getRawAxis(OIConstants.fineControlAxis))+(DriveConstants.kFasterSpeed*driverJoytick.getRawAxis(OIConstants.fasterSpeedAxis));
+            ySpeed*=1.-(DriveConstants.kFineControlSpeed*driverJoytick.getRawAxis(OIConstants.fineControlAxis))+(DriveConstants.kFasterSpeed*driverJoytick.getRawAxis(OIConstants.fasterSpeedAxis));
+            turningSpeed*=1.-(DriveConstants.kFineControlSpeed*driverJoytick.getRawAxis(OIConstants.fineControlAxis))+(DriveConstants.kFasterSpeed*driverJoytick.getRawAxis(OIConstants.fasterSpeedAxis));
             //    Smooth driver inputs
             smoothedXSpeed = smoothedXSpeed + (xSpeed - smoothedXSpeed) * .08;
             smoothedYSpeed = smoothedYSpeed + (ySpeed - smoothedYSpeed) * .08;
