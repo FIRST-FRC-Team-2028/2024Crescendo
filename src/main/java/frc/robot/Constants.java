@@ -295,8 +295,9 @@ public final class Constants {
       public static final double elbowNudgeAmount = 2.;
       public static final double elbowWristAmount = 2.;
       public static final double elbowNudgeAmountFine = 1.;
-      public static final double elbowWristAmountFine = 1.;
-
+      public static final double wristNudgeAmountFine = 1.;
+      public static final int nudgeUp = 1;
+      public static final int nudgeDown = -1;
 
     }
 
