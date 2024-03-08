@@ -123,10 +123,10 @@ public class RobotContainer {
                 //configureButtonBindings();   // postponed until telopInit    
 
                 m_chooser = new SendableChooser<Command>();
-                m_chooser.setDefaultOption("DoNothing", new Wait(1));
+                m_chooser.addOption("DoNothing", new Wait(1));
                 //m_chooser.addOption("Travel Test", getAutonomousCommand());
                 m_chooser.addOption("2 Note Center", new ShootMovePickup(handlerSubsystem, swerveSubsystem, armSubsystem, Stations.Center));
-                m_chooser.addOption("Auto Shoot", new AutoShoot(armSubsystem, handlerSubsystem));
+                m_chooser.setDefaultOption("Auto Shoot", new AutoShoot(armSubsystem, handlerSubsystem));
                 m_chooser.addOption("2 Note Right", new InstantCommand(() -> gyro.setYaw(-60))
                         .andThen(new ShootMovePickup(handlerSubsystem, swerveSubsystem, armSubsystem, Stations.Right)));
                 m_chooser.addOption("2 Note Left", new InstantCommand(() -> gyro.setYaw(60))
