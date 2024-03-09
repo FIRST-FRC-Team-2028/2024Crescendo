@@ -38,6 +38,7 @@ public class Handler extends SubsystemBase {
   //private final ColorSensorV3 sensor;
   private final DigitalInput sensord;
   boolean doIHaveIt;
+  boolean shouldIUseSensor=true;
 
   /** Creates a new Handler. */
   public Handler() {
@@ -82,7 +83,7 @@ public class Handler extends SubsystemBase {
       return sensord.get();
     } else {
       return false;
-    }
+    }   
   }
 
   @Override
@@ -91,6 +92,18 @@ public class Handler extends SubsystemBase {
     SmartDashboard.putBoolean("ColorSensor", useSensor());
 
     // This method will be called once per scheduler run
+  }
+
+  public boolean shouldIUseSensor() {
+    return shouldIUseSensor;
+  }
+
+  public void useSensorFalse() {
+    shouldIUseSensor = false;
+  }
+
+  public void useSensorTrue() {
+    shouldIUseSensor = true;
   }
 
   public boolean doIHaveIt() {

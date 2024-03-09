@@ -48,17 +48,17 @@ public class ShootPickup extends SequentialCommandGroup {
                   Constants.FieldConstants.StageX-Constants.FieldConstants.noteRadius-Constants.RobotConstants.robotLength*.7,
                   Constants.Stations.Left.x +Constants.RobotConstants.robotLength*.7*Math.cos(Math.toRadians(Stations.Left.heading)));
       ydist = /*Constants.FieldConstants.Speaker2StageY+*/FieldConstants.noteDistance - 
-                       (Constants.Stations.Left.y+Constants.RobotConstants.robotLength*.7*Math.sin(Math.toRadians(station.heading)));
+                       (Constants.Stations.Left.y+Constants.RobotConstants.robotLength*.5*Math.sin(Math.toRadians(station.heading)));
       yp=String.format("to-from = %4f - %4f", 
                        /*Constants.FieldConstants.StageY+*/FieldConstants.noteDistance,
-                       Constants.Stations.Left.y+Constants.RobotConstants.robotLength*.7*Math.sin(Math.toRadians(60.)) );
+                       Constants.Stations.Left.y+Constants.RobotConstants.robotLength*.5*Math.sin(Math.toRadians(60.)) );
       heading = Stations.Left.heading;
     }else {  // station Right
       xdist = Constants.FieldConstants.StageX-Constants.FieldConstants.noteRadius-Constants.RobotConstants.robotLength*.7 -
                        (Constants.Stations.Right.x +
                         Constants.RobotConstants.robotLength*.7*Math.cos(Math.toRadians(Stations.Right.heading)));
       ydist = /*Constants.FieldConstants.StageY*/-FieldConstants.noteDistance - 
-                       (Constants.Stations.Right.y-Constants.RobotConstants.robotLength*.7*Math.sin(Math.toRadians(60.)));
+                       (Constants.Stations.Right.y-Constants.RobotConstants.robotLength*.5*Math.sin(Math.toRadians(60.)));
       heading = Stations.Right.heading;  
       xp="";
       yp="";

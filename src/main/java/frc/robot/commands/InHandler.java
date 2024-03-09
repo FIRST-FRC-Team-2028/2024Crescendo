@@ -22,7 +22,7 @@ public class InHandler extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-  
+  if (handler.shouldIUseSensor()){
     if (handler.useSensor()) {
       handler.stop();
     }
@@ -30,6 +30,10 @@ public class InHandler extends Command {
         handler.iDontHaveIt();
         handler.low_PickUp();
     }
+  } else {
+    handler.iDontHaveIt();
+    handler.low_PickUp();
+  }
 
   }
 

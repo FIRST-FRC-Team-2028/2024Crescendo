@@ -37,7 +37,7 @@ public final class Constants {
   public static final boolean APRIL_AVAILABLE = false;
   public static final boolean COLOR_AVALIBLE = true;
   public static final boolean PID_CLIMB = false;
-  public static final boolean Shoot_Pickup_Shoot = true;
+  //public static final boolean Shoot_Pickup_Shoot = true;
 
 
   public static final class ModuleConstants {
@@ -164,18 +164,18 @@ public final class Constants {
         public static final boolean kBackRightDriveAbsoluteEncoderReversed  = true;
 
 // Speed Limits
-        public static final double kPhysicalMaxSpeedMetersPerSecond = 3;
+        public static final double kPhysicalMaxSpeedMetersPerSecond = 4.5;
         public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = 3 * 2 * Math.PI;
 
         public static final double kTeleDriveMaxSpeedMetersPerSecond = kPhysicalMaxSpeedMetersPerSecond /1.5;
         public static final double kTeleDriveMaxAngularSpeedRadiansPerSecond = 
                                            kPhysicalMaxAngularSpeedRadiansPerSecond / 4;
-        public static final double kTeleDriveMaxAccelerationUnitsPerSecond = 3;
+        public static final double kTeleDriveMaxAccelerationUnitsPerSecond = 4;
         public static final double kTeleDriveMaxAngularAccelerationUnitsPerSecond = 1.8;
         public static final double kptwist = .5;
 
         public static final double kFineControlSpeed = .5;
-        public static final double kFasterSpeed = .2;
+        public static final double kFasterSpeed = .4;
   
     //    CAN_Number = new int[10];
     //    CAN_Name   = new string[30];
@@ -413,6 +413,7 @@ public final class Constants {
         public static final int kIntake                       = 6;
         public static final int kTestRightExtend              = 7;
         public static final int kClimberRetract               = 8;
+        public static final int kIgnoreSensor                 = 9;
         public static final int kShootSequenceButton          = 10;
         
         public static final double kDeadband = 0.075;

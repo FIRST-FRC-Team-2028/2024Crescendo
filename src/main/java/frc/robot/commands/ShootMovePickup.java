@@ -31,7 +31,7 @@ public class ShootMovePickup extends SequentialCommandGroup {
    */
   public ShootMovePickup(Handler handler, Drivetrain drivetrain, Arm arm, Stations station) {
     String xp,yp;
-    double xdist, ydist, heading;
+    double xdist, ydist, heading, turnP;
     if (station == Stations.Center) {
       xdist = Constants.FieldConstants.StageX-Constants.FieldConstants.noteRadius -
                       (Constants.FieldConstants.SpeakerfaceX+Constants.RobotConstants.robotLength+Constants.RobotConstants.handlerThickness);
@@ -39,6 +39,7 @@ public class ShootMovePickup extends SequentialCommandGroup {
       heading = 2.;  // degrees, NOT ZERO because of unexplained behaviour of DriveGenericHead
       xp="";
       yp="";
+      turnP = 0;
     }
     else if (station ==Stations.Left){
       xdist = Constants.FieldConstants.StageX-Constants.FieldConstants.noteRadius-Constants.RobotConstants.robotLength*.7 - //went form .5 to .7 to account for handler length
@@ -48,20 +49,22 @@ public class ShootMovePickup extends SequentialCommandGroup {
                   Constants.FieldConstants.StageX-Constants.FieldConstants.noteRadius-Constants.RobotConstants.robotLength*.7,
                   Constants.Stations.Left.x +Constants.RobotConstants.robotLength*.7*Math.cos(Math.toRadians(Stations.Left.heading)));
       ydist = /*Constants.FieldConstants.Speaker2StageY+*/FieldConstants.noteDistance - 
-                       (Constants.Stations.Left.y+Constants.RobotConstants.robotLength*.7*Math.sin(Math.toRadians(station.heading)));
+                       (Constants.Stations.Left.y+Constants.RobotConstants.robotLength*.5*Math.sin(Math.toRadians(station.heading)));
       yp=String.format("to-from = %4f - %4f", 
                        /*Constants.FieldConstants.StageY+*/FieldConstants.noteDistance,
-                       Constants.Stations.Left.y+Constants.RobotConstants.robotLength*.7*Math.sin(Math.toRadians(60.)) );
+                       Constants.Stations.Left.y+Constants.RobotConstants.robotLength*.5*Math.sin(Math.toRadians(60.)) );
       heading = Stations.Left.heading;
+      turnP = AutoConstants.kToShootTurnP;
     }else {  // station Right
       xdist = Constants.FieldConstants.StageX-Constants.FieldConstants.noteRadius-Constants.RobotConstants.robotLength*.7 -
                        (Constants.Stations.Right.x +
                         Constants.RobotConstants.robotLength*.7*Math.cos(Math.toRadians(Stations.Right.heading)));
       ydist = /*Constants.FieldConstants.StageY*/-FieldConstants.noteDistance - 
-                       (Constants.Stations.Right.y-Constants.RobotConstants.robotLength*.7*Math.sin(Math.toRadians(60.)));
+                       (Constants.Stations.Right.y-Constants.RobotConstants.robotLength*.5*Math.sin(Math.toRadians(60.)));
       heading = Stations.Right.heading;  
       xp="";
       yp="";
+      turnP = AutoConstants.kToShootTurnP;
                       
     }
     
@@ -87,7 +90,7 @@ public class ShootMovePickup extends SequentialCommandGroup {
                   
                   Commands.parallel(
                     Commands.race(
-                      new DriveGenericHead(drivetrain, -xdist-0.45, -ydist,  heading, AutoConstants.kToShootTurnP ),// heading),
+                      new DriveGenericHead(drivetrain, -xdist-0.45, -ydist,  heading, turnP ),// heading),
                       new WaitCommand(3)
                     ),
                     new TravelPosition(arm)
