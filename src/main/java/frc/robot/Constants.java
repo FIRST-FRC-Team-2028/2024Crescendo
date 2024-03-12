@@ -274,6 +274,7 @@ public final class Constants {
       //Encoders
       public static final int ABSENCODERPORT = 0;
       public static final int kAbsoluteEncoder = 0;
+      //public static final int kAbsoluteEncoder2 = 1;
       public static final double elbowEncoderFactor = 90./(80.); 
       public static final int RelMin = 0; //0;     // 6;  //  upright
       public static final int AbsMin = 1735; //850;     //584;  // parallel to floor
@@ -303,6 +304,7 @@ public final class Constants {
       public static final int nudgeUp = 1;
       public static final int nudgeDown = -1;
 
+
     }
 
     public static final class HandlerConstants {
@@ -321,6 +323,7 @@ public final class Constants {
       public static final double kHighAmpSpeed = 0.5;
       public static final double kLowAmpSpeed = -.5;
       public static final double kSpitBackWaitTime = .75;
+    public static final double shotCurrent = 50;
       
     }
 

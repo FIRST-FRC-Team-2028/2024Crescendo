@@ -36,6 +36,7 @@ public class Handler extends SubsystemBase {
   private final TalonSRX high_side_follower;
   private final TalonSRX high_side;
   //private final ColorSensorV3 sensor;
+
   private final DigitalInput sensord;
   boolean doIHaveIt;
   boolean shouldIUseSensor=true;
@@ -56,8 +57,7 @@ public class Handler extends SubsystemBase {
     low_side.setNeutralMode(NeutralMode.Coast); 
     high_side.setNeutralMode(NeutralMode.Coast);
 
-   // low_encoder = low_side.getEncoder();
-   // high_encoder = high_side.getEncoder();
+
 
     //low_PidController = low_side.getPIDController();
     //high_PidController = high_side.getPIDController();
@@ -86,10 +86,17 @@ public class Handler extends SubsystemBase {
     }   
   }
 
+  public double getHighCurrent() {
+    return high_side.getStatorCurrent();
+    //return high_side.getSupplyCurrent();
+  }
+
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("High Amps", high_side.getStatorCurrent());
+    //SmartDashboard.putNumber("High Amps", high_side.getStatorCurrent());
     SmartDashboard.putBoolean("ColorSensor", useSensor());
+    SmartDashboard.putNumber("Output Current", high_side.getStatorCurrent());
+    SmartDashboard.putNumber("Input Current", high_side.getSupplyCurrent());
 
     // This method will be called once per scheduler run
   }
