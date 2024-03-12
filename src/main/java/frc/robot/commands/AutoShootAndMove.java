@@ -24,7 +24,7 @@ public class AutoShootAndMove extends SequentialCommandGroup {
   public AutoShootAndMove(Arm arm, Drivetrain drive, Handler handler, double xdist, double ydist) {
 
     addCommands(
-                      new ArmRun(arm, ArmConstants.kElbowHighSpeaker, ArmConstants.kWristHighSpeaker, 1.5),
+                      new ArmRun(arm, ArmConstants.kElbowHighSpeaker, ArmConstants.kWristHighSpeaker, 2),
                       
                 new InstantCommand(()-> arm.rearmArm()),
                           

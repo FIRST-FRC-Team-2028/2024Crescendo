@@ -37,6 +37,7 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.Stations;
 import frc.robot.commands.Amp;
 import frc.robot.commands.ArmRun;
+import frc.robot.commands.AutoDriveOut;
 import frc.robot.commands.AutoShoot;
 import frc.robot.commands.AutoShootAndMove;
 import frc.robot.commands.Climb;
@@ -124,17 +125,20 @@ public class RobotContainer {
 
                 m_chooser = new SendableChooser<Command>();
                 m_chooser.addOption("DoNothing", new Wait(1));
-                //m_chooser.addOption("Travel Test", getAutonomousCommand());
-                m_chooser.addOption("2 Note Center", new ShootMovePickup(handlerSubsystem, swerveSubsystem, armSubsystem, Stations.Center));
-                m_chooser.setDefaultOption("Auto Shoot", new AutoShoot(armSubsystem, handlerSubsystem));
-                m_chooser.addOption("2 Note Right", new InstantCommand(() -> gyro.setYaw(-60))
-                        .andThen(new ShootMovePickup(handlerSubsystem, swerveSubsystem, armSubsystem, Stations.Right)));
-                m_chooser.addOption("2 Note Left", new InstantCommand(() -> gyro.setYaw(60))
-                        .andThen(new ShootMovePickup(handlerSubsystem, swerveSubsystem, armSubsystem, Stations.Left)));
-                m_chooser.addOption("Shoot 1 Pickup 1 Right", new InstantCommand(() -> gyro.setYaw(-60))
-                        .andThen(new ShootPickup(handlerSubsystem, swerveSubsystem, armSubsystem, Stations.Right)));
-                m_chooser.addOption("Shoot 1 Pickup 1 Left", new InstantCommand(() -> gyro.setYaw(60))
-                        .andThen(new ShootPickup(handlerSubsystem, swerveSubsystem, armSubsystem, Stations.Left)));
+                //m_chooser.addOption("Travel out", new AutoDriveOut(swerveSubsystem));
+                m_chooser.setDefaultOption("Travel out", new AutoDriveOut(swerveSubsystem));
+                if (Constants.ARM_AVAILABLE) {
+                        m_chooser.addOption("2 Note Center", new ShootMovePickup(handlerSubsystem, swerveSubsystem, armSubsystem, Stations.Center));
+                        m_chooser.setDefaultOption("Auto Shoot", new AutoShoot(armSubsystem, handlerSubsystem));
+                        m_chooser.addOption("2 Note Right", new InstantCommand(() -> gyro.setYaw(-60))
+                                .andThen(new ShootMovePickup(handlerSubsystem, swerveSubsystem, armSubsystem, Stations.Right)));
+                        m_chooser.addOption("2 Note Left", new InstantCommand(() -> gyro.setYaw(60))
+                                .andThen(new ShootMovePickup(handlerSubsystem, swerveSubsystem, armSubsystem, Stations.Left)));
+                        m_chooser.addOption("Shoot 1 Pickup 1 Right", new InstantCommand(() -> gyro.setYaw(-60))
+                                .andThen(new ShootPickup(handlerSubsystem, swerveSubsystem, armSubsystem, Stations.Right)));
+                        m_chooser.addOption("Shoot 1 Pickup 1 Left", new InstantCommand(() -> gyro.setYaw(60))
+                                .andThen(new ShootPickup(handlerSubsystem, swerveSubsystem, armSubsystem, Stations.Left)));
+                }
         
                 //m_chooser.addOption("Shoot, Move, pickup", );
                 /*m_chooser.addOption("HeadingTest", new InstantCommand(()-> gyro.setYaw(60))
@@ -189,9 +193,11 @@ public class RobotContainer {
         }*/
         /*new JoystickButton(driverJoytick, OIConstants.kElbowRearmButton).
                 onTrue(Commands.runOnce( armSubsystem::rearmArm, armSubsystem));*/
+        if(Constants.ARM_AVAILABLE){
         new JoystickButton(driverJoytick, Constants.OIConstants.kArmDuck).
                 onTrue(new ArmRun(armSubsystem, ArmConstants.elbowDuck, ArmConstants.wristDuck, 0.25).
                 andThen(new InstantCommand(() -> armSubsystem.IamDucked(true))));
+        
         
         
         new JoystickButton(mechJoytick1, OIConstants.kDuck).
@@ -208,7 +214,8 @@ public class RobotContainer {
                 onTrue(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowSpeaker, ArmConstants.kWristSpeaker, .25)
                 //.andThen(new InstantCommand(() -> this.rumble()))
                 );
-
+        }
+        if (Constants.HANDLER_AVAILABLE){
         if (Constants.COLOR_AVALIBLE){
                 new JoystickButton(mechJoytick2, OIConstants.kIntake)
                         .onTrue(new InHandler(handlerSubsystem)
@@ -226,6 +233,8 @@ public class RobotContainer {
                 .onFalse(new Spit_Back(handlerSubsystem)
                 .andThen(new TravelPosition(armSubsystem)));
         }
+        }
+        if (Constants.ARM_AVAILABLE){
         new JoystickButton(mechJoytick1, OIConstants.kElbowRearmButton).
                 onTrue(Commands.runOnce( armSubsystem::rearmArm, armSubsystem));
         new JoystickButton(mechJoytick1, OIConstants.kArmFloor).
@@ -265,6 +274,7 @@ public class RobotContainer {
         new JoystickButton(mechJoytick2, OIConstants.kNudgeWristDown).
                 //onTrue(new InstantCommand(() -> armSubsystem.retargetWrist(-ArmConstants.elbowWristAmount)));
                 onTrue(new InstantCommand(() -> armSubsystem.retargetWrist(ArmConstants.nudgeDown)));
+        }
 
         if (Constants.CLIMB_AVAILABLE){
                 new JoystickButton(mechJoytick2, OIConstants.kClimberExtend).

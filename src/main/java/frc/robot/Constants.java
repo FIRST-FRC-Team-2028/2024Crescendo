@@ -275,18 +275,18 @@ public final class Constants {
       public static final int ABSENCODERPORT = 0;
       public static final int kAbsoluteEncoder = 0;
       public static final double elbowEncoderFactor = 90./(80.); 
-      public static final int RelMin = 6;  //  upright
-      public static final int AbsMin = 584;  // parallel to floor
-      public static final int RelMax = 45;  // upright
-      public static final int AbsMax = 860; // upright
-      public static final double Ratio = 39./(860.-584.); //(RelMax-RelMin)/(AbsMax-AbsMin);
-      public static final int kAbsoluteEncoderW = 1;
+      public static final int RelMin = 0; //0;     // 6;  //  upright
+      public static final int AbsMin = 1735; //850;     //584;  // parallel to floor
+      public static final int RelMax = 90; //90;     //45;  // upright
+      public static final int AbsMax = 2400;  //1514;    //860; // upright
+      public static final double Ratio = 90./(2400.-1735.); //(RelMax-RelMin)/(AbsMax-AbsMin);
+      public static final int kAbsoluteEncoderW = 3;
       public static final double wristEncoderFactor = 64.7/16.5;  
-      public static final int RelMinW = -32;     //SUBJECT TO CHEANGE
-      public static final int AbsMinW = 1345;   //SUBJECT TO CHEANGE
-      public static final int RelMaxW = 32;     //SUBJECT TO CHEANGE
-      public static final int AbsMaxW = 950;    //SUBJECT TO CHEANGE
-      public static final double RatioW = 64./(950-1345);
+      public static final int RelMinW = -46; //-32;     //SUBJECT TO CHEANGE
+      public static final int AbsMinW = 1350; //1345;   //SUBJECT TO CHEANGE
+      public static final int RelMaxW = 0; //32;     //SUBJECT TO CHEANGE
+      public static final int AbsMaxW = 1050; //950;    //SUBJECT TO CHEANGE
+      public static final double RatioW = 46./(1050-1350);
       //public static final double RatioW = (RelMaxW-RelMinW)./(AbsMaxW-AbsMinW);
 
       public static final double ElbowCurrentLimit = 25.;
@@ -328,7 +328,7 @@ public final class Constants {
         public static final double ExtendSpeed = 0.5;
         public static final double ExtendPosition = 9.2;
         public static final double RetractPosition = 0;
-        public static final float extendLimit = 10.1f;
+        public static final float extendLimit = 10.5f;
         public static final float retractLimit = 0.f;
         public static final double encoderConversionFactor = 4.0625/(522-398);
     }

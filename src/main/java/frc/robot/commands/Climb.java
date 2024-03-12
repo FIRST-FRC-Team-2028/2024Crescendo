@@ -47,6 +47,7 @@ public class Climb extends Command {
     climber.levelme();
     System.out.println(climber.getPositionDriver());
     System.out.println(climber.getPositionLeveler());
+    if (Constants.ARM_AVAILABLE)
     arm.retargetElbow(-pitchController.calculate(gyro.getPitch().getValue(), 0));
   }
 

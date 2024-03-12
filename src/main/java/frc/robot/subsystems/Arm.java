@@ -80,19 +80,21 @@ public class Arm extends SubsystemBase {
 
     elbow_encoder.setPositionConversionFactor(Constants.ArmConstants.elbowEncoderFactor);
     wrist_encoder.setPositionConversionFactor(Constants.ArmConstants.wristEncoderFactor);
+    //elbow_encoder.setPosition(abs2rel(elbowAbs.getAverageValue()));
     elbow_encoder.setPosition(abs2rel(elbowAbs.getAverageValue()));
     wrist_encoder.setPosition(abs2relw(wristAbs.getAverageValue()));
+    //wrist_encoder.setPosition(0);
+    //elbow_encoder.setPosition(0);
 
-    
     elbow.setSoftLimit(SoftLimitDirection.kForward, ArmConstants.kElbowForwardLimit); //elbow forward limit
     elbow.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.kElbowReverseLimit); //elbow reverse limit
     wrist.setSoftLimit(SoftLimitDirection.kForward, ArmConstants.kWristForwardLimit); //wrist forward limit
     wrist.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.kWristReverseLimit); //wrist reverse limit
 
-    elbow.enableSoftLimit(SoftLimitDirection.kForward,true);
-    elbow.enableSoftLimit(SoftLimitDirection.kReverse, true);
-    wrist.enableSoftLimit(SoftLimitDirection.kForward,true);
-    wrist.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    //elbow.enableSoftLimit(SoftLimitDirection.kForward,true);
+    //elbow.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    //wrist.enableSoftLimit(SoftLimitDirection.kForward,true);
+    //wrist.enableSoftLimit(SoftLimitDirection.kReverse, true);
 
     elbow_PidController = elbow.getPIDController();
     wrist_PidController = wrist.getPIDController();
@@ -140,6 +142,22 @@ public class Arm extends SubsystemBase {
     wrist.setIdleMode(IdleMode.kBrake);
   }
 
+
+
+
+  /*public void enableSoftLimit(){
+    elbow.enableSoftLimit(SoftLimitDirection.kForward,true);
+    elbow.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    wrist.enableSoftLimit(SoftLimitDirection.kForward,true);
+    wrist.enableSoftLimit(SoftLimitDirection.kReverse, true);
+  } 
+
+
+  public void enableSoftLimit(){
+    elbow.enableSoftLimit(SoftLimitDirection.kForward,true);
+    elbow.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    wrist.enableSoftLimit(SoftLimitDirection.kForward, false    wrist.enableSoftLimit(SoftLimitDirection.kReverse, false);
+  } */
  
   /** Elbow up open loop control higher speed */
   public void elbowUp() {

@@ -133,9 +133,11 @@ public class Robot extends TimedRobot {
         //lights.setSpeed(0.93);
         SendableChooser<Command> slector = m_robotContainer.getAutoChooser();
         m_autonomousCommand = slector.getSelected();
-        if (arm == null) arm = m_robotContainer.getArm();
-        arm.setBrakeMode();
-        (new TravelPosition(arm)).schedule();
+        if(Constants.ARM_AVAILABLE){
+            if (arm == null) arm = m_robotContainer.getArm();
+            arm.setBrakeMode();
+            (new TravelPosition(arm)).schedule();
+        }
         //pigeon.setYaw(180);  Do we need to initialize the gyro?
         // schedule the autonomous command (example)
         if (m_autonomousCommand != null) {
@@ -178,10 +180,12 @@ public class Robot extends TimedRobot {
 
         if (climber == null) climber = m_robotContainer.getClimber();
         climber.zeroSoftLimit();
-        if (arm == null) arm = m_robotContainer.getArm();
-        arm.setBrakeMode();
-        // start up arm PID controller; move to Travel position
-        (new TravelPosition(arm)).schedule();
+        if(Constants.ARM_AVAILABLE){
+            if (arm == null) arm = m_robotContainer.getArm();
+            arm.setBrakeMode();
+            // start up arm PID controller; move to Travel position
+            (new TravelPosition(arm)).schedule();
+        }
         
         // to drive in teleopPeriodic rather than defaultCommand {
         this.swerveSubsystem = m_robotContainer.getSwerveSS();
@@ -311,19 +315,22 @@ public class Robot extends TimedRobot {
             .andThen(new ArmRun(arm, Constants.ArmConstants.kElbowFloor, Constants.ArmConstants.kWristFloor, .25))
             .andThen(new InstantCommand(()-> arm.stopIt()))).schedule();*/
     
-
-        handler = m_robotContainer.getHandler();
+        if(Constants.HANDLER_AVAILABLE){ 
+            handler = m_robotContainer.getHandler();
+        }
         if (Constants.CLIMB_AVAILABLE){
             climber = m_robotContainer.getClimber();
         }
+        if (Constants.ARM_AVAILABLE){
         arm = m_robotContainer.getArm();
+        }
     }
 
     /** This function is called periodically during test mode. */
     @Override
 
     public void testPeriodic() {
-
+        if (Constants.ARM_AVAILABLE){
         if (new JoystickButton(mechJoytick1, OIConstants.kNudgeElbowUp).getAsBoolean()) {
             arm.elbowUpSlow();  
         } 
@@ -343,7 +350,11 @@ public class Robot extends TimedRobot {
             arm.moveWrist(0.);
             //System.out.println("Stopped Wrist");
         }
-      
+
+        /*if (new JoystickButton(mechjoytick1, OIConstants.kArmSubwoofer).getAsBoolean()) {
+         * arm.
+        */
+    }
         if (Constants.CLIMB_AVAILABLE){
 
             if (new JoystickButton(mechJoytick1, OIConstants.kSwitch).getAsBoolean()) {
@@ -389,13 +400,14 @@ public class Robot extends TimedRobot {
             }
             
         }
-        // handler 
+        if(Constants.HANDLER_AVAILABLE){
         if (new JoystickButton(mechJoytick2, OIConstants.shootButton).getAsBoolean()) {
             handler.low_out();  
         } else if (new JoystickButton(mechJoytick2, OIConstants.kIntake).getAsBoolean() && !handler.useSensor() ) {
             handler.low_PickUp();  
             System.out.println(handler.useSensor());
         } else handler.stop();
+    }
 
     }
 }
