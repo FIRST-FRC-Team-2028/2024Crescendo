@@ -17,6 +17,8 @@ import com.revrobotics.ColorSensorV3;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -25,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.Constants.HandlerConstants;
+import frc.robot.Constants.Lights;
 
 /** Handler consists of:
  *     motor to drive handler rollers and belts, low_side
@@ -35,6 +38,7 @@ public class Handler extends SubsystemBase {
   private final TalonSRX low_side;
   private final TalonSRX high_side_follower;
   private final TalonSRX high_side;
+  private final Solenoid yellow;
   //private final ColorSensorV3 sensor;
 
   private final DigitalInput sensord;
@@ -46,6 +50,8 @@ public class Handler extends SubsystemBase {
     low_side = new TalonSRX(Constants.CANIDs.low_side);
     high_side = new TalonSRX(Constants.CANIDs.high_side);
     high_side_follower = new TalonSRX(Constants.CANIDs.high_side_follower);
+    yellow = new Solenoid(PneumaticsModuleType.CTREPCM, Lights.yellow); //Note
+
 
     low_side.configFactoryDefault();
     high_side.configFactoryDefault();
@@ -99,6 +105,17 @@ public class Handler extends SubsystemBase {
     SmartDashboard.putNumber("Input Current", high_side.getSupplyCurrent());
 
     // This method will be called once per scheduler run
+  }
+
+
+
+
+  public void noteOn() {
+    yellow.set(true);
+  }
+
+  public void noteOff() {
+    yellow.set(false);
   }
 
   public boolean shouldIUseSensor() {
