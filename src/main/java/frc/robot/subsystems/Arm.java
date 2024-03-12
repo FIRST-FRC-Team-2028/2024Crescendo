@@ -15,11 +15,14 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.ArmConstants;
+import frc.robot.Constants.Lights;
 
 /** Arm consists of:
  *     two tandem motors to drive the elbow,
@@ -37,6 +40,7 @@ public class Arm extends SubsystemBase {
   private final SparkPIDController wrist_PidController;
   private final AnalogInput elbowAbs;
   private final AnalogInput wristAbs;
+  private final Solenoid light2;
   
   double latestTarget;
   double latestTargetW;
@@ -62,6 +66,7 @@ public class Arm extends SubsystemBase {
     wristAbs = new AnalogInput(Constants.ArmConstants.kAbsoluteEncoderW);
     elbowAbs.setAverageBits(40);
     wristAbs.setAverageBits(40);
+    light2 = new Solenoid(PneumaticsModuleType.CTREPCM, Lights.light2); //Voltage warning
     //boreHoleW = new AnalogInput(Constants.ArmConstants.kAbsoluteEncoderW);
     //boreHoleW.setAverageBits(40);
 
@@ -91,10 +96,10 @@ public class Arm extends SubsystemBase {
     wrist.setSoftLimit(SoftLimitDirection.kForward, ArmConstants.kWristForwardLimit); //wrist forward limit
     wrist.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.kWristReverseLimit); //wrist reverse limit
 
-    //elbow.enableSoftLimit(SoftLimitDirection.kForward,true);
-    //elbow.enableSoftLimit(SoftLimitDirection.kReverse, true);
-    //wrist.enableSoftLimit(SoftLimitDirection.kForward,true);
-    //wrist.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    elbow.enableSoftLimit(SoftLimitDirection.kForward,true);
+    elbow.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    wrist.enableSoftLimit(SoftLimitDirection.kForward,true);
+    wrist.enableSoftLimit(SoftLimitDirection.kReverse, true);
 
     elbow_PidController = elbow.getPIDController();
     wrist_PidController = wrist.getPIDController();
@@ -143,9 +148,15 @@ public class Arm extends SubsystemBase {
   }
 
 
+  public void voltageOn() {
+    light2.set(true);
+  }
 
+  public void voltageOff() {
+    light2.set(false);
+  }
 
-  /*public void enableSoftLimit(){
+  public void enableSoftLimit(){
     elbow.enableSoftLimit(SoftLimitDirection.kForward,true);
     elbow.enableSoftLimit(SoftLimitDirection.kReverse, true);
     wrist.enableSoftLimit(SoftLimitDirection.kForward,true);
@@ -153,11 +164,12 @@ public class Arm extends SubsystemBase {
   } 
 
 
-  public void enableSoftLimit(){
-    elbow.enableSoftLimit(SoftLimitDirection.kForward,true);
-    elbow.enableSoftLimit(SoftLimitDirection.kReverse, true);
-    wrist.enableSoftLimit(SoftLimitDirection.kForward, false    wrist.enableSoftLimit(SoftLimitDirection.kReverse, false);
-  } */
+  public void disableSoftLimit(){
+    elbow.enableSoftLimit(SoftLimitDirection.kForward,false);
+    elbow.enableSoftLimit(SoftLimitDirection.kReverse, false);
+    wrist.enableSoftLimit(SoftLimitDirection.kForward, false);   
+    wrist.enableSoftLimit(SoftLimitDirection.kReverse, false);
+  } 
  
   /** Elbow up open loop control higher speed */
   public void elbowUp() {
@@ -229,6 +241,7 @@ public class Arm extends SubsystemBase {
       //for (double each: currentHist) System.out.print(" "+each);
       //System.out.println(" => avg: "+avgCurrent);
       armSafety = false;
+      voltageOn();
     }
     //SmartDashboard.putBoolean("Elbow Warning", armSafety);
 
@@ -240,7 +253,11 @@ public class Arm extends SubsystemBase {
     currPw = (currPw+1)%5;
     //SmartDashboard.putNumber("WRelVal", wrist_encoder.getPosition());
     //SmartDashboard.putNumber("AbsVal", boreHolew.getAverageValue());
-    if(avgCurrentw>Constants.ArmConstants.ElbowCurrentLimit) armSafetyw = false;
+    if(avgCurrentw>Constants.ArmConstants.ElbowCurrentLimit) {
+    armSafetyw = false;
+    voltageOn();
+    }
+
     //SmartDashboard.putBoolean("Wrist Warning", armSafetyw);
 
     //System.out.println("TEST");
@@ -263,6 +280,7 @@ public class Arm extends SubsystemBase {
     armSafetyw = true;
     elbow_encoder.setPosition(abs2rel(elbowAbs.getAverageValue()));
     wrist_encoder.setPosition(abs2relw(wristAbs.getAverageValue()));
+    voltageOff();
   }
 
   /** Disable motion of the arm */

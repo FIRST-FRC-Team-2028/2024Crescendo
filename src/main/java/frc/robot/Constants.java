@@ -37,6 +37,7 @@ public final class Constants {
   public static final boolean APRIL_AVAILABLE = false;
   public static final boolean COLOR_AVALIBLE = true;
   public static final boolean PID_CLIMB = false;
+  public static final boolean LIGHTS_AVALIBLE = true;
   //public static final boolean Shoot_Pickup_Shoot = true;
 
 
@@ -337,6 +338,12 @@ public final class Constants {
       //public static final I2C.Port sensorPort = I2C.Port.kOnboard;
       //public static final double NoteHue = 0.2;
       public static final int sensordPort = 8;
+    }
+
+    public static final class Lights {
+      public static final int yellow = 0;
+      public static final int light2 = 1;
+      public static final int blue = 2;
     }
 
     public static final class CANIDs {

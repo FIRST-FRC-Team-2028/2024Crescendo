@@ -42,6 +42,7 @@ public class Amp extends Command {
     timer.reset();
     intake.stop();
     intake.iDontHaveIt();
+    intake.noteOff();
   }
 
   // Returns true when the command should end.

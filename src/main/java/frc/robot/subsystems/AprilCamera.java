@@ -21,8 +21,11 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.Lights;
 
 public class AprilCamera extends SubsystemBase {
   private PhotonCamera camera;
@@ -35,11 +38,13 @@ public class AprilCamera extends SubsystemBase {
   Transform3d robotToCam;
   PhotonPoseEstimator photonPoseEstimator;
   private Drivetrain drivetrain;
+  private final Solenoid blue;
   
   //private PhotonPipelineResult result;
   /** Creates a new AprilTags. */
   public AprilCamera() {
 
+    blue = new Solenoid(PneumaticsModuleType.CTREPCM, Lights.blue); //April tags
     aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
      //Cam mounted facing forward, 0.3302 meters in front of the center, 0 meters left/right of center, 
      // and 0.1778 meters of elevation (off floor)            on project X
@@ -52,6 +57,13 @@ public class AprilCamera extends SubsystemBase {
   }
 
 
+  public void aprilTagsOn() {
+    blue.set(true);
+  }
+
+  public void aprilTagsOff() {
+    blue.set(false);
+  }
 
 
   public Pose3d getRobotPosition() {

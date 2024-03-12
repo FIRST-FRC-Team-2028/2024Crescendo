@@ -49,6 +49,7 @@ public class InHandler extends Command {
   @Override
   public void end(boolean interrupted) {
     handler.stop();
+    handler.noteOn();
     //handler.spit_Back();
   }
 

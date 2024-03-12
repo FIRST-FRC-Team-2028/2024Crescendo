@@ -330,38 +330,50 @@ public class Robot extends TimedRobot {
     @Override
 
     public void testPeriodic() {
+
+        if (new JoystickButton(mechJoytick1, OIConstants.kSwitch).getAsBoolean()) {
+                climber.enableSoftLimit();
+            }else {
+                climber.disableLimit();
+            }
+     
         if (Constants.ARM_AVAILABLE){
-        if (new JoystickButton(mechJoytick1, OIConstants.kNudgeElbowUp).getAsBoolean()) {
+            if (new JoystickButton(mechJoytick1, OIConstants.kSwitch).getAsBoolean()) {
+                arm.enableSoftLimit();
+            }else {
+                arm.disableSoftLimit();
+            }
+
+            if (new JoystickButton(mechJoytick1, OIConstants.kNudgeElbowUp).getAsBoolean()) {
             arm.elbowUpSlow();  
-        } 
-        else if (new JoystickButton(mechJoytick1, OIConstants.kNudgeElbowDown).getAsBoolean() ) {
+            } 
+            else if (new JoystickButton(mechJoytick1, OIConstants.kNudgeElbowDown).getAsBoolean() ) {
             arm.elbowDownSlow();  
-        }
-        else {
+            }
+            else {
             arm.stopElbow();
             //System.out.println("Stopped Elbow");
-        }
+            }
 
-        if (new JoystickButton(mechJoytick2,OIConstants.kNudgeWristDown).getAsBoolean()) {
+            if (new JoystickButton(mechJoytick2,OIConstants.kNudgeWristDown).getAsBoolean()) {
             arm.moveWrist(-.1);  
-        }else if (new JoystickButton(mechJoytick2,OIConstants.kNudgeWristUp).getAsBoolean()) {
+            }else if (new JoystickButton(mechJoytick2,OIConstants.kNudgeWristUp).getAsBoolean()) {
             arm.moveWrist(.1);  
-        } else {
+            } else {
             arm.moveWrist(0.);
             //System.out.println("Stopped Wrist");
+            }
+
         }
-
-        /*if (new JoystickButton(mechjoytick1, OIConstants.kArmSubwoofer).getAsBoolean()) {
-         * arm.
-        */
-    }
+        
         if (Constants.CLIMB_AVAILABLE){
-
             if (new JoystickButton(mechJoytick1, OIConstants.kSwitch).getAsBoolean()) {
                 climber.enableSoftLimit();
             }else {
                 climber.disableLimit();
             }
+     
+            
                 //climber.getRoll();
                 if (new JoystickButton(mechJoytick2, OIConstants.kTestLeftExtend).getAsBoolean()) {
                     climber.extend_left(.5);
@@ -400,7 +412,7 @@ public class Robot extends TimedRobot {
             }
             
         }
-        if(Constants.HANDLER_AVAILABLE){
+        if(Constants.HANDLER_AVAILABLE){     
         if (new JoystickButton(mechJoytick2, OIConstants.shootButton).getAsBoolean()) {
             handler.low_out();  
         } else if (new JoystickButton(mechJoytick2, OIConstants.kIntake).getAsBoolean() && !handler.useSensor() ) {
