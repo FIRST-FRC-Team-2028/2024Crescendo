@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.subsystems.AprilCamera;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Handler;
@@ -21,7 +22,7 @@ public class AutoShootAndMove extends SequentialCommandGroup {
    * @param xdist, 
    * @param ydist meters in the x direction 
    */
-  public AutoShootAndMove(Arm arm, Drivetrain drive, Handler handler, double xdist, double ydist) {
+  public AutoShootAndMove(Arm arm, Drivetrain drive, Handler handler, AprilCamera aprilCamera, double xdist, double ydist) {
 
     addCommands(
                       new ArmRun(arm, ArmConstants.kElbowHighSpeaker, ArmConstants.kWristHighSpeaker, 2),
@@ -29,7 +30,7 @@ public class AutoShootAndMove extends SequentialCommandGroup {
                 new InstantCommand(()-> arm.rearmArm()),
                           
                 Commands.race(
-                      new Speaker(handler),
+                      new Speaker(handler, aprilCamera),
                       new WaitCommand(3.5)
                           ),
                 Commands.parallel(
@@ -43,7 +44,7 @@ public class AutoShootAndMove extends SequentialCommandGroup {
 
 
   /** Shoots into the speaker then drives two meters in the x direction */
-  public AutoShootAndMove(Arm arm, Drivetrain drivetrain, Handler handler){
-                          this(arm, drivetrain, handler, 2., 0.);
+  public AutoShootAndMove(Arm arm, Drivetrain drivetrain, Handler handler, AprilCamera aprilCamera){
+                          this(arm, drivetrain, handler, aprilCamera, 2., 0.);
   }
 }

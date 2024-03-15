@@ -129,7 +129,7 @@ public class RobotContainer {
                 m_chooser.setDefaultOption("Travel out", new AutoDriveOut(swerveSubsystem));
                 if (Constants.ARM_AVAILABLE) {
                         m_chooser.addOption("2 Note Center", new ShootMovePickup(handlerSubsystem, swerveSubsystem, armSubsystem, Stations.Center));
-                        m_chooser.setDefaultOption("Auto Shoot", new AutoShoot(armSubsystem, handlerSubsystem));
+                        m_chooser.setDefaultOption("Auto Shoot", new AutoShoot(armSubsystem, handlerSubsystem, april));
                         m_chooser.addOption("2 Note Right", new InstantCommand(() -> gyro.setYaw(-60))
                                 .andThen(new ShootMovePickup(handlerSubsystem, swerveSubsystem, armSubsystem, Stations.Right)));
                         m_chooser.addOption("2 Note Left", new InstantCommand(() -> gyro.setYaw(60))
