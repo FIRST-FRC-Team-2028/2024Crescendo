@@ -216,7 +216,8 @@ public class RobotContainer {
                 onTrue(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowAmp, ArmConstants.kWristAmp, .25)
                 );
         new JoystickButton(mechJoytick1, OIConstants.kArmSubwoofer).
-                onTrue(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowSpeaker, ArmConstants.kWristSpeaker, .25)
+                onTrue(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowSpeaker, ArmConstants.kWristSpeaker, .25).
+                andThen(new InstantCommand(() -> handlerSubsystem.high_out()))
                 //.andThen(new InstantCommand(() -> this.rumble()))
                 );
         }

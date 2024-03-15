@@ -39,6 +39,7 @@ public class Arm extends SubsystemBase {
   private final SparkPIDController elbow_PidController;
   private final SparkPIDController wrist_PidController;
   private final AnalogInput elbowAbs;
+  //private final AnalogInput elbowAbs2;
   private final AnalogInput wristAbs;
   private final Solenoid light2;
   
@@ -47,6 +48,7 @@ public class Arm extends SubsystemBase {
   double kp;
   double wkp;
   boolean IamDone;
+  //boolean absConsistent=true;
   boolean armSafety = true;   // true for arm motion enabled
   boolean armSafetyw = true;   // true for wrist motion enabled
   boolean amIDucked = false;
@@ -63,8 +65,10 @@ public class Arm extends SubsystemBase {
     elbow_follower = new CANSparkMax(Constants.CANIDs.elbow_follower, MotorType.kBrushless);
     wrist = new CANSparkMax(Constants.CANIDs.wrist, MotorType.kBrushless);
     elbowAbs = new AnalogInput(Constants.ArmConstants.kAbsoluteEncoder);
+    //elbowAbs2 = new AnalogInput(ArmConstants.kAbsoluteEncoder2);
     wristAbs = new AnalogInput(Constants.ArmConstants.kAbsoluteEncoderW);
     elbowAbs.setAverageBits(40);
+    //elbowAbs2.setAverageBits(40);
     wristAbs.setAverageBits(40);
     light2 = new Solenoid(PneumaticsModuleType.CTREPCM, Lights.light2); //Voltage warning
     //boreHoleW = new AnalogInput(Constants.ArmConstants.kAbsoluteEncoderW);
@@ -210,6 +214,7 @@ public class Arm extends SubsystemBase {
     return wrist.getOutputCurrent();
   }
   
+  
 
   /** moveWrist 
    * @param speed is positive in the same axis as the arm
@@ -243,6 +248,13 @@ public class Arm extends SubsystemBase {
       armSafety = false;
       voltageOn();
     }
+    /*if (elbowAbs.getAverageValue()>elbowAbs2.getAverageValue()-25 &&
+        elbowAbs.getAverageValue()<elbowAbs2.getAverageValue()+25){
+          absConsistent=false;
+    }
+    if (absConsistent=false){
+      stopIt();
+    }*/
     //SmartDashboard.putBoolean("Elbow Warning", armSafety);
 
 
