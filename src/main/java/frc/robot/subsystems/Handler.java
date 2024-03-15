@@ -43,6 +43,7 @@ public class Handler extends SubsystemBase {
   private final DigitalInput sensord;
   boolean doIHaveIt;
   boolean shouldIUseSensor=true;
+  boolean turnToTarget=false;
 
   /** Creates a new Handler. */
   public Handler() {
@@ -100,8 +101,15 @@ public class Handler extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-
-
+  public void turnToTarget() {
+    turnToTarget = true;
+  }
+  public void dontTurnToTarget(){
+    turnToTarget = false;
+  }
+  public boolean getTurnToTarget(){
+    return turnToTarget;
+  }
 
   public void noteOn() {
     yellow.set(true);
@@ -110,6 +118,7 @@ public class Handler extends SubsystemBase {
   public void noteOff() {
     yellow.set(false);
   }
+
 
   public boolean shouldIUseSensor() {
     return shouldIUseSensor;

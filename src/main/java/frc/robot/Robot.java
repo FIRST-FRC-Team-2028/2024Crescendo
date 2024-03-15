@@ -29,6 +29,7 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.ArmRun;
 import frc.robot.commands.TravelPosition;
+import frc.robot.subsystems.AprilCamera;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
@@ -61,6 +62,8 @@ public class Robot extends TimedRobot {
     private Drivetrain swerveSubsystem;
     Arm arm;
     Climber climber;
+    AprilCamera aprilCamera;
+    Handler handler;
    // private Pigeon2 pigeon;
 
     private PowerDistribution PDH;
@@ -178,13 +181,21 @@ public class Robot extends TimedRobot {
             m_autonomousCommand.cancel();
         }
 
-        if (climber == null) climber = m_robotContainer.getClimber();
-        climber.zeroSoftLimit();
+        if (Constants.CLIMB_AVAILABLE) {
+            if (climber == null) climber = m_robotContainer.getClimber();
+                climber.zeroSoftLimit();
+        }
         if(Constants.ARM_AVAILABLE){
             if (arm == null) arm = m_robotContainer.getArm();
             arm.setBrakeMode();
             // start up arm PID controller; move to Travel position
             (new TravelPosition(arm)).schedule();
+        }
+        if (Constants.HANDLER_AVAILABLE){
+            handler = m_robotContainer.getHandler();
+        }
+        if (Constants.APRIL_AVAILABLE){
+            aprilCamera = m_robotContainer.getAprilCamera();
         }
         
         // to drive in teleopPeriodic rather than defaultCommand {
@@ -263,7 +274,14 @@ public class Robot extends TimedRobot {
             //                + " R: " + String.format("%.3f", turningSpeed));
 
             //System.out.println("=====================");
-
+            // April Tag Yaw
+            if (!driverJoytick.getRawButton(OIConstants.kDriverFaceSpeaker))
+                //if ()
+                    if (Constants.APRIL_AVAILABLE){
+                        if (aprilCamera.target()){
+                            turningSpeed = aprilCamera.tagYaw();
+                        }
+                    }
             // 4. Construct desired chassis speeds
             ChassisSpeeds chassisSpeeds;
             if ( !driverJoytick.getRawButton(OIConstants.kDriverRobotOrientedButtonIdx)) {
@@ -300,7 +318,7 @@ public class Robot extends TimedRobot {
         }
     }
 
-    Handler handler;
+    //Handler handler;
     @Override
     public void testInit() {
         CommandScheduler.getInstance().cancelAll();

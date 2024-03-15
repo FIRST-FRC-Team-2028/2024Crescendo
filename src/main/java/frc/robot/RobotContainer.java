@@ -161,6 +161,9 @@ public class RobotContainer {
         public final SendableChooser getAutoChooser() {
                 return m_chooser;
         }
+        public final AprilCamera getAprilCamera() {
+                return april;
+        }
 
 
 
@@ -178,6 +181,8 @@ public class RobotContainer {
                 new JoystickButton(driverJoytick, OIConstants.kDriverResetOdometryButtonIdx).
                      onTrue(new InstantCommand(() -> 
                         swerveSubsystem.resetOdometry(new Pose2d(0., 0., new Rotation2d(0.0)))));
+                //new JoystickButton(driverJoytick, OIConstants.kDriverTurnToTarget).
+                //        onTrue();
             }
          /*  new JoystickButton(driverJoytick, 5).
           whileTrue(routine.quasistatic(SysIdRoutine.Direction.kForward));
@@ -243,7 +248,7 @@ public class RobotContainer {
         /*new JoystickButton(mechJoytick, 3).
                  onTrue(new ArmRun(armSubsystem, 90, 0));*/
         new JoystickButton(mechJoytick2, Constants.OIConstants.kShootSequenceButton ).
-                onTrue(new Speaker(handlerSubsystem)
+                onTrue(new Speaker(handlerSubsystem, april)
                 // and return arm/wrist to travelling position 
                 .andThen(new TravelPosition(armSubsystem))
                 );

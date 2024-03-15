@@ -45,7 +45,7 @@ public class Drivetrain extends SubsystemBase {
   boolean iShouldStop;  // logical mechanism to stop moving when other reasons are not met
   static double kMaxSpeed = Constants.DriveConstants.kMaxTranslationalVelocity;
   static double kMaxAngularSpeed = Constants.DriveConstants.kMaxRotationalVelocity;
-  private PhotonCamera camera = new PhotonCamera("Microsoft_LifeCam_HD-3000");
+  //PhotonCamera camera = new PhotonCamera("Microsoft_LifeCam_HD-3000");
    AprilTagFieldLayout aprilTagFieldLayout;
    AprilCamera aprilSubsystem;
 
@@ -129,7 +129,7 @@ public class Drivetrain extends SubsystemBase {
                           m_backLeft.getPosition(),
                           m_backRight.getPosition()
     });
-    if(Constants.APRIL_AVAILABLE){
+    /*if(Constants.APRIL_AVAILABLE){
       var res = camera.getLatestResult();
       if (res.hasTargets()) {
         var imageCaptureTime = res.getTimestampSeconds();
@@ -140,7 +140,7 @@ public class Drivetrain extends SubsystemBase {
         SmartDashboard.putNumber("Robot X Pos", m_poseEstimator.getEstimatedPosition().getX());
         SmartDashboard.putNumber("Robot Y Pos", m_poseEstimator.getEstimatedPosition().getY());
           }
-    }
+    }*/
   }
   
 

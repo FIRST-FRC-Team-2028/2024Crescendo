@@ -29,13 +29,12 @@ import edu.wpi.first.wpilibj.I2C.Port;
  */
 
 public final class Constants {
-  public static final boolean PHOTONVISION_AVAILABLE = false;
   public static final boolean DRIVE_AVAILABLE = true;
-  public static final boolean ARM_AVAILABLE = true;
-  public static final boolean HANDLER_AVAILABLE = true;
-  public static final boolean CLIMB_AVAILABLE = true;
-  public static final boolean APRIL_AVAILABLE = false;
-  public static final boolean COLOR_AVALIBLE = true;
+  public static final boolean ARM_AVAILABLE = false;
+  public static final boolean HANDLER_AVAILABLE = false;
+  public static final boolean CLIMB_AVAILABLE = false;
+  public static final boolean APRIL_AVAILABLE = true;
+  public static final boolean COLOR_AVALIBLE = false;
   public static final boolean PID_CLIMB = false;
   public static final boolean LIGHTS_AVALIBLE = true;
   //public static final boolean Shoot_Pickup_Shoot = true;
@@ -425,6 +424,7 @@ public final class Constants {
         
         public static final double kDeadband = 0.075;
         //public static final int kRetract = 1;
+        public static final int kDriverFaceSpeaker = 0;
 
 
     }
@@ -432,6 +432,8 @@ public final class Constants {
     public static final class CamConstant {
       public static final double camera_Height_Meters = Units.inchesToMeters(7.);
       public static final double target_Height_Meters = Units.inchesToMeters(78.);
+      public static final int redSpeaker = 4;
+    public static final int blueSpeaker = 7;
 
     }
 
