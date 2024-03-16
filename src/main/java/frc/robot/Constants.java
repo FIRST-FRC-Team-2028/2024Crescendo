@@ -29,13 +29,12 @@ import edu.wpi.first.wpilibj.I2C.Port;
  */
 
 public final class Constants {
-  public static final boolean PHOTONVISION_AVAILABLE = false;
   public static final boolean DRIVE_AVAILABLE = true;
-  public static final boolean ARM_AVAILABLE = true;
-  public static final boolean HANDLER_AVAILABLE = true;
-  public static final boolean CLIMB_AVAILABLE = true;
-  public static final boolean APRIL_AVAILABLE = false;
-  public static final boolean COLOR_AVALIBLE = true;
+  public static final boolean ARM_AVAILABLE = false;
+  public static final boolean HANDLER_AVAILABLE = false;
+  public static final boolean CLIMB_AVAILABLE = false;
+  public static final boolean APRIL_AVAILABLE = true;
+  public static final boolean COLOR_AVALIBLE = false;
   public static final boolean PID_CLIMB = false;
   public static final boolean LIGHTS_AVALIBLE = true;
   //public static final boolean Shoot_Pickup_Shoot = true;
@@ -409,6 +408,7 @@ public final class Constants {
         public static final int kArmDuck                      = 2; // driverJoystick B button
         public static final int kDriverResetOdometryButtonIdx = 3; // driverJoystick button X
         public static final int kDriverRobotOrientedButtonIdx = 5; // driverJoystick button left-bumper
+        public static final int kDriverStopFaceSpeaker            = 6;
 
         //Mech contoller buttons left region
         public static final int kArmTravel                    = 1;
@@ -421,6 +421,7 @@ public final class Constants {
         public static final int kSwitch                       = 8;
         public static final int kNudgeElbowUp                 = 9;
         public static final int kNudgeElbowDown               = 10;
+        public static final int kMechFaceSpeaker              = 11;
         public static final int kElbowRearmButton             = 12; 
 
         //Mech controller buttons right region
@@ -437,6 +438,8 @@ public final class Constants {
         
         public static final double kDeadband = 0.075;
         //public static final int kRetract = 1;
+        
+
 
 
     }
@@ -444,6 +447,8 @@ public final class Constants {
     public static final class CamConstant {
       public static final double camera_Height_Meters = Units.inchesToMeters(7.);
       public static final double target_Height_Meters = Units.inchesToMeters(78.);
+      public static final int redSpeaker = 4;
+    public static final int blueSpeaker = 7;
 
     }
 

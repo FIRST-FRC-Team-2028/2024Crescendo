@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Constants.HandlerConstants;
+import frc.robot.subsystems.AprilCamera;
 import frc.robot.subsystems.Handler;
 
 public class Speaker extends Command {
@@ -18,7 +19,7 @@ public class Speaker extends Command {
    *   Presuming the robot is positioned and aimed
    */
   /** Shoot note into Speaker */
-  public Speaker(Handler handler) {
+  public Speaker(Handler handler, AprilCamera aprilCamera) {
     this.handler = handler;
     timer = new Timer();
     addRequirements(handler);   // here to declare subsystem dependencies.
@@ -29,13 +30,14 @@ public class Speaker extends Command {
   public void initialize() {
     //timer.start();
     //handler.high_out();
-    handler.low_ToHigh();
+    
 
   }
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     //if (timer.hasElapsed(Constants.HandlerConstants.HighSpinTime)) handler.low_ToHigh();
+    handler.low_ToHigh();
   }
 
 

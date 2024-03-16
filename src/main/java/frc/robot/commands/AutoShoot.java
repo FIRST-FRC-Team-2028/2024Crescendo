@@ -10,13 +10,14 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.ArmConstants;
+import frc.robot.subsystems.AprilCamera;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Handler;
 
 public class AutoShoot extends SequentialCommandGroup {
   /** Shoots into the speaker then drives two meters in the x direction */
-  public AutoShoot(Arm arm, Handler handler) {
+  public AutoShoot(Arm arm, Handler handler, AprilCamera aprilCamera) {
 
     addCommands(/*Commands.race(
                             new TravelPosition(arm),
@@ -28,7 +29,7 @@ public class AutoShoot extends SequentialCommandGroup {
                             new WaitCommand(2)), 
                           new InstantCommand(() -> arm.rearmArm()),
                           Commands.race(
-                            new Speaker(handler),
+                            new Speaker(handler, aprilCamera),
                             new WaitCommand(3.5)
                           )
                           //new DriveGeneric(drive, 2, 0)

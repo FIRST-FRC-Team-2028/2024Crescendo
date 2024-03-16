@@ -25,6 +25,8 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+import frc.robot.Constants.CamConstant;
 import frc.robot.Constants.Lights;
 
 public class AprilCamera extends SubsystemBase {
@@ -44,6 +46,7 @@ public class AprilCamera extends SubsystemBase {
   /** Creates a new AprilTags. */
   public AprilCamera() {
 
+    camera = new PhotonCamera("Microsoft_LifeCam_HD-3000");
     blue = new Solenoid(PneumaticsModuleType.CTREPCM, Lights.blue); //April tags
     aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
      //Cam mounted facing forward, 0.3302 meters in front of the center, 0 meters left/right of center, 
@@ -75,6 +78,15 @@ public class AprilCamera extends SubsystemBase {
   public PhotonPoseEstimator camPose() {
     return photonPoseEstimator;
   }
+  public double tagYaw() {
+    return target.getYaw();
+  }
+  public boolean target() {
+    return hasTargets && (target.getFiducialId() == Constants.CamConstant.redSpeaker || target.getFiducialId() == CamConstant.blueSpeaker);
+  }
+  public double tagArea(){
+    return target.getArea();
+  }
 
   //public void showYaw() {
   //  SmartDashboard.putNumber("YE Yaw", target.getYaw());         IF DONT HAVE TARGET, DONT RUN SHOWYAW
@@ -86,16 +98,29 @@ public class AprilCamera extends SubsystemBase {
   public void periodic() {
 
     //photonPoseEstimator.update();
-    //var result = camera.getLatestResult();
-    //hasTargets = result.hasTargets();
-    //targets = result.getTargets();
-    //target = result.getBestTarget();
-    //robotPose = PhotonUtils.estimateFieldToRobotAprilTag(target.getBestCameraToTarget(),
-    //          aprilTagFieldLayout.getTagPose(target.getFiducialId()).get(), robotToCam);
-    //showYaw();
+    var result = camera.getLatestResult();
+    hasTargets = result.hasTargets();
+    if (hasTargets) {
+      targets = result.getTargets();
+      target = result.getBestTarget();
+      for (PhotonTrackedTarget each: targets) {
+        if (each.getFiducialId() == Constants.CamConstant.blueSpeaker 
+           || each.getFiducialId() == Constants.CamConstant.redSpeaker) target =each;
+      }
 
-    //SmartDashboard.putString("Robot Pose", photonPoseEstimator.toString());
-    //SmartDashboard.put("April Tag X", result.getTargets());
-    // This method will be called once per scheduler run
+      //robotPose = PhotonUtils.estimateFieldToRobotAprilTag(target.getBestCameraToTarget(),
+      //          aprilTagFieldLayout.getTagPose(target.getFiducialId()).get(), robotToCam);
+      //showYaw();
+
+      //SmartDashboard.putString("Robot Pose", photonPoseEstimator.toString());
+      SmartDashboard.putNumber("April Tag X", target.getFiducialId());
+      SmartDashboard.putNumber("Get Yaw", target.getYaw());
+      SmartDashboard.putNumber("Get Distance", target.getArea());
+      // This method will be called once per scheduler run
+    } else {
+      SmartDashboard.putNumber("April Tag X", 999.);
+      SmartDashboard.putNumber("Get Yaw", 999.);
+      SmartDashboard.putNumber("Get Distance", 999.);
+    }
   }
 }

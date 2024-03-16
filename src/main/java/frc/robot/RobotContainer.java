@@ -129,7 +129,7 @@ public class RobotContainer {
                 m_chooser.setDefaultOption("Travel out", new AutoDriveOut(swerveSubsystem));
                 if (Constants.ARM_AVAILABLE) {
                         m_chooser.addOption("2 Note Center", new ShootMovePickup(handlerSubsystem, swerveSubsystem, armSubsystem, Stations.Center));
-                        m_chooser.setDefaultOption("Auto Shoot", new AutoShoot(armSubsystem, handlerSubsystem));
+                        m_chooser.setDefaultOption("Auto Shoot", new AutoShoot(armSubsystem, handlerSubsystem, april));
                         m_chooser.addOption("2 Note Right", new InstantCommand(() -> gyro.setYaw(-60))
                                 .andThen(new ShootMovePickup(handlerSubsystem, swerveSubsystem, armSubsystem, Stations.Right)));
                         m_chooser.addOption("2 Note Left", new InstantCommand(() -> gyro.setYaw(60))
@@ -161,6 +161,9 @@ public class RobotContainer {
         public final SendableChooser getAutoChooser() {
                 return m_chooser;
         }
+        public final AprilCamera getAprilCamera() {
+                return april;
+        }
 
 
 
@@ -178,6 +181,8 @@ public class RobotContainer {
                 new JoystickButton(driverJoytick, OIConstants.kDriverResetOdometryButtonIdx).
                      onTrue(new InstantCommand(() -> 
                         swerveSubsystem.resetOdometry(new Pose2d(0., 0., new Rotation2d(0.0)))));
+                //new JoystickButton(driverJoytick, OIConstants.kDriverTurnToTarget).
+                //        onTrue();
             }
          /*  new JoystickButton(driverJoytick, 5).
           whileTrue(routine.quasistatic(SysIdRoutine.Direction.kForward));
@@ -224,13 +229,13 @@ public class RobotContainer {
         if (Constants.HANDLER_AVAILABLE){
                 if (Constants.ARM_AVAILABLE){
                         new JoystickButton(mechJoytick2, Constants.OIConstants.kShootSequenceButton ).
-                                onTrue(new Speaker(handlerSubsystem)
+                                onTrue(new Speaker(handlerSubsystem, april)
                                 // and return arm/wrist to travelling position 
                                 .andThen(new TravelPosition(armSubsystem))
                         );
                 } else {
                         new JoystickButton(mechJoytick2, Constants.OIConstants.kShootSequenceButton ).
-                                onTrue(new Speaker(handlerSubsystem));
+                                onTrue(new Speaker(handlerSubsystem, april));
                 }
                 new JoystickButton(mechJoytick2, Constants.OIConstants.shootButton).
                         whileTrue(new Amp(handlerSubsystem)
@@ -263,7 +268,16 @@ public class RobotContainer {
                 .andThen(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowFloor, Constants.ArmConstants.kWristFloor, .25)));
         /*new JoystickButton(mechJoytick, 3).
                  onTrue(new ArmRun(armSubsystem, 90, 0));*/
-
+        new JoystickButton(mechJoytick2, Constants.OIConstants.kShootSequenceButton ).
+                onTrue(new Speaker(handlerSubsystem, april)
+                // and return arm/wrist to travelling position 
+                .andThen(new TravelPosition(armSubsystem))
+                );
+        new JoystickButton(mechJoytick2, Constants.OIConstants.shootButton).
+                whileTrue(new Amp(handlerSubsystem)
+                // back up a bit
+                // return arm to travel position
+                );
         new JoystickButton(mechJoytick1, Constants.OIConstants.kArmSource).
                 onTrue(new ArmRun(armSubsystem, ArmConstants.kElbowSource, ArmConstants.kWristSource, 0.25));
         

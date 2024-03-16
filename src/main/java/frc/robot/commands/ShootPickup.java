@@ -14,6 +14,7 @@ import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.Stations;
+import frc.robot.subsystems.AprilCamera;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Handler;
@@ -23,6 +24,7 @@ public class ShootPickup extends SequentialCommandGroup {
   Handler handler;
   Drivetrain drivetrain;
   Arm arm;
+  AprilCamera aprilCamera;
   /** Shoots note in speaker from selected station,
    *  move to near note,
    *  and picks up a note,
@@ -71,7 +73,7 @@ public class ShootPickup extends SequentialCommandGroup {
                                          System.out.println("xdist: = "+xp+"="+xdist);
                                          System.out.println("ydist: = "+yp+"="+ydist);
                                          }),
-                    new AutoShootAndMove(arm, drivetrain, handler, 
+                    new AutoShootAndMove(arm, drivetrain, handler, aprilCamera,
                       xdist, 
                     ydist),   
                   Commands.parallel(
