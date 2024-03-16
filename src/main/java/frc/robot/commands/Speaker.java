@@ -30,13 +30,14 @@ public class Speaker extends Command {
   public void initialize() {
     //timer.start();
     //handler.high_out();
-    handler.low_ToHigh();
+    
 
   }
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     //if (timer.hasElapsed(Constants.HandlerConstants.HighSpinTime)) handler.low_ToHigh();
+    handler.low_ToHigh();
   }
 
 

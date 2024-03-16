@@ -399,6 +399,7 @@ public final class Constants {
         public static final int kArmDuck                      = 2; // driverJoystick B button
         public static final int kDriverResetOdometryButtonIdx = 3; // driverJoystick button X
         public static final int kDriverRobotOrientedButtonIdx = 5; // driverJoystick button left-bumper
+        public static final int kDriverStopFaceSpeaker            = 6;
 
         //Mech contoller buttons left region
         public static final int kArmTravel                    = 1;
@@ -411,6 +412,7 @@ public final class Constants {
         public static final int kSwitch                       = 8;
         public static final int kNudgeElbowUp                 = 9;
         public static final int kNudgeElbowDown               = 10;
+        public static final int kMechFaceSpeaker              = 11;
         public static final int kElbowRearmButton             = 12; 
 
         //Mech controller buttons right region
@@ -427,7 +429,8 @@ public final class Constants {
         
         public static final double kDeadband = 0.075;
         //public static final int kRetract = 1;
-        public static final int kDriverFaceSpeaker = 0;
+        
+
 
 
     }

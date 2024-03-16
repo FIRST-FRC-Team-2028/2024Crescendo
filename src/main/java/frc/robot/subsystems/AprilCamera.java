@@ -84,6 +84,9 @@ public class AprilCamera extends SubsystemBase {
   public boolean target() {
     return hasTargets && (target.getFiducialId() == Constants.CamConstant.redSpeaker || target.getFiducialId() == CamConstant.blueSpeaker);
   }
+  public double tagArea(){
+    return target.getArea();
+  }
 
   //public void showYaw() {
   //  SmartDashboard.putNumber("YE Yaw", target.getYaw());         IF DONT HAVE TARGET, DONT RUN SHOWYAW
@@ -98,17 +101,26 @@ public class AprilCamera extends SubsystemBase {
     var result = camera.getLatestResult();
     hasTargets = result.hasTargets();
     if (hasTargets) {
-    targets = result.getTargets();
-    target = result.getBestTarget();
+      targets = result.getTargets();
+      target = result.getBestTarget();
+      for (PhotonTrackedTarget each: targets) {
+        if (each.getFiducialId() == Constants.CamConstant.blueSpeaker 
+           || each.getFiducialId() == Constants.CamConstant.redSpeaker) target =each;
+      }
 
-    //robotPose = PhotonUtils.estimateFieldToRobotAprilTag(target.getBestCameraToTarget(),
-    //          aprilTagFieldLayout.getTagPose(target.getFiducialId()).get(), robotToCam);
-    //showYaw();
+      //robotPose = PhotonUtils.estimateFieldToRobotAprilTag(target.getBestCameraToTarget(),
+      //          aprilTagFieldLayout.getTagPose(target.getFiducialId()).get(), robotToCam);
+      //showYaw();
 
-    //SmartDashboard.putString("Robot Pose", photonPoseEstimator.toString());
-    SmartDashboard.putNumber("April Tag X", target.getFiducialId());
-    SmartDashboard.putNumber("Get Yaw", target.getYaw());
-    // This method will be called once per scheduler run
+      //SmartDashboard.putString("Robot Pose", photonPoseEstimator.toString());
+      SmartDashboard.putNumber("April Tag X", target.getFiducialId());
+      SmartDashboard.putNumber("Get Yaw", target.getYaw());
+      SmartDashboard.putNumber("Get Distance", target.getArea());
+      // This method will be called once per scheduler run
+    } else {
+      SmartDashboard.putNumber("April Tag X", 999.);
+      SmartDashboard.putNumber("Get Yaw", 999.);
+      SmartDashboard.putNumber("Get Distance", 999.);
     }
   }
 }
