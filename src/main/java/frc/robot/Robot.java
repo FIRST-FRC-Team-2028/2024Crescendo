@@ -377,9 +377,11 @@ public class Robot extends TimedRobot {
             }
 
             if (new JoystickButton(mechJoytick2,OIConstants.kNudgeWristDown).getAsBoolean()) {
-            arm.moveWrist(-.1);  
+            //arm.moveWrist(-.1); 
+            System.out.println("Wrist Down: "+arm.getWristPos()); 
             }else if (new JoystickButton(mechJoytick2,OIConstants.kNudgeWristUp).getAsBoolean()) {
-            arm.moveWrist(.1);  
+            //arm.moveWrist(.2); 
+            System.out.println("Wrist Up: "+arm.getWristPos()); 
             } else {
             arm.moveWrist(0.);
             //System.out.println("Stopped Wrist");

@@ -33,8 +33,8 @@ public final class Constants {
   public static final boolean ARM_AVAILABLE = true;
   public static final boolean HANDLER_AVAILABLE = true;
   public static final boolean CLIMB_AVAILABLE = true;
-  public static final boolean APRIL_AVAILABLE = true;
-  public static final boolean COLOR_AVALIBLE = false;
+  public static final boolean APRIL_AVAILABLE = false;
+  public static final boolean COLOR_AVALIBLE = true;
   public static final boolean PID_CLIMB = false;
   public static final boolean LIGHTS_AVALIBLE = true;
   //public static final boolean Shoot_Pickup_Shoot = true;
@@ -291,12 +291,12 @@ public final class Constants {
       public static final double Ratio2 = 90./(1550.-870.); //(RelMax-RelMin)/(AbsMax-AbsMin);
       // Wrist Encoder
       public static final int kAbsoluteEncoderW = 3;
-      public static final double wristEncoderFactor = 64.7/16.5;  
-      public static final int RelMinW = -46; //-32;     //SUBJECT TO CHEANGE
-      public static final int AbsMinW = 1350; //1345;   //SUBJECT TO CHEANGE
+      public static final double wristEncoderFactor = 68./19.; //64.7/16.5;
+      public static final int RelMinW = -44; //-32;     //SUBJECT TO CHEANGE
+      public static final int AbsMinW = 1360; //1345;   //SUBJECT TO CHEANGE
       public static final int RelMaxW = 0; //32;     //SUBJECT TO CHEANGE
-      public static final int AbsMaxW = 1050; //950;    //SUBJECT TO CHEANGE
-      public static final double RatioW = 46./(1050-1350);
+      public static final int AbsMaxW = 1115; //950;    //SUBJECT TO CHEANGE
+      public static final double RatioW = 44./(1115-1360);
       //public static final double RatioW = (RelMaxW-RelMinW)./(AbsMaxW-AbsMinW);
 
       public static final double ElbowCurrentLimit = 25.;
@@ -332,7 +332,7 @@ public final class Constants {
       public static final double kHighAmpSpeed = 0.5;
       public static final double kLowAmpSpeed = -.5;
       public static final double kSpitBackWaitTime = .75;
-    public static final double shotCurrent = 50;
+    public static final double shotCurrent = 500;
       
     }
 
@@ -348,7 +348,7 @@ public final class Constants {
     public static final class ColorConstants {
       //public static final I2C.Port sensorPort = I2C.Port.kOnboard;
       //public static final double NoteHue = 0.2;
-      public static final int sensordPort = 8;
+      public static final int sensordPort = 9;
     }
 
     public static final class Lights {
