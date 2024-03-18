@@ -272,15 +272,24 @@ public final class Constants {
       public static final float kWristForwardLimit = 85.f;
       public static final float kWristReverseLimit = -66.f;
       //Encoders
-      public static final int ABSENCODERPORT = 0;
+      //public static final int ABSENCODERPORT = 0;
       public static final int kAbsoluteEncoder = 0;
       //public static final int kAbsoluteEncoder2 = 1;
       public static final double elbowEncoderFactor = 90./(80.); 
       public static final int RelMin = 0; //0;     // 6;  //  upright
-      public static final int AbsMin = 1735; //850;     //584;  // parallel to floor
+      public static final int AbsMin = 1250; //850;     //584;  // parallel to floor
       public static final int RelMax = 90; //90;     //45;  // upright
-      public static final int AbsMax = 2400;  //1514;    //860; // upright
-      public static final double Ratio = 90./(2400.-1735.); //(RelMax-RelMin)/(AbsMax-AbsMin);
+      public static final int AbsMax = 615;  //1514;    //860; // upright
+      public static final double Ratio = 90./(615.-1250.); //(RelMax-RelMin)/(AbsMax-AbsMin);
+      // Second Elbow Encoder
+      public static final int kAbsoluteEncoder2 = 1;
+      //public static final double elbowEncoderFactor2 = 0;
+      public static final int RelMin2 = 0;
+      public static final int AbsMin2 = 870; //875
+      public static final int RelMax2 = 90;
+      public static final int AbsMax2 = 1550; //1600
+      public static final double Ratio2 = 90./(1550.-870.); //(RelMax-RelMin)/(AbsMax-AbsMin);
+      // Wrist Encoder
       public static final int kAbsoluteEncoderW = 3;
       public static final double wristEncoderFactor = 64.7/16.5;  
       public static final int RelMinW = -46; //-32;     //SUBJECT TO CHEANGE

@@ -215,13 +215,33 @@ public class RobotContainer {
         new JoystickButton(mechJoytick1, OIConstants.kArmAmp).
                 onTrue(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowAmp, ArmConstants.kWristAmp, .25)
                 );
-        new JoystickButton(mechJoytick1, OIConstants.kArmSubwoofer).
-                onTrue(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowSpeaker, ArmConstants.kWristSpeaker, .25).
-                andThen(new InstantCommand(() -> handlerSubsystem.high_out()))
-                //.andThen(new InstantCommand(() -> this.rumble()))
+        if (Constants.HANDLER_AVAILABLE){
+                new JoystickButton(mechJoytick1, OIConstants.kArmSubwoofer).
+                        onTrue(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowSpeaker, ArmConstants.kWristSpeaker, .25).
+                        andThen(new InstantCommand(() -> handlerSubsystem.high_out()))
+                        //.andThen(new InstantCommand(() -> this.rumble()))
                 );
+        } else {
+                new JoystickButton(mechJoytick1, OIConstants.kArmSubwoofer).
+                        onTrue(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowSpeaker, ArmConstants.kWristSpeaker, .25));
+        }
         }
         if (Constants.HANDLER_AVAILABLE){
+                if (Constants.ARM_AVAILABLE){
+                        new JoystickButton(mechJoytick2, Constants.OIConstants.kShootSequenceButton ).
+                                onTrue(new Speaker(handlerSubsystem, april)
+                                // and return arm/wrist to travelling position 
+                                .andThen(new TravelPosition(armSubsystem))
+                        );
+                } else {
+                        new JoystickButton(mechJoytick2, Constants.OIConstants.kShootSequenceButton ).
+                                onTrue(new Speaker(handlerSubsystem, april));
+                }
+                new JoystickButton(mechJoytick2, Constants.OIConstants.shootButton).
+                        whileTrue(new Amp(handlerSubsystem)
+                        // back up a bit
+                        // return arm to travel position
+                        );
         if (Constants.COLOR_AVALIBLE){
                 new JoystickButton(mechJoytick2, OIConstants.kIntake)
                         .onTrue(new InHandler(handlerSubsystem)

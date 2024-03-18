@@ -87,6 +87,7 @@ public class Robot extends TimedRobot {
         PDH = new PowerDistribution(1, ModuleType.kRev);
        
         m_robotContainer = new RobotContainer();
+        CommandScheduler.getInstance().enable();
         //pigeon = m_robotContainer.getGyro();
         //PortForwarder.add(1182, "photonvision.local",5800 );
 
@@ -133,6 +134,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
+        CommandScheduler.getInstance().enable();
         //lights.setSpeed(0.93);
         SendableChooser<Command> slector = m_robotContainer.getAutoChooser();
         m_autonomousCommand = slector.getSelected();
@@ -157,6 +159,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
+        CommandScheduler.getInstance().enable();
         m_robotContainer.configureButtonBindings();
         buttonbinding = true;
         //UsbCamera usbCamera = new UsbCamera("Front Cam", 0);
@@ -327,6 +330,7 @@ public class Robot extends TimedRobot {
         CommandScheduler.getInstance().cancelAll();
         // Cancels all running commands at the start of test mode.
         CommandScheduler.getInstance().getActiveButtonLoop().clear();
+        //CommandScheduler.getInstance().disable();
         // Gets rid of all button bindings
         
         //if (arm == null) arm = m_robotContainer.getArm();
@@ -351,12 +355,8 @@ public class Robot extends TimedRobot {
     @Override
 
     public void testPeriodic() {
-
-        if (new JoystickButton(mechJoytick1, OIConstants.kSwitch).getAsBoolean()) {
-                climber.enableSoftLimit();
-            }else {
-                climber.disableLimit();
-            }
+        
+        
      
         if (Constants.ARM_AVAILABLE){
             if (new JoystickButton(mechJoytick1, OIConstants.kSwitch).getAsBoolean()) {
@@ -387,7 +387,7 @@ public class Robot extends TimedRobot {
 
         }
         
-        if (Constants.CLIMB_AVAILABLE){
+        /*if (Constants.CLIMB_AVAILABLE){
             if (new JoystickButton(mechJoytick1, OIConstants.kSwitch).getAsBoolean()) {
                 climber.enableSoftLimit();
             }else {
@@ -440,7 +440,7 @@ public class Robot extends TimedRobot {
             handler.low_PickUp();  
             System.out.println(handler.useSensor());
         } else handler.stop();
-    }
+    }*/
 
     }
 }
