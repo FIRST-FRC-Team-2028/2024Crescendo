@@ -170,10 +170,12 @@ public class Arm extends SubsystemBase {
   }
 
 
+  /** turn on arm motor over-load warning light */
   public void voltageOn() {
     light2.set(true);
   }
 
+  /** turn off arm motor over-load warning light */
   public void voltageOff() {
     light2.set(false);
   }
