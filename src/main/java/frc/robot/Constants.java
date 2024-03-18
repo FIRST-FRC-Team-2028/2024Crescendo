@@ -400,6 +400,7 @@ public final class Constants {
         public static final int kDriverResetOdometryButtonIdx = 3; // driverJoystick button X
         public static final int kDriverRobotOrientedButtonIdx = 5; // driverJoystick button left-bumper
         public static final int kDriverStopFaceSpeaker            = 6;
+        public static final int kDriverFaceSpeaker = 8; //For testing purposes
 
         //Mech contoller buttons left region
         public static final int kArmTravel                    = 1;
@@ -429,6 +430,7 @@ public final class Constants {
         
         public static final double kDeadband = 0.075;
         //public static final int kRetract = 1;
+        
         
 
 

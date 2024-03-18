@@ -277,12 +277,14 @@ public class Robot extends TimedRobot {
             // April Tag Yaw
             if (!driverJoytick.getRawButton(OIConstants.kDriverStopFaceSpeaker))
                 if (mechJoytick1.getRawButton(OIConstants.kMechFaceSpeaker))
+              // if (driverJoytick.getRawButton(OIConstants.kDriverFaceSpeaker))
                     if (Constants.APRIL_AVAILABLE){
                         if (aprilCamera.target()){
                             turningSpeed = -aprilCamera.tagYaw()/20.; 
-                            turningSpeed*=(1+.4*Math.abs(xSpeed));  // Adjust based on driving speed ?
+                            turningSpeed*=(1+1.2*Math.abs(xSpeed));  // Adjust based on driving speed ?
                         }
                     }
+            
             // 4. Construct desired chassis speeds
             ChassisSpeeds chassisSpeeds;
             if ( !driverJoytick.getRawButton(OIConstants.kDriverRobotOrientedButtonIdx)) {
