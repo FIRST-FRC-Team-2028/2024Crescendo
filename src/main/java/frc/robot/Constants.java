@@ -34,7 +34,7 @@ public final class Constants {
   public static final boolean HANDLER_AVAILABLE = true;
   public static final boolean CLIMB_AVAILABLE = true;
   public static final boolean APRIL_AVAILABLE = false;
-  public static final boolean COLOR_AVALIBLE = true;
+  public static final boolean COLOR_AVALIBLE = false;
   public static final boolean PID_CLIMB = false;
   public static final boolean LIGHTS_AVALIBLE = true;
   //public static final boolean Shoot_Pickup_Shoot = true;
