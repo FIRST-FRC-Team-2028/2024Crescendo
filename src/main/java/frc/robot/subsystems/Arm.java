@@ -11,6 +11,7 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkLimitSwitch;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 
@@ -39,7 +40,7 @@ public class Arm extends SubsystemBase {
   private final SparkPIDController elbow_PidController;
   private final SparkPIDController wrist_PidController;
   private final AnalogInput elbowAbs;
-  //private final AnalogInput elbowAbs2;
+  private final AnalogInput elbowAbs2;
   private final AnalogInput wristAbs;
   private final Solenoid light2;
   
@@ -48,11 +49,12 @@ public class Arm extends SubsystemBase {
   double kp;
   double wkp;
   boolean IamDone;
-  //boolean absConsistent=true;
+  boolean absConsistent=true;
   boolean armSafety = true;   // true for arm motion enabled
   boolean armSafetyw = true;   // true for wrist motion enabled
   boolean amIDucked = false;
   boolean fineNudge=false;
+
   
   /** The Arm:
    *    o moves the handler (relative to the robot)
@@ -65,10 +67,10 @@ public class Arm extends SubsystemBase {
     elbow_follower = new CANSparkMax(Constants.CANIDs.elbow_follower, MotorType.kBrushless);
     wrist = new CANSparkMax(Constants.CANIDs.wrist, MotorType.kBrushless);
     elbowAbs = new AnalogInput(Constants.ArmConstants.kAbsoluteEncoder);
-    //elbowAbs2 = new AnalogInput(ArmConstants.kAbsoluteEncoder2);
+    elbowAbs2 = new AnalogInput(ArmConstants.kAbsoluteEncoder2);
     wristAbs = new AnalogInput(Constants.ArmConstants.kAbsoluteEncoderW);
     elbowAbs.setAverageBits(40);
-    //elbowAbs2.setAverageBits(40);
+    elbowAbs2.setAverageBits(40);
     wristAbs.setAverageBits(40);
     light2 = new Solenoid(PneumaticsModuleType.CTREPCM, Lights.light2); //Voltage warning
     //boreHoleW = new AnalogInput(Constants.ArmConstants.kAbsoluteEncoderW);
@@ -92,6 +94,7 @@ public class Arm extends SubsystemBase {
     //elbow_encoder.setPosition(abs2rel(elbowAbs.getAverageValue()));
     elbow_encoder.setPosition(abs2rel(elbowAbs.getAverageValue()));
     wrist_encoder.setPosition(abs2relw(wristAbs.getAverageValue()));
+    SmartDashboard.putNumber("Abs2Calibration", abs2rel2(elbowAbs2.getAverageValue()));
     //wrist_encoder.setPosition(0);
     //elbow_encoder.setPosition(0);
 
@@ -102,6 +105,7 @@ public class Arm extends SubsystemBase {
 
     elbow.enableSoftLimit(SoftLimitDirection.kForward,true);
     elbow.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    elbow.getForwardLimitSwitch(SparkLimitSwitch.Type.kNormallyOpen).enableLimitSwitch(true);
     wrist.enableSoftLimit(SoftLimitDirection.kForward,true);
     wrist.enableSoftLimit(SoftLimitDirection.kReverse, true);
 
@@ -129,6 +133,14 @@ public class Arm extends SubsystemBase {
     System.out.println("               "+Constants.ArmConstants.RelMin+" + " + Constants.ArmConstants.Ratio+ " * ("+absval+" - "+Constants.ArmConstants.AbsMin+") = "+val);
     return Constants.ArmConstants.RelMin + Constants.ArmConstants.Ratio * (absval - Constants.ArmConstants.AbsMin);
   }
+  /**Check first absolute encoder to check if things have broken */
+  double abs2rel2(double absval){
+    System.out.println("calibrate Arm 2nd encoder: Rmin + Ratio*(aval-amin) = rval");
+    double val = Constants.ArmConstants.RelMin2 + Constants.ArmConstants.Ratio2 * (absval - Constants.ArmConstants.AbsMin2);
+    System.out.println("               "+Constants.ArmConstants.RelMin2+" + " + Constants.ArmConstants.Ratio2+ " * ("+absval+" - "+Constants.ArmConstants.AbsMin2+") = "+val);
+    return Constants.ArmConstants.RelMin2 + Constants.ArmConstants.Ratio2 * (absval - Constants.ArmConstants.AbsMin2);
+  }
+
   /** Calibrate relative encoder from absolute encoder for the wrist*/
   double abs2relw(double absval){
     System.out.println("calibrate Wrist");
@@ -136,6 +148,14 @@ public class Arm extends SubsystemBase {
     System.out.println("               "+Constants.ArmConstants.RelMinW+" + " + Constants.ArmConstants.RatioW+ " * ("+absval+" - "+Constants.ArmConstants.AbsMinW+") = "+val);
     return Constants.ArmConstants.RelMinW + Constants.ArmConstants.RatioW * (absval - Constants.ArmConstants.AbsMinW);
   }
+  double abs2relNoPrint(double absval){
+    return Constants.ArmConstants.RelMin + Constants.ArmConstants.Ratio * (absval - Constants.ArmConstants.AbsMin);
+  }
+  /**Check first absolute encoder to check if things have broken */
+  double abs2rel2NoPrint(double absval){
+    return Constants.ArmConstants.RelMin2 + Constants.ArmConstants.Ratio2 * (absval - Constants.ArmConstants.AbsMin2);
+  }
+
 
   /** Sets the arm motors to coast */
   public void setCoastMode() {
@@ -152,10 +172,12 @@ public class Arm extends SubsystemBase {
   }
 
 
+  /** turn on arm motor over-load warning light */
   public void voltageOn() {
     light2.set(true);
   }
 
+  /** turn off arm motor over-load warning light */
   public void voltageOff() {
     light2.set(false);
   }
@@ -240,6 +262,8 @@ public class Arm extends SubsystemBase {
     currP = (currP+1)%5;
     SmartDashboard.putNumber("ElbowRelVal", elbow_encoder.getPosition());
     SmartDashboard.putNumber("ElbowAbsVal", elbowAbs.getAverageValue());
+    SmartDashboard.putNumber("ElbowAbsVal2", elbowAbs2.getAverageValue());
+
     SmartDashboard.putNumber("WristRelVal", wrist_encoder.getPosition());
     SmartDashboard.putNumber("WristAbsVal", wristAbs.getAverageValue());
     if(avgCurrent>Constants.ArmConstants.ElbowCurrentLimit) {
@@ -248,6 +272,9 @@ public class Arm extends SubsystemBase {
       armSafety = false;
       voltageOn();
     }
+    //if (abs2relNoPrint(elbowAbs.getAverageValue())>abs2rel2NoPrint(elbowAbs2.getAverageValue())+5 || abs2relNoPrint(elbowAbs.getAverageValue())<abs2rel2NoPrint(elbowAbs2.getAverageValue())-5){
+      //armSafety = false;
+    //}
     /*if (elbowAbs.getAverageValue()>elbowAbs2.getAverageValue()-25 &&
         elbowAbs.getAverageValue()<elbowAbs2.getAverageValue()+25){
           absConsistent=false;
@@ -305,8 +332,10 @@ public class Arm extends SubsystemBase {
    * @param target angle from floor, degrees
    */
   public void positionArm(double target) {
-    elbow_PidController.setReference(target, CANSparkMax.ControlType.kPosition);
-    latestTarget = target;
+    if (armSafety){
+      elbow_PidController.setReference(target, CANSparkMax.ControlType.kPosition);
+      latestTarget = target;
+    }
   }
 
   /** closed loop control wrist to target
@@ -328,16 +357,20 @@ public class Arm extends SubsystemBase {
    * @see positionArm
   */
   public void retargetElbow(double Adjustment) {
-     latestTarget += Adjustment;
-    elbow_PidController.setReference(latestTarget, CANSparkMax.ControlType.kPosition);
+    if (armSafety){
+      latestTarget += Adjustment;
+      elbow_PidController.setReference(latestTarget, CANSparkMax.ControlType.kPosition);
+    }
   }
   /** Adjust elbow target
    * @param Adjustment 1 up, -1 down
    */
   public void retargetElbow(int Adjustment) {
-     //latestTarget += Adjustment;
-     latestTarget += (fineNudge?Constants.ArmConstants.elbowNudgeAmountFine:Constants.ArmConstants.elbowNudgeAmount)*Math.signum(Adjustment);
-     elbow_PidController.setReference(latestTarget, CANSparkMax.ControlType.kPosition);
+    if (armSafety){
+      //latestTarget += Adjustment;
+      latestTarget += (fineNudge?Constants.ArmConstants.elbowNudgeAmountFine:Constants.ArmConstants.elbowNudgeAmount)*Math.signum(Adjustment);
+      elbow_PidController.setReference(latestTarget, CANSparkMax.ControlType.kPosition);
+    }
   }
 
   /** Adjust wrist PID target 
@@ -396,6 +429,7 @@ public class Arm extends SubsystemBase {
    * @see positionArm, positionWrist
   */
   public void run(double targetW, double target) {
+    
     positionArm(target);
     positionWrist(targetW);
   }

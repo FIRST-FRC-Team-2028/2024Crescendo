@@ -87,6 +87,7 @@ public class Robot extends TimedRobot {
         PDH = new PowerDistribution(1, ModuleType.kRev);
        
         m_robotContainer = new RobotContainer();
+        CommandScheduler.getInstance().enable();
         //pigeon = m_robotContainer.getGyro();
         //PortForwarder.add(1182, "photonvision.local",5800 );
 
@@ -133,6 +134,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
+        CommandScheduler.getInstance().enable();
         //lights.setSpeed(0.93);
         SendableChooser<Command> slector = m_robotContainer.getAutoChooser();
         m_autonomousCommand = slector.getSelected();
@@ -157,6 +159,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
+        CommandScheduler.getInstance().enable();
         m_robotContainer.configureButtonBindings();
         buttonbinding = true;
         //UsbCamera usbCamera = new UsbCamera("Front Cam", 0);
@@ -277,12 +280,14 @@ public class Robot extends TimedRobot {
             // April Tag Yaw
             if (!driverJoytick.getRawButton(OIConstants.kDriverStopFaceSpeaker))
                 if (mechJoytick1.getRawButton(OIConstants.kMechFaceSpeaker))
+              // if (driverJoytick.getRawButton(OIConstants.kDriverFaceSpeaker))
                     if (Constants.APRIL_AVAILABLE){
                         if (aprilCamera.target()){
                             turningSpeed = -aprilCamera.tagYaw()/20.; 
-                            turningSpeed*=(1+.4*Math.abs(xSpeed));  // Adjust based on driving speed ?
+                            turningSpeed*=(1+1.2*Math.abs(xSpeed));  // Adjust based on driving speed ?
                         }
                     }
+            
             // 4. Construct desired chassis speeds
             ChassisSpeeds chassisSpeeds;
             if ( !driverJoytick.getRawButton(OIConstants.kDriverRobotOrientedButtonIdx)) {
@@ -325,6 +330,7 @@ public class Robot extends TimedRobot {
         CommandScheduler.getInstance().cancelAll();
         // Cancels all running commands at the start of test mode.
         CommandScheduler.getInstance().getActiveButtonLoop().clear();
+        //CommandScheduler.getInstance().disable();
         // Gets rid of all button bindings
         
         //if (arm == null) arm = m_robotContainer.getArm();
@@ -349,12 +355,8 @@ public class Robot extends TimedRobot {
     @Override
 
     public void testPeriodic() {
-
-        if (new JoystickButton(mechJoytick1, OIConstants.kSwitch).getAsBoolean()) {
-                climber.enableSoftLimit();
-            }else {
-                climber.disableLimit();
-            }
+        
+        
      
         if (Constants.ARM_AVAILABLE){
             if (new JoystickButton(mechJoytick1, OIConstants.kSwitch).getAsBoolean()) {
@@ -375,9 +377,11 @@ public class Robot extends TimedRobot {
             }
 
             if (new JoystickButton(mechJoytick2,OIConstants.kNudgeWristDown).getAsBoolean()) {
-            arm.moveWrist(-.1);  
+            //arm.moveWrist(-.1); 
+            System.out.println("Wrist Down: "+arm.getWristPos()); 
             }else if (new JoystickButton(mechJoytick2,OIConstants.kNudgeWristUp).getAsBoolean()) {
-            arm.moveWrist(.1);  
+            //arm.moveWrist(.2); 
+            System.out.println("Wrist Up: "+arm.getWristPos()); 
             } else {
             arm.moveWrist(0.);
             //System.out.println("Stopped Wrist");
@@ -385,7 +389,7 @@ public class Robot extends TimedRobot {
 
         }
         
-        if (Constants.CLIMB_AVAILABLE){
+        /*if (Constants.CLIMB_AVAILABLE){
             if (new JoystickButton(mechJoytick1, OIConstants.kSwitch).getAsBoolean()) {
                 climber.enableSoftLimit();
             }else {
@@ -438,7 +442,7 @@ public class Robot extends TimedRobot {
             handler.low_PickUp();  
             System.out.println(handler.useSensor());
         } else handler.stop();
-    }
+    }*/
 
     }
 }

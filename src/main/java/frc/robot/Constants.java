@@ -30,9 +30,9 @@ import edu.wpi.first.wpilibj.I2C.Port;
 
 public final class Constants {
   public static final boolean DRIVE_AVAILABLE = true;
-  public static final boolean ARM_AVAILABLE = false;
-  public static final boolean HANDLER_AVAILABLE = false;
-  public static final boolean CLIMB_AVAILABLE = false;
+  public static final boolean ARM_AVAILABLE = true;
+  public static final boolean HANDLER_AVAILABLE = true;
+  public static final boolean CLIMB_AVAILABLE = true;
   public static final boolean APRIL_AVAILABLE = false;
   public static final boolean COLOR_AVALIBLE = false;
   public static final boolean PID_CLIMB = false;
@@ -272,22 +272,31 @@ public final class Constants {
       public static final float kWristForwardLimit = 85.f;
       public static final float kWristReverseLimit = -66.f;
       //Encoders
-      public static final int ABSENCODERPORT = 0;
+      //public static final int ABSENCODERPORT = 0;
       public static final int kAbsoluteEncoder = 0;
       //public static final int kAbsoluteEncoder2 = 1;
       public static final double elbowEncoderFactor = 90./(80.); 
       public static final int RelMin = 0; //0;     // 6;  //  upright
-      public static final int AbsMin = 1735; //850;     //584;  // parallel to floor
+      public static final int AbsMin = 1250; //850;     //584;  // parallel to floor
       public static final int RelMax = 90; //90;     //45;  // upright
-      public static final int AbsMax = 2400;  //1514;    //860; // upright
-      public static final double Ratio = 90./(2400.-1735.); //(RelMax-RelMin)/(AbsMax-AbsMin);
+      public static final int AbsMax = 615;  //1514;    //860; // upright
+      public static final double Ratio = 90./(615.-1250.); //(RelMax-RelMin)/(AbsMax-AbsMin);
+      // Second Elbow Encoder
+      public static final int kAbsoluteEncoder2 = 1;
+      //public static final double elbowEncoderFactor2 = 0;
+      public static final int RelMin2 = 0;
+      public static final int AbsMin2 = 870; //875
+      public static final int RelMax2 = 90;
+      public static final int AbsMax2 = 1550; //1600
+      public static final double Ratio2 = 90./(1550.-870.); //(RelMax-RelMin)/(AbsMax-AbsMin);
+      // Wrist Encoder
       public static final int kAbsoluteEncoderW = 3;
-      public static final double wristEncoderFactor = 64.7/16.5;  
-      public static final int RelMinW = -46; //-32;     //SUBJECT TO CHEANGE
-      public static final int AbsMinW = 1350; //1345;   //SUBJECT TO CHEANGE
+      public static final double wristEncoderFactor = 68./19.; //64.7/16.5;
+      public static final int RelMinW = -44; //-32;     //SUBJECT TO CHEANGE
+      public static final int AbsMinW = 1360; //1345;   //SUBJECT TO CHEANGE
       public static final int RelMaxW = 0; //32;     //SUBJECT TO CHEANGE
-      public static final int AbsMaxW = 1050; //950;    //SUBJECT TO CHEANGE
-      public static final double RatioW = 46./(1050-1350);
+      public static final int AbsMaxW = 1115; //950;    //SUBJECT TO CHEANGE
+      public static final double RatioW = 44./(1115-1360);
       //public static final double RatioW = (RelMaxW-RelMinW)./(AbsMaxW-AbsMinW);
 
       public static final double ElbowCurrentLimit = 25.;
@@ -323,7 +332,7 @@ public final class Constants {
       public static final double kHighAmpSpeed = 0.5;
       public static final double kLowAmpSpeed = -.5;
       public static final double kSpitBackWaitTime = .75;
-    public static final double shotCurrent = 50;
+    public static final double shotCurrent = 500;
       
     }
 
@@ -339,7 +348,7 @@ public final class Constants {
     public static final class ColorConstants {
       //public static final I2C.Port sensorPort = I2C.Port.kOnboard;
       //public static final double NoteHue = 0.2;
-      public static final int sensordPort = 8;
+      public static final int sensordPort = 9;
     }
 
     public static final class Lights {
@@ -400,6 +409,7 @@ public final class Constants {
         public static final int kDriverResetOdometryButtonIdx = 3; // driverJoystick button X
         public static final int kDriverRobotOrientedButtonIdx = 5; // driverJoystick button left-bumper
         public static final int kDriverStopFaceSpeaker            = 6;
+        public static final int kDriverFaceSpeaker = 8; //For testing purposes
 
         //Mech contoller buttons left region
         public static final int kArmTravel                    = 1;
@@ -429,6 +439,7 @@ public final class Constants {
         
         public static final double kDeadband = 0.075;
         //public static final int kRetract = 1;
+        
         
 
 

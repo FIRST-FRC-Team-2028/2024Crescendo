@@ -93,6 +93,19 @@ public class Handler extends SubsystemBase {
     }   
   }
 
+  /* If a single sample of the shooter motor current is sufficient, Yay!
+   * Otherwise, save a short time history of the shooter motor current to test.
+   */
+  double[] shooterCurrent = {
+              0.,0.,0.,0.,0.,0.
+             ,0.,0.,0.,0.,0.,0.
+             ,0.,0.,0.,0.,0.,0.
+       };
+  /** clear shooter current sample */
+  public void clearCurrent() {
+    for(int i=0;i<shooterCurrent.length;i++) shooterCurrent[i]=0.;
+  }
+  /**sense from current history whether the note has been shot */
   public double getHighCurrent() {
     return high_side.getStatorCurrent();
     //return high_side.getSupplyCurrent();
@@ -118,27 +131,33 @@ public class Handler extends SubsystemBase {
     return turnToTarget;
   }
 
+  /**Turn on light indicating a note is posessed */
   public void noteOn() {
     yellow.set(true);
   }
 
+  /**Turn off light indicating a note is posessed */
   public void noteOff() {
     yellow.set(false);
   }
 
 
+  /**report whether note sensor is trusted */
   public boolean shouldIUseSensor() {
     return shouldIUseSensor;
   }
 
+  /**distrust note sensor */
   public void useSensorFalse() {
     shouldIUseSensor = false;
   }
 
+  /**trust note sensor */
   public void useSensorTrue() {
     shouldIUseSensor = true;
   }
 
+  /** report whether note is acquired */
   public boolean doIHaveIt() {
     return doIHaveIt;
   }
