@@ -190,12 +190,12 @@ public class Arm extends SubsystemBase {
 
   /** Elbow down open loop control lower speed */
   public void elbowDownSlow() {
-    if(armSafety)elbow.set(-.2);
+    if(armSafety)elbow.set(-.5);
   }
   
   /** Elbow up open loop control  lower speed*/
   public void elbowUpSlow() {
-    if(armSafety)elbow.set(.2);
+    if(armSafety)elbow.set(.5);
   }
 
   /** move arm - open loop
