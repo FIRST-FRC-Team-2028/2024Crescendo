@@ -115,15 +115,17 @@ public class Arm extends SubsystemBase {
     elbow_PidController.setP(Constants.ArmConstants.kElbowP);
     elbow_PidController.setI(Constants.ArmConstants.kElbowI);
     elbow_PidController.setD(Constants.ArmConstants.kElbowD);
+    
 
     wrist_PidController.setP(Constants.ArmConstants.kWristP);
     wrist_PidController.setI(Constants.ArmConstants.kWristI);
     wrist_PidController.setD(Constants.ArmConstants.kWristD);
 
-    elbow.setOpenLoopRampRate(Constants.ArmConstants.kElbowRampRate);
-    elbow.setClosedLoopRampRate(Constants.ArmConstants.kElbowRampRate);
+    //elbow.setOpenLoopRampRate(Constants.ArmConstants.kElbowRampRate);
+    //elbow.setClosedLoopRampRate(Constants.ArmConstants.kElbowRampRate);
     wrist.setOpenLoopRampRate(Constants.ArmConstants.kWristRampRate);
     wrist.setClosedLoopRampRate(Constants.ArmConstants.kWristRampRate);
+    
   }
 
   /** Calibrate relative encoder from absolute encoder for the elbow*/
@@ -252,6 +254,8 @@ public class Arm extends SubsystemBase {
   int currPw = 0;
   double avgCurrentw = 0.;
 
+  
+
   @Override
   public void periodic() {
     //SmartDashboard.putNumber("AbsWrist", wristAbs.getAverageValue());
@@ -260,16 +264,23 @@ public class Arm extends SubsystemBase {
     avgCurrent += currentCurrent/5. - currentHist[currP]/5.;
     currentHist[currP] = currentCurrent;
     currP = (currP+1)%5;
+
+    SmartDashboard.putNumber("Elbow Temp", elbow.getMotorTemperature());
+    SmartDashboard.putNumber("Elbow_Follow Temp", elbow_follower.getMotorTemperature());
+    SmartDashboard.putNumber("Wrist Temp", wrist.getMotorTemperature());
+    SmartDashboard.putNumber("Target Pos", latestTarget);
+    //SmartDashboard.putNumber("Error", elbow_PidController.get)
     SmartDashboard.putNumber("ElbowRelVal", elbow_encoder.getPosition());
     SmartDashboard.putNumber("ElbowAbsVal", elbowAbs.getAverageValue());
     SmartDashboard.putNumber("ElbowAbsVal2", elbowAbs2.getAverageValue());
 
     SmartDashboard.putNumber("WristRelVal", wrist_encoder.getPosition());
     SmartDashboard.putNumber("WristAbsVal", wristAbs.getAverageValue());
+    //elbow_PidController.setFF(ArmConstants.kElbowFF*Math.cos(Math.toRadians(getElbowPos())));
     if(avgCurrent>Constants.ArmConstants.ElbowCurrentLimit) {
       //for (double each: currentHist) System.out.print(" "+each);
       //System.out.println(" => avg: "+avgCurrent);
-      armSafety = false;
+      armSafety = true;
       voltageOn();
     }
     //if (abs2relNoPrint(elbowAbs.getAverageValue())>abs2rel2NoPrint(elbowAbs2.getAverageValue())+5 || abs2relNoPrint(elbowAbs.getAverageValue())<abs2rel2NoPrint(elbowAbs2.getAverageValue())-5){
@@ -293,7 +304,7 @@ public class Arm extends SubsystemBase {
     //SmartDashboard.putNumber("WRelVal", wrist_encoder.getPosition());
     //SmartDashboard.putNumber("AbsVal", boreHolew.getAverageValue());
     if(avgCurrentw>Constants.ArmConstants.ElbowCurrentLimit) {
-    armSafetyw = false;
+    armSafetyw = true;
     voltageOn();
     }
 

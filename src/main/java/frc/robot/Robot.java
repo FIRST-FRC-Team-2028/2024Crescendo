@@ -366,30 +366,30 @@ public class Robot extends TimedRobot {
             }
 
             if (new JoystickButton(mechJoytick1, OIConstants.kNudgeElbowUp).getAsBoolean()) {
-            arm.elbowUpSlow();  
+                arm.elbowUpSlow();
             } 
             else if (new JoystickButton(mechJoytick1, OIConstants.kNudgeElbowDown).getAsBoolean() ) {
-            arm.elbowDownSlow();  
+                arm.elbowDownSlow();  
             }
             else {
-            arm.stopElbow();
-            //System.out.println("Stopped Elbow");
+                arm.stopElbow();
+                //System.out.println("Stopped Elbow");
             }
 
             if (new JoystickButton(mechJoytick2,OIConstants.kNudgeWristDown).getAsBoolean()) {
-            //arm.moveWrist(-.1); 
-            System.out.println("Wrist Down: "+arm.getWristPos()); 
+                arm.moveWrist(-.3); 
+                //System.out.println("Wrist Down: "+arm.getWristPos()); 
             }else if (new JoystickButton(mechJoytick2,OIConstants.kNudgeWristUp).getAsBoolean()) {
-            //arm.moveWrist(.2); 
-            System.out.println("Wrist Up: "+arm.getWristPos()); 
+                arm.moveWrist(.3); 
+                //System.out.println("Wrist Up: "+arm.getWristPos()); 
             } else {
             arm.moveWrist(0.);
             //System.out.println("Stopped Wrist");
             }
 
-        }
+        }/*
         
-        /*if (Constants.CLIMB_AVAILABLE){
+        if (Constants.CLIMB_AVAILABLE){
             if (new JoystickButton(mechJoytick1, OIConstants.kSwitch).getAsBoolean()) {
                 climber.enableSoftLimit();
             }else {

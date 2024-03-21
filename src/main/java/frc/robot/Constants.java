@@ -225,9 +225,10 @@ public final class Constants {
 
     public static final class ArmConstants {
       //Elbow PID
-      public static final double kElbowP = 0.025;
+      public static final double kElbowP = 0.008;//0.0035;
       public static final double kElbowI = 0;
       public static final double kElbowD = 0;
+      public static final double kElbowFF = 0.007;
       //Wrist PID
       public static final double kWristP = 0.01;
       public static final double kWristI = 0;
@@ -239,11 +240,11 @@ public final class Constants {
       public static final double kElbowSource = 52;
       public static final double kElbowSpeaker = 51;
       public static final double kElbowAmp = 58; //80;
-      public static final double kElbowPreFloow = 20;
+      public static final double kElbowPreFloow = 10;
       public static final double kElbowFloor = -9;  //-5;
       //Wrist Positions (in degrees from perpendicular to arm)
       public static final double kWristSource = 93;
-      public static final double kWristHighSpeaker = -41;
+      public static final double kWristHighSpeaker = -52;
       public static final double kWristGround = 0;
       public static final double kWristSpeaker = 3 ;  //22;
       public static final double kWristAmp = 19;  //41;
@@ -273,14 +274,14 @@ public final class Constants {
       public static final float kWristReverseLimit = -66.f;
       //Encoders
       //public static final int ABSENCODERPORT = 0;
-      public static final int kAbsoluteEncoder = 0;
+      public static final int kAbsoluteEncoder = 2;
       //public static final int kAbsoluteEncoder2 = 1;
-      public static final double elbowEncoderFactor = 90./(80.); 
+      public static final double elbowEncoderFactor = (90./15.7); //90./(80.); 
       public static final int RelMin = 0; //0;     // 6;  //  upright
-      public static final int AbsMin = 1250; //850;     //584;  // parallel to floor
+      public static final int AbsMin = 1265; //850;     //584;  // parallel to floor
       public static final int RelMax = 90; //90;     //45;  // upright
-      public static final int AbsMax = 615;  //1514;    //860; // upright
-      public static final double Ratio = 90./(615.-1250.); //(RelMax-RelMin)/(AbsMax-AbsMin);
+      public static final int AbsMax = 580;  //1514;    //860; // upright
+      public static final double Ratio = 90./(615.-1265.); //(RelMax-RelMin)/(AbsMax-AbsMin);
       // Second Elbow Encoder
       public static final int kAbsoluteEncoder2 = 1;
       //public static final double elbowEncoderFactor2 = 0;
@@ -314,6 +315,7 @@ public final class Constants {
       public static final int nudgeDown = -1;
 
 
+
     }
 
     public static final class HandlerConstants {
@@ -332,7 +334,7 @@ public final class Constants {
       public static final double kHighAmpSpeed = 0.5;
       public static final double kLowAmpSpeed = -.5;
       public static final double kSpitBackWaitTime = .75;
-    public static final double shotCurrent = 500;
+    public static final double shotCurrent = 15;
       
     }
 

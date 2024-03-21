@@ -25,19 +25,27 @@ public class AutoShootAndMove extends SequentialCommandGroup {
   public AutoShootAndMove(Arm arm, Drivetrain drive, Handler handler, AprilCamera aprilCamera, double xdist, double ydist) {
 
     addCommands(
-                      new ArmRun(arm, ArmConstants.kElbowHighSpeaker, ArmConstants.kWristHighSpeaker, 2),
+                      Commands.parallel(
+                            new ArmRun(arm, arm.getElbowPos(), ArmConstants.kWristHighSpeaker, 2.5),
+                            new InstantCommand(()-> handler.high_out())
+                      ),
                       
                 new InstantCommand(()-> arm.rearmArm()),
                           
-                Commands.race(
-                      new Speaker(handler, aprilCamera),
-                      new WaitCommand(3.5)
-                          ),
+                
+                new WaitCommand(1).
+                  andThen(new Speaker(handler, aprilCamera)).
+                    andThen(new ArmRun(arm, arm.getElbowPos(), ArmConstants.wristTravel-10, 3.)).
+                      andThen(new TravelPosition(arm)).
+                        andThen(new InstantCommand(()-> arm.rearmArm())),
+                      
+                          
                 Commands.parallel(
-                      new WaitCommand(1.15).
-                      andThen(new DriveGenericHead(drive, xdist, ydist, DriveConstants.kRotateToZero, AutoConstants.kToNoteTurnP)),
-                      new ArmRun(arm, ArmConstants.kElbowPreFloow, ArmConstants.kWristPreFloor, 0.75).
-                        andThen(new ArmRun(arm, ArmConstants.kElbowFloor, ArmConstants.kWristFloor))
+                      new WaitCommand(5).
+                        andThen(new DriveGenericHead(drive, xdist, ydist, DriveConstants.kRotateToZero, AutoConstants.kToNoteTurnP)),
+                      new ArmRun(arm, ArmConstants.kElbowPreFloow, ArmConstants.kWristPreFloor, 2).
+                        andThen(new ArmRun(arm, ArmConstants.kElbowFloor, ArmConstants.kWristFloor, 2)).
+                          andThen(new InstantCommand(()-> arm.rearmArm()))
                           )
     );  // TODO this process takes 8 seconds; must be quicker to shoot two notes in auto
   }
