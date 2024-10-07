@@ -21,6 +21,7 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -40,14 +41,14 @@ public class AprilCamera extends SubsystemBase {
   Transform3d robotToCam;
   PhotonPoseEstimator photonPoseEstimator;
   private Drivetrain drivetrain;
-  private final Solenoid blue;
+  //private final Solenoid blue;
   
   //private PhotonPipelineResult result;
   /** Creates a new AprilTags. */
   public AprilCamera() {
 
-    camera = new PhotonCamera("Microsoft_LifeCam_HD-3000");
-    blue = new Solenoid(PneumaticsModuleType.CTREPCM, Lights.blue); //April tags
+    camera = new PhotonCamera("Microsoft_LifeCam_HD-3000 (1)");
+    //blue = new Solenoid(PneumaticsModuleType.CTREPCM, Lights.blue); //April tags
     aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
      //Cam mounted facing forward, 0.3302 meters in front of the center, 0 meters left/right of center, 
      // and 0.1778 meters of elevation (off floor)            on project X
@@ -59,14 +60,17 @@ public class AprilCamera extends SubsystemBase {
 
   }
 
+  public PhotonPipelineResult getLatestResult(){
+    return camera.getLatestResult();
+  }
 
-  public void aprilTagsOn() {
+  /*public void aprilTagsOn() {
     blue.set(true);
   }
 
   public void aprilTagsOff() {
     blue.set(false);
-  }
+  }*/
 
 
   public Pose3d getRobotPosition() {
@@ -84,8 +88,24 @@ public class AprilCamera extends SubsystemBase {
   public boolean target() {
     return hasTargets && (target.getFiducialId() == Constants.CamConstant.redSpeaker || target.getFiducialId() == CamConstant.blueSpeaker);
   }
+  public boolean generalTarget() {
+    return hasTargets;
+  }
   public double tagArea(){
     return target.getArea();
+  }
+  public double getTimestampSeconds(){
+    return 0;
+  }
+
+
+  public double getDistanceToTarget(){
+    return PhotonUtils.calculateDistanceToTargetMeters(CamConstant.camera_Height_Meters,
+                                                      CamConstant.target_Height_Meters,
+                                                      CamConstant.camera_Pitch_Radians,
+                                                      Units.degreesToRadians(target.getPitch()));
+          
+    
   }
 
   //public void showYaw() {
@@ -97,7 +117,8 @@ public class AprilCamera extends SubsystemBase {
   @Override
   public void periodic() {
 
-    //photonPoseEstimator.update();
+
+    photonPoseEstimator.update();
     var result = camera.getLatestResult();
     hasTargets = result.hasTargets();
     if (hasTargets) {
@@ -112,10 +133,11 @@ public class AprilCamera extends SubsystemBase {
       //          aprilTagFieldLayout.getTagPose(target.getFiducialId()).get(), robotToCam);
       //showYaw();
 
-      //SmartDashboard.putString("Robot Pose", photonPoseEstimator.toString());
+      //SmartDashboard.putString("Robot Pose 1", photonPoseEstimator.getReferencePose().toString());
+      SmartDashboard.putString("Robot Pose 2", photonPoseEstimator.toString());
       SmartDashboard.putNumber("April Tag X", target.getFiducialId());
       SmartDashboard.putNumber("Get Yaw", target.getYaw());
-      SmartDashboard.putNumber("Get Distance", target.getArea());
+      SmartDashboard.putNumber("Get Distance", getDistanceToTarget());
       // This method will be called once per scheduler run
     } else {
       SmartDashboard.putNumber("April Tag X", 999.);

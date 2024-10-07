@@ -1,20 +1,13 @@
 package frc.robot;
 
-import com.ctre.phoenix6.hardware.Pigeon2;
-
-//import frc.robot.subsystems.SwerveSubsystem;
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.cscore.MjpegServer;
-import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 //import edu.wpi.first.math.geometry.Pose2d;
 //import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.net.PortForwarder;
 //import edu.wpi.first.wpilibj.AnalogInput;
 //import edu.wpi.first.wpilibj.DataLogManager;   //MEE
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -22,22 +15,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.Constants.ArmConstants;
+import frc.robot.Constants.CamConstant;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
-import frc.robot.commands.ArmRun;
 import frc.robot.commands.TravelPosition;
 import frc.robot.subsystems.AprilCamera;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
-import edu.wpi.first.wpilibj.I2C;           // Maddox: Color sensor
-import edu.wpi.first.wpilibj.util.Color;    // Maddox: Color sensor
-
-import com.revrobotics.ColorSensorV3;       // Maddox: Color sensor
-
 import frc.robot.subsystems.Handler;
 
 //import com.ctre.phoenix.sensors.Pigeon2_Faults;
@@ -59,16 +45,19 @@ public class Robot extends TimedRobot {
     private final Joystick driverJoytick = new Joystick(OIConstants.kDriverControllerPort);
     private final Joystick mechJoytick1 = new Joystick(OIConstants.kMechControllerPort);
     private final Joystick mechJoytick2 = new Joystick(OIConstants.kMechControllerPort2);
+    PIDController controller = new PIDController(CamConstant.tag_Follow_P, 0, CamConstant.tag_Follow_D);
     private Drivetrain swerveSubsystem;
     Arm arm;
     Climber climber;
     AprilCamera aprilCamera;
     Handler handler;
-   // private Pigeon2 pigeon;
+    double distance;
+    double error;
+    // private Pigeon2 pigeon;
 
     private PowerDistribution PDH;
-    //private AnalogInput pixyCam;
-    //private PWM lights;
+    // private AnalogInput pixyCam;
+    // private PWM lights;
     // private Timer timer = new Timer();
 
     /**
@@ -80,18 +69,18 @@ public class Robot extends TimedRobot {
     public void robotInit() {
 
         // Instantiate our RobotContainer.
-        //      o build subsystems based on what is available,
-        //      o perform all our button bindings,
-        //      o put our autonomous chooser on the dashboard.
+        // o build subsystems based on what is available,
+        // o perform all our button bindings,
+        // o put our autonomous chooser on the dashboard.
 
         PDH = new PowerDistribution(1, ModuleType.kRev);
-       
+
         m_robotContainer = new RobotContainer();
         CommandScheduler.getInstance().enable();
-        //pigeon = m_robotContainer.getGyro();
-        //PortForwarder.add(1182, "photonvision.local",5800 );
+        // pigeon = m_robotContainer.getGyro();
+        // PortForwarder.add(1182, "photonvision.local",5800 );
 
-        //DataLogManager.start();   //MEE
+        // DataLogManager.start(); //MEE
     }
 
     /**
@@ -135,15 +124,16 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         CommandScheduler.getInstance().enable();
-        //lights.setSpeed(0.93);
+        // lights.setSpeed(0.93);
         SendableChooser<Command> slector = m_robotContainer.getAutoChooser();
         m_autonomousCommand = slector.getSelected();
-        if(Constants.ARM_AVAILABLE){
-            if (arm == null) arm = m_robotContainer.getArm();
+        if (Constants.ARM_AVAILABLE) {
+            if (arm == null)
+                arm = m_robotContainer.getArm();
             arm.setBrakeMode();
             (new TravelPosition(arm)).schedule();
         }
-        //pigeon.setYaw(180);  Do we need to initialize the gyro?
+        // pigeon.setYaw(180); Do we need to initialize the gyro?
         // schedule the autonomous command (example)
         if (m_autonomousCommand != null) {
             m_autonomousCommand.schedule();
@@ -162,19 +152,20 @@ public class Robot extends TimedRobot {
         CommandScheduler.getInstance().enable();
         m_robotContainer.configureButtonBindings();
         buttonbinding = true;
-        //UsbCamera usbCamera = new UsbCamera("Front Cam", 0);
-        //MjpegServer mjpegServer1 = new MjpegServer("Front Server", 1181);
-        //mjpegServer1.setSource(usbCamera);
-        //CameraServer.startAutomaticCapture();
+        // UsbCamera usbCamera = new UsbCamera("Front Cam", 0);
+        // MjpegServer mjpegServer1 = new MjpegServer("Front Server", 1181);
+        // mjpegServer1.setSource(usbCamera);
+        // CameraServer.startAutomaticCapture();
 
-         // Creates the CvSink and connects it to the UsbCamera
-        //CvSink cvSink = new CvSink("opencv_USB Camera 0");
-        //cvSink.setSource(usbCamera);
+        // Creates the CvSink and connects it to the UsbCamera
+        // CvSink cvSink = new CvSink("opencv_USB Camera 0");
+        // cvSink.setSource(usbCamera);
 
         // Creates the CvSource and MjpegServer [2] and connects them
-        //CvSource outputStream = new CvSource("Blur", PixelFormat.kMJPEG, 640, 480, 30);
-        //MjpegServer mjpegServer2 = new MjpegServer("serve_Blur", 1182);
-        //mjpegServer2.setSource(outputStream);
+        // CvSource outputStream = new CvSource("Blur", PixelFormat.kMJPEG, 640, 480,
+        // 30);
+        // MjpegServer mjpegServer2 = new MjpegServer("serve_Blur", 1182);
+        // mjpegServer2.setSource(outputStream);
 
         // This makes sure that the autonomous stops running when
         // teleop starts running. If you want the autonomous to
@@ -185,53 +176,59 @@ public class Robot extends TimedRobot {
         }
 
         if (Constants.CLIMB_AVAILABLE) {
-            if (climber == null) climber = m_robotContainer.getClimber();
-                climber.zeroSoftLimit();
+            if (climber == null)
+                climber = m_robotContainer.getClimber();
+            climber.zeroSoftLimit();
         }
-        if(Constants.ARM_AVAILABLE){
-            if (arm == null) arm = m_robotContainer.getArm();
+        if (Constants.ARM_AVAILABLE) {
+            if (arm == null)
+                arm = m_robotContainer.getArm();
             arm.setBrakeMode();
             // start up arm PID controller; move to Travel position
-            (new TravelPosition(arm)).schedule();
+            //(new TravelPosition(arm)).schedule();
         }
-        if (Constants.HANDLER_AVAILABLE){
+        if (Constants.HANDLER_AVAILABLE) {
             handler = m_robotContainer.getHandler();
         }
-        if (Constants.APRIL_AVAILABLE){
+        if (Constants.APRIL_AVAILABLE) {
             aprilCamera = m_robotContainer.getAprilCamera();
         }
-        
+
         // to drive in teleopPeriodic rather than defaultCommand {
         this.swerveSubsystem = m_robotContainer.getSwerveSS();
         this.xLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
         this.yLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
         this.turningLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAngularAccelerationUnitsPerSecond);
-      //  this.swerveSubsystem.setCoastMode();
+        // this.swerveSubsystem.setCoastMode();
 
     }
 
     double smoothedXSpeed = 0.;
     double smoothedYSpeed = 0.;
     double smoothedTurningSpeed = 0.;
+
     /** This function is called periodically during operator control. */
     @Override
     public void teleopPeriodic() {
 
-        /* if (driverJoytick.getRawButton(3)) {
-                System.out.println("Button Pressed");
-        } */
+        /*
+         * if (driverJoytick.getRawButton(3)) {
+         * System.out.println("Button Pressed");
+         * }
+         */
 
-        //SmartDashboard.putNumber("BotA", pigeon.getAngle());
+        // SmartDashboard.putNumber("BotA", pigeon.getAngle());
         SmartDashboard.putNumber("BatV", PDH.getVoltage());
 
-        //   SmartDashboard.putNumber("Pitch", pigeon.getPitch().getValue().doubleValue());
-        //  SmartDashboard.putNumber("Yaw", pigeon.getYaw().getValue().doubleValue());
-        //  SmartDashboard.putNumber("Angle", pigeon.getAngle());
+        // SmartDashboard.putNumber("Pitch",
+        // pigeon.getPitch().getValue().doubleValue());
+        // SmartDashboard.putNumber("Yaw", pigeon.getYaw().getValue().doubleValue());
+        // SmartDashboard.putNumber("Angle", pigeon.getAngle());
 
-        //SmartDashboard.putNumber()
+        // SmartDashboard.putNumber()
 
-        // CRG use SwerveSubsystem drive methods similar to the SwerveJoysickCmd  {
-        if (Constants.DRIVE_AVAILABLE){
+        // CRG use SwerveSubsystem drive methods similar to the SwerveJoysickCmd {
+        if (Constants.DRIVE_AVAILABLE) {
             // 1. Get real-time joystick inputs
             double xSpeed = -driverJoytick.getRawAxis(OIConstants.kDriverXAxis); // Negative values go forward
             double ySpeed = -driverJoytick.getRawAxis(OIConstants.kDriverYAxis);
@@ -241,26 +238,30 @@ public class Robot extends TimedRobot {
             xSpeed = Math.abs(xSpeed) > OIConstants.kDeadband ? xSpeed : 0.0;
             ySpeed = Math.abs(ySpeed) > OIConstants.kDeadband ? ySpeed : 0.0;
             turningSpeed = Math.abs(turningSpeed) > OIConstants.kDeadband ? turningSpeed : 0.0;
-            //System.out.println("Deadband Applied");
-            //System.out.println("X: " + String.format("%.3f", xSpeed)
-            //                + " Y: " + String.format("%.3f", ySpeed)
-            //                + " R: " + String.format("%.3f", turningSpeed));
-            xSpeed*=1.-(DriveConstants.kFineControlSpeed*driverJoytick.getRawAxis(OIConstants.fineControlAxis))+(DriveConstants.kFasterSpeed*driverJoytick.getRawAxis(OIConstants.fasterSpeedAxis));
-            ySpeed*=1.-(DriveConstants.kFineControlSpeed*driverJoytick.getRawAxis(OIConstants.fineControlAxis))+(DriveConstants.kFasterSpeed*driverJoytick.getRawAxis(OIConstants.fasterSpeedAxis));
-            turningSpeed*=1.-(DriveConstants.kFineControlSpeed*driverJoytick.getRawAxis(OIConstants.fineControlAxis))+(DriveConstants.kFasterSpeed*driverJoytick.getRawAxis(OIConstants.fasterSpeedAxis));
-            //    Smooth driver inputs
+            // System.out.println("Deadband Applied");
+            // System.out.println("X: " + String.format("%.3f", xSpeed)
+            // + " Y: " + String.format("%.3f", ySpeed)
+            // + " R: " + String.format("%.3f", turningSpeed));
+            xSpeed *= 1. - (DriveConstants.kFineControlSpeed * driverJoytick.getRawAxis(OIConstants.fineControlAxis))
+                    + (DriveConstants.kFasterSpeed * driverJoytick.getRawAxis(OIConstants.fasterSpeedAxis));
+            ySpeed *= 1. - (DriveConstants.kFineControlSpeed * driverJoytick.getRawAxis(OIConstants.fineControlAxis))
+                    + (DriveConstants.kFasterSpeed * driverJoytick.getRawAxis(OIConstants.fasterSpeedAxis));
+            turningSpeed *= 1.
+                    - (DriveConstants.kFineControlSpeed * driverJoytick.getRawAxis(OIConstants.fineControlAxis))
+                    + (DriveConstants.kFasterSpeed * driverJoytick.getRawAxis(OIConstants.fasterSpeedAxis));
+            // Smooth driver inputs
             smoothedXSpeed = smoothedXSpeed + (xSpeed - smoothedXSpeed) * .08;
             smoothedYSpeed = smoothedYSpeed + (ySpeed - smoothedYSpeed) * .08;
             smoothedTurningSpeed = smoothedTurningSpeed + (turningSpeed - smoothedTurningSpeed) * .08;
-            //    System.out.println("Raw Joystick Values");
-            //    System.out.println("X: " + String.format("%.3f", xSpeed) 
-            //                    + " Y: " + String.format("%.3f", ySpeed)
-            //                    + " R: " + String.format("%.3f", turningSpeed));
+            // System.out.println("Raw Joystick Values");
+            // System.out.println("X: " + String.format("%.3f", xSpeed)
+            // + " Y: " + String.format("%.3f", ySpeed)
+            // + " R: " + String.format("%.3f", turningSpeed));
 
             // if (driverJoytick.getRawButton(OIConstants.BALANCE_AUGMENTER)) {
-            //     double augment = Math.sin(Math.toRadians(pigeon.getPitch()-1));
-            //     //System.out.println(augment);
-            //     smoothedXSpeed+=augment*.036;
+            // double augment = Math.sin(Math.toRadians(pigeon.getPitch()-1));
+            // //System.out.println(augment);
+            // smoothedXSpeed+=augment*.036;
             // }
             xSpeed = smoothedXSpeed;
             ySpeed = smoothedYSpeed;
@@ -270,27 +271,49 @@ public class Robot extends TimedRobot {
             xSpeed = xLimiter.calculate(xSpeed) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
             ySpeed = yLimiter.calculate(ySpeed) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
             turningSpeed = turningLimiter.calculate(turningSpeed)
-                * DriveConstants.kTeleDriveMaxAngularSpeedRadiansPerSecond;
-            //System.out.println("Smoothing Applied");
-            //System.out.println("X: " + String.format("%.3f", xSpeed)
-            //                + " Y: " + String.format("%.3f", ySpeed)
-            //                + " R: " + String.format("%.3f", turningSpeed));
+                    * DriveConstants.kTeleDriveMaxAngularSpeedRadiansPerSecond;
+            // System.out.println("Smoothing Applied");
+            // System.out.println("X: " + String.format("%.3f", xSpeed)
+            // + " Y: " + String.format("%.3f", ySpeed)
+            // + " R: " + String.format("%.3f", turningSpeed));
 
-            //System.out.println("=====================");
+            // System.out.println("=====================");
             // April Tag Yaw
             if (!driverJoytick.getRawButton(OIConstants.kDriverStopFaceSpeaker))
-                if (mechJoytick1.getRawButton(OIConstants.kMechFaceSpeaker))
-              // if (driverJoytick.getRawButton(OIConstants.kDriverFaceSpeaker))
-                    if (Constants.APRIL_AVAILABLE){
-                        if (aprilCamera.target()){
-                            turningSpeed = -aprilCamera.tagYaw()/20.; 
-                            turningSpeed*=(1+1.2*Math.abs(xSpeed));  // Adjust based on driving speed ?
+                if (mechJoytick1.getRawButton(OIConstants.kShootFloor))
+                    // if (driverJoytick.getRawButton(OIConstants.kDriverFaceSpeaker))
+                    if (Constants.APRIL_AVAILABLE) {
+                        if (aprilCamera.target()) {
+                            turningSpeed = -aprilCamera.tagYaw() / 20.;
+                            turningSpeed *= (1 + 1.2 * Math.abs(xSpeed)); // Adjust based on driving speed ?
                         }
                     }
-            
+
+            if (driverJoytick.getRawButton(OIConstants.kDriverResetGyroButtonIdx)) { //kStartFollow
+                if (Constants.APRIL_AVAILABLE) {
+                    if (aprilCamera.generalTarget()) {
+                        turningSpeed = -aprilCamera.tagYaw() / 20.;
+                        
+                        distance = aprilCamera.getDistanceToTarget();
+                        //System.out.println(distance);
+                        error = distance - CamConstant.drive_Range_Meters;
+                        if (error < 0.) {
+                            error = error - (error * error);
+                        }
+                        //xSpeed = -controller.calculate(distance, CamConstant.drive_Range_Meters);
+                        xSpeed = -controller.calculate(error, 0);
+                        //System.out.println(-controller.calculate(distance, CamConstant.drive_Range_Meters)); 
+                        System.out.println(xSpeed);
+                        //System.out.println("TEST " + distance);
+                    }
+
+                }
+            }
+
             // 4. Construct desired chassis speeds
             ChassisSpeeds chassisSpeeds;
-            if ( !driverJoytick.getRawButton(OIConstants.kDriverRobotOrientedButtonIdx)) {
+            //if (driverJoytick.getRawButton(OIConstants.kDriverRobotOrientedButtonIdx)) { //Following Minibot
+            if (!driverJoytick.getRawButton(OIConstants.kDriverRobotOrientedButtonIdx)) { //normal use
                 // Relative to field
                 chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
                         xSpeed, ySpeed, turningSpeed, swerveSubsystem.getRotation2d());
@@ -298,56 +321,61 @@ public class Robot extends TimedRobot {
                 // Relative to robot
                 chassisSpeeds = new ChassisSpeeds(xSpeed, ySpeed, turningSpeed);
             }
-            //System.out.println("Chassis Speeds");
-            //System.out.println("X: " + String.format("%.3f", xSpeed)
-            //                + " Y: " + String.format("%.3f", ySpeed)
-            //                + " R: " + String.format("%.3f", swerveSubsystem.getRotation2d()));
+            // System.out.println("Chassis Speeds");
+            // System.out.println("X: " + String.format("%.3f", xSpeed)
+            // + " Y: " + String.format("%.3f", ySpeed)
+            // + " R: " + String.format("%.3f", swerveSubsystem.getRotation2d()));
 
-            //System.out.println("Encoder: " + frontleftsteerencoder.getPosition());
+            // System.out.println("Encoder: " + frontleftsteerencoder.getPosition());
 
             swerveSubsystem.drive(chassisSpeeds);
-            // MrG recommends looking at swerveSubsystem.driveIt  TODO
+            // MrG recommends looking at swerveSubsystem.driveIt TODO
 
             // 5. Convert chassis speeds to individual module states
-            //SwerveModuleState[] moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
+            // SwerveModuleState[] moduleStates =
+            // DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
             /* this should be done in the SwerveSubsystem */
-            // SwerveModuleState[] moduleStates = swerveSubsystem.chassis2ModuleStates(chassisSpeeds);
+            // SwerveModuleState[] moduleStates =
+            // swerveSubsystem.chassis2ModuleStates(chassisSpeeds);
 
             // 6. Output each module states to wheels
-            //swerveSubsystem.setModuleStates(moduleStates);
-        
+            // swerveSubsystem.setModuleStates(moduleStates);
+
             // steps 4-6 should be accomplished by the swerve subsystem via a method such as
             // swerveSubsystem.driveit(xSpeed, ySpeed, turningSpeed, fieldoriented);
-            //}
-    
-            //swerveSubsystem.reportStatesToSmartDashbd(moduleStates);
+            // }
+
+            // swerveSubsystem.reportStatesToSmartDashbd(moduleStates);
         }
     }
 
-    //Handler handler;
+    // Handler handler;
     @Override
     public void testInit() {
         CommandScheduler.getInstance().cancelAll();
         // Cancels all running commands at the start of test mode.
         CommandScheduler.getInstance().getActiveButtonLoop().clear();
-        //CommandScheduler.getInstance().disable();
+        // CommandScheduler.getInstance().disable();
         // Gets rid of all button bindings
-        
-        //if (arm == null) arm = m_robotContainer.getArm();
-        //arm.setCoastMode();
+
+        // if (arm == null) arm = m_robotContainer.getArm();
+        // arm.setCoastMode();
         // immediately move the arm to the floor and end the PID control
-        /*(new ArmRun(arm, ArmConstants.kElbowPreFloow, ArmConstants.kWristPreFloor, 2)
-            .andThen(new ArmRun(arm, Constants.ArmConstants.kElbowFloor, Constants.ArmConstants.kWristFloor, .25))
-            .andThen(new InstantCommand(()-> arm.stopIt()))).schedule();*/
-    
-        if(Constants.HANDLER_AVAILABLE){ 
+        /*
+         * (new ArmRun(arm, ArmConstants.kElbowPreFloow, ArmConstants.kWristPreFloor, 2)
+         * .andThen(new ArmRun(arm, Constants.ArmConstants.kElbowFloor,
+         * Constants.ArmConstants.kWristFloor, .25))
+         * .andThen(new InstantCommand(()-> arm.stopIt()))).schedule();
+         */
+
+        if (Constants.HANDLER_AVAILABLE) {
             handler = m_robotContainer.getHandler();
         }
-        if (Constants.CLIMB_AVAILABLE){
+        if (Constants.CLIMB_AVAILABLE) {
             climber = m_robotContainer.getClimber();
         }
-        if (Constants.ARM_AVAILABLE){
-        arm = m_robotContainer.getArm();
+        if (Constants.ARM_AVAILABLE) {
+            arm = m_robotContainer.getArm();
         }
     }
 
@@ -355,94 +383,107 @@ public class Robot extends TimedRobot {
     @Override
 
     public void testPeriodic() {
-        
-        
-     
-        if (Constants.ARM_AVAILABLE){
+
+        if (Constants.ARM_AVAILABLE) {
             if (new JoystickButton(mechJoytick1, OIConstants.kSwitch).getAsBoolean()) {
                 arm.enableSoftLimit();
-            }else {
+            } else {
                 arm.disableSoftLimit();
             }
 
             if (new JoystickButton(mechJoytick1, OIConstants.kNudgeElbowUp).getAsBoolean()) {
                 arm.elbowUpSlow();
-            } 
-            else if (new JoystickButton(mechJoytick1, OIConstants.kNudgeElbowDown).getAsBoolean() ) {
-                arm.elbowDownSlow();  
-            }
-            else {
-                arm.stopElbow();
-                //System.out.println("Stopped Elbow");
-            }
-
-            if (new JoystickButton(mechJoytick2,OIConstants.kNudgeWristDown).getAsBoolean()) {
-                arm.moveWrist(-.3); 
-                //System.out.println("Wrist Down: "+arm.getWristPos()); 
-            }else if (new JoystickButton(mechJoytick2,OIConstants.kNudgeWristUp).getAsBoolean()) {
-                arm.moveWrist(.3); 
-                //System.out.println("Wrist Up: "+arm.getWristPos()); 
+            } else if (new JoystickButton(mechJoytick1, OIConstants.kNudgeElbowDown).getAsBoolean()) {
+                arm.elbowDownSlow();
             } else {
-            arm.moveWrist(0.);
-            //System.out.println("Stopped Wrist");
+                arm.stopElbow();
+                // System.out.println("Stopped Elbow");
             }
 
-        }/*
-        
-        if (Constants.CLIMB_AVAILABLE){
-            if (new JoystickButton(mechJoytick1, OIConstants.kSwitch).getAsBoolean()) {
-                climber.enableSoftLimit();
-            }else {
-                climber.disableLimit();
+            if (new JoystickButton(mechJoytick2, OIConstants.kNudgeWristDown).getAsBoolean()) {
+                arm.moveWrist(-.3);
+                // System.out.println("Wrist Down: "+arm.getWristPos());
+            } else if (new JoystickButton(mechJoytick2, OIConstants.kNudgeWristUp).getAsBoolean()) {
+                arm.moveWrist(.3);
+                // System.out.println("Wrist Up: "+arm.getWristPos());
+            } else {
+                arm.moveWrist(0.);
+                // System.out.println("Stopped Wrist");
             }
-     
-            
-                //climber.getRoll();
-                if (new JoystickButton(mechJoytick2, OIConstants.kTestLeftExtend).getAsBoolean()) {
-                    climber.extend_left(.5);
-                    //System.out.println(String.format("Climber Position = %4.f" , m_robotContainer.getClimber().getPositionDriver()));
-                    System.out.println(climber.getPositionDriver());
 
-                }
-                else if (new JoystickButton(mechJoytick2, OIConstants.kClimberExtend).getAsBoolean() ) {
-                    climber.extend_left(-.5);
-                    //System.out.println(String.format("Climber Position = %.4f" , m_robotContainer.getClimber().getPositionDriver()));
-                    System.out.println(climber.getPositionDriver());
-
-                }
-                else{
-                    climber.stop_left();
-                }
-            // reuse buttons in test mode for other than they were designated in teleop
-             if (new JoystickButton(mechJoytick2, OIConstants.kTestRightExtend).getAsBoolean()) {
-                    climber.extend_right(.5);
-                    //System.out.println(String.format("Climber Position = %4.f" , m_robotContainer.getClimber().getPositionLeveler()));
-                    System.out.println(climber.getPositionLeveler());
-
-                }
-                else if (new JoystickButton(mechJoytick2, OIConstants.kClimberRetract).getAsBoolean() ) {
-                    climber.extend_right(-.5);
-                    //System.out.println(String.format("Climber Position = %.4f" , m_robotContainer.getClimber().getPositionLeveler()));
-                    System.out.println(climber.getPositionLeveler());
-
-                }
-                else{
-                    climber.stop_right();
-                }
-            
-            if (new JoystickButton(mechJoytick1, OIConstants.kElbowRearmButton).getAsBoolean()) {
-                climber.zeroSoftLimit();
-            }
-            
-        }
-        if(Constants.HANDLER_AVAILABLE){     
-        if (new JoystickButton(mechJoytick2, OIConstants.shootButton).getAsBoolean()) {
-            handler.low_out();  
-        } else if (new JoystickButton(mechJoytick2, OIConstants.kIntake).getAsBoolean() && !handler.useSensor() ) {
-            handler.low_PickUp();  
+        } /*
+           * 
+           * if (Constants.CLIMB_AVAILABLE){
+           * if (new JoystickButton(mechJoytick1, OIConstants.kSwitch).getAsBoolean()) {
+           * climber.enableSoftLimit();
+           * }else {
+           * climber.disableLimit();
+           * }
+           * 
+           * 
+           * //climber.getRoll();
+           * if (new JoystickButton(mechJoytick2,
+           * OIConstants.kTestLeftExtend).getAsBoolean()) {
+           * climber.extend_left(.5);
+           * //System.out.println(String.format("Climber Position = %4.f" ,
+           * m_robotContainer.getClimber().getPositionDriver()));
+           * System.out.println(climber.getPositionDriver());
+           * 
+           * }
+           * else if (new JoystickButton(mechJoytick2,
+           * OIConstants.kClimberExtend).getAsBoolean() ) {
+           * climber.extend_left(-.5);
+           * //System.out.println(String.format("Climber Position = %.4f" ,
+           * m_robotContainer.getClimber().getPositionDriver()));
+           * System.out.println(climber.getPositionDriver());
+           * 
+           * }
+           * else{
+           * climber.stop_left();
+           * }
+           * // reuse buttons in test mode for other than they were designated in teleop
+           * if (new JoystickButton(mechJoytick2,
+           * OIConstants.kTestRightExtend).getAsBoolean()) {
+           * climber.extend_right(.5);
+           * //System.out.println(String.format("Climber Position = %4.f" ,
+           * m_robotContainer.getClimber().getPositionLeveler()));
+           * System.out.println(climber.getPositionLeveler());
+           * 
+           * }
+           * else if (new JoystickButton(mechJoytick2,
+           * OIConstants.kClimberRetract).getAsBoolean() ) {
+           * climber.extend_right(-.5);
+           * //System.out.println(String.format("Climber Position = %.4f" ,
+           * m_robotContainer.getClimber().getPositionLeveler()));
+           * System.out.println(climber.getPositionLeveler());
+           * 
+           * }
+           * else{
+           * climber.stop_right();
+           * }
+           * 
+           * if (new JoystickButton(mechJoytick1,
+           * OIConstants.kElbowRearmButton).getAsBoolean()) {
+           * climber.zeroSoftLimit();
+           * }
+           * 
+           * }
+           * */
+            if(Constants.HANDLER_AVAILABLE){
+            if (new JoystickButton(mechJoytick2, OIConstants.shootButton).getAsBoolean());
+            {
+                handler.high_out();
+                handler.low_ToHigh();
+           /*handler.low_out();
+            } else if (new JoystickButton(mechJoytick2,
+            OIConstants.kIntake).getAsBoolean() && !handler.useSensor() ) {
+            handler.low_PickUp();
             System.out.println(handler.useSensor());
-        } else handler.stop();
-    }*/
+             } else handler.stop();
+            */ }
+            
+           
 
+        }
     }
 }

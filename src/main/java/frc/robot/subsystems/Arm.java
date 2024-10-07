@@ -69,9 +69,9 @@ public class Arm extends SubsystemBase {
     elbowAbs = new AnalogInput(Constants.ArmConstants.kAbsoluteEncoder);
     elbowAbs2 = new AnalogInput(ArmConstants.kAbsoluteEncoder2);
     wristAbs = new AnalogInput(Constants.ArmConstants.kAbsoluteEncoderW);
-    elbowAbs.setAverageBits(40);
-    elbowAbs2.setAverageBits(40);
-    wristAbs.setAverageBits(40);
+    elbowAbs.setAverageBits(60);
+    elbowAbs2.setAverageBits(60);
+    wristAbs.setAverageBits(60);
     light2 = new Solenoid(PneumaticsModuleType.CTREPCM, Lights.light2); //Voltage warning
     //boreHoleW = new AnalogInput(Constants.ArmConstants.kAbsoluteEncoderW);
     //boreHoleW.setAverageBits(40);
@@ -268,8 +268,11 @@ public class Arm extends SubsystemBase {
     SmartDashboard.putNumber("Elbow Temp", elbow.getMotorTemperature());
     SmartDashboard.putNumber("Elbow_Follow Temp", elbow_follower.getMotorTemperature());
     SmartDashboard.putNumber("Wrist Temp", wrist.getMotorTemperature());
-    SmartDashboard.putNumber("Target Pos", latestTarget);
+    SmartDashboard.putNumber("Target Elbow", latestTarget);
+    SmartDashboard.putNumber("Target Wrist", latestTargetW);
+    SmartDashboard.putNumber("Elbow Current", avgCurrent);
     //SmartDashboard.putNumber("Error", elbow_PidController.get)
+    
     SmartDashboard.putNumber("ElbowRelVal", elbow_encoder.getPosition());
     SmartDashboard.putNumber("ElbowAbsVal", elbowAbs.getAverageValue());
     SmartDashboard.putNumber("ElbowAbsVal2", elbowAbs2.getAverageValue());
@@ -280,7 +283,7 @@ public class Arm extends SubsystemBase {
     if(avgCurrent>Constants.ArmConstants.ElbowCurrentLimit) {
       //for (double each: currentHist) System.out.print(" "+each);
       //System.out.println(" => avg: "+avgCurrent);
-      armSafety = true;
+      armSafety = false;
       voltageOn();
     }
     //if (abs2relNoPrint(elbowAbs.getAverageValue())>abs2rel2NoPrint(elbowAbs2.getAverageValue())+5 || abs2relNoPrint(elbowAbs.getAverageValue())<abs2rel2NoPrint(elbowAbs2.getAverageValue())-5){
@@ -304,7 +307,7 @@ public class Arm extends SubsystemBase {
     //SmartDashboard.putNumber("WRelVal", wrist_encoder.getPosition());
     //SmartDashboard.putNumber("AbsVal", boreHolew.getAverageValue());
     if(avgCurrentw>Constants.ArmConstants.ElbowCurrentLimit) {
-    armSafetyw = true;
+    armSafetyw = false;
     voltageOn();
     }
 

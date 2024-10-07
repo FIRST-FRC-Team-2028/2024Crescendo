@@ -8,6 +8,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.Unit;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.I2C.Port;
@@ -34,9 +35,9 @@ public final class Constants {
   public static final boolean HANDLER_AVAILABLE = true;
   public static final boolean CLIMB_AVAILABLE = true;
   public static final boolean APRIL_AVAILABLE = false;
-  public static final boolean COLOR_AVALIBLE = false;
+  public static final boolean COLOR_AVALIBLE = true;
   public static final boolean PID_CLIMB = false;
-  public static final boolean LIGHTS_AVALIBLE = true;
+  public static final boolean LIGHTS_AVALIBLE = false;
   //public static final boolean Shoot_Pickup_Shoot = true;
 
 
@@ -225,7 +226,7 @@ public final class Constants {
 
     public static final class ArmConstants {
       //Elbow PID
-      public static final double kElbowP = 0.008;//0.0035;
+      public static final double kElbowP = 0.00975;//0.008;
       public static final double kElbowI = 0;
       public static final double kElbowD = 0;
       public static final double kElbowFF = 0.007;
@@ -235,7 +236,7 @@ public final class Constants {
       public static final double kWristD = 0;
 
       //Elbow Position  (in degrees up from parallel to the floor)
-      public static final double kElbowGround = 10;
+      public static final double kElbowGroundShoot = 10;
       public static final double kElbowHighSpeaker = 80;
       public static final double kElbowSource = 52;
       public static final double kElbowSpeaker = 51;
@@ -245,7 +246,7 @@ public final class Constants {
       //Wrist Positions (in degrees from perpendicular to arm)
       public static final double kWristSource = 93;
       public static final double kWristHighSpeaker = -52;
-      public static final double kWristGround = 0;
+      public static final double kWristGroundShoot = 0;
       public static final double kWristSpeaker = 3 ;  //22;
       public static final double kWristAmp = 19;  //41;
       public static final double kWristPreFloor = 30;
@@ -276,7 +277,7 @@ public final class Constants {
       //public static final int ABSENCODERPORT = 0;
       public static final int kAbsoluteEncoder = 2;
       //public static final int kAbsoluteEncoder2 = 1;
-      public static final double elbowEncoderFactor = (90./15.7); //90./(80.); 
+      public static final double elbowEncoderFactor = (88.7-(-5.4))/(80.2-(-5.4));//(90./15.7); //90./(80.); 
       public static final int RelMin = 0; //0;     // 6;  //  upright
       public static final int AbsMin = 1265; //850;     //584;  // parallel to floor
       public static final int RelMax = 90; //90;     //45;  // upright
@@ -300,7 +301,7 @@ public final class Constants {
       public static final double RatioW = 44./(1115-1360);
       //public static final double RatioW = (RelMaxW-RelMinW)./(AbsMaxW-AbsMinW);
 
-      public static final double ElbowCurrentLimit = 25.;
+      public static final double ElbowCurrentLimit = 45.;
       public static final double kElbowRampRate = 2.;  // seconds
       public static final double kWristRampRate = 2.;  // seconds
 
@@ -329,7 +330,7 @@ public final class Constants {
       public static final double kLowToHighSpeed = 1;
       public static final double kHighOutSpeed = 1;
       public static final double kLowOutSpeed = -.7;
-      public static final double HighSpinTime = 1.75;
+      public static final double HighSpinTime = 0.75;//1.75
       public static final double TotalShootTime = 3.;
       public static final double kHighAmpSpeed = 0.5;
       public static final double kLowAmpSpeed = -.5;
@@ -403,8 +404,8 @@ public final class Constants {
 
         public static final int kDriverYAxis                  = 0;
         public static final int kDriverXAxis                  = 1;
-        public static final int kDriverRotAxis                = 4;
-        public static final int fineControlAxis               = 2;
+        public static final int kDriverRotAxis                = 2;
+        public static final int fineControlAxis               = 3;
         public static final int fasterSpeedAxis               = 3;
         public static final int kDriverResetGyroButtonIdx     = 1; // driverJoystick button A
         public static final int kArmDuck                      = 2; // driverJoystick B button
@@ -412,6 +413,8 @@ public final class Constants {
         public static final int kDriverRobotOrientedButtonIdx = 5; // driverJoystick button left-bumper
         public static final int kDriverStopFaceSpeaker            = 6;
         public static final int kDriverFaceSpeaker = 8; //For testing purposes
+        public static final int kStartFollow                  = 9; // driverJoystick left stick button
+        public static final int kStopFollow                   = 10; // driverJoystick right stick button
 
         //Mech contoller buttons left region
         public static final int kArmTravel                    = 1;
@@ -424,7 +427,7 @@ public final class Constants {
         public static final int kSwitch                       = 8;
         public static final int kNudgeElbowUp                 = 9;
         public static final int kNudgeElbowDown               = 10;
-        public static final int kMechFaceSpeaker              = 11;
+        public static final int kShootFloor                   = 11; 
         public static final int kElbowRearmButton             = 12; 
 
         //Mech controller buttons right region
@@ -449,10 +452,17 @@ public final class Constants {
     }
 
     public static final class CamConstant {
-      public static final double camera_Height_Meters = Units.inchesToMeters(7.);
-      public static final double target_Height_Meters = Units.inchesToMeters(78.);
+      //public static final double camera_Height_Meters = Units.inchesToMeters(7.);
+      //public static final double target_Height_Meters = Units.inchesToMeters(78.);
       public static final int redSpeaker = 4;
-    public static final int blueSpeaker = 7;
+      public static final int blueSpeaker = 7;
+      public static final int followDistance = 1; //Meters
+      public static final double camera_Height_Meters = Units.inchesToMeters(7);
+      public static final double target_Height_Meters = Units.inchesToMeters(12);
+      public static final double camera_Pitch_Radians = Units.degreesToRadians(1);
+      public static final double tag_Follow_P = 1.75;
+      public static final double tag_Follow_D = 0.5;
+      public static final double drive_Range_Meters = 1;
 
     }
 

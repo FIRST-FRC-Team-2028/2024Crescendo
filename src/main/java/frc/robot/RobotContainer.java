@@ -181,6 +181,7 @@ public class RobotContainer {
                 new JoystickButton(driverJoytick, OIConstants.kDriverResetOdometryButtonIdx).
                      onTrue(new InstantCommand(() -> 
                         swerveSubsystem.resetOdometry(new Pose2d(0., 0., new Rotation2d(0.0)))));
+                
                 //new JoystickButton(driverJoytick, OIConstants.kDriverTurnToTarget).
                 //        onTrue();
             }
@@ -201,7 +202,8 @@ public class RobotContainer {
         if(Constants.ARM_AVAILABLE){
         new JoystickButton(driverJoytick, Constants.OIConstants.kArmDuck).
                 onTrue(new ArmRun(armSubsystem, ArmConstants.elbowDuck, ArmConstants.wristDuck, 0.25).
-                andThen(new InstantCommand(() -> armSubsystem.IamDucked(true))));
+                andThen(new InstantCommand(() -> armSubsystem.IamDucked(true))).
+                andThen(new InstantCommand(()-> armSubsystem.rearmArm())));
         
         
         
@@ -210,15 +212,18 @@ public class RobotContainer {
         /*new JoystickButton(mechJoytick1, 3).
                 whileTrue(new WristUp(armSubsystem,.2));*/
         new JoystickButton(mechJoytick1, OIConstants.kArmTravel).
-                onTrue(new TravelPosition(armSubsystem));
+                onTrue(new TravelPosition(armSubsystem).
+                andThen(new InstantCommand(()-> armSubsystem.rearmArm())));
                 //.andThen(new InstantCommand(()-> armSubsystem.IamDucked(false))));
         new JoystickButton(mechJoytick1, OIConstants.kArmAmp).
-                onTrue(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowAmp, ArmConstants.kWristAmp, .25)
+                onTrue(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowAmp, ArmConstants.kWristAmp, .25).
+                andThen(new InstantCommand(()-> armSubsystem.rearmArm()))
                 );
         if (Constants.HANDLER_AVAILABLE){
                 new JoystickButton(mechJoytick1, OIConstants.kArmSubwoofer).
                         onTrue(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowSpeaker, ArmConstants.kWristSpeaker, .25).
-                        andThen(new InstantCommand(() -> handlerSubsystem.high_out()))
+                        andThen(new InstantCommand(() -> handlerSubsystem.high_out()).
+                        andThen(new InstantCommand(()-> armSubsystem.rearmArm())))
                         //.andThen(new InstantCommand(() -> this.rumble()))
                 );
         } else {
@@ -242,6 +247,9 @@ public class RobotContainer {
                         // back up a bit
                         // return arm to travel position
                         );
+                new JoystickButton(mechJoytick1, Constants.OIConstants.kShootFloor).
+                        onTrue(new InstantCommand(() -> handlerSubsystem.high_out())); //going to be shoot from floor, just spin wheels until get angle
+
         if (Constants.COLOR_AVALIBLE){
                 new JoystickButton(mechJoytick2, OIConstants.kIntake)
                         .onTrue(new InHandler(handlerSubsystem)
@@ -265,13 +273,15 @@ public class RobotContainer {
                 onTrue(Commands.runOnce( armSubsystem::rearmArm, armSubsystem));
         new JoystickButton(mechJoytick1, OIConstants.kArmFloor).
                 onTrue(new ArmRun(armSubsystem, ArmConstants.kElbowPreFloow, ArmConstants.kWristPreFloor, 0.5)
-                .andThen(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowFloor, Constants.ArmConstants.kWristFloor, .25)));
+                .andThen(new ArmRun(armSubsystem, Constants.ArmConstants.kElbowFloor, Constants.ArmConstants.kWristFloor, .25)).
+                andThen(new InstantCommand(()-> armSubsystem.rearmArm())));
         /*new JoystickButton(mechJoytick, 3).
                  onTrue(new ArmRun(armSubsystem, 90, 0));*/
         new JoystickButton(mechJoytick2, Constants.OIConstants.kShootSequenceButton ).
                 onTrue(new Speaker(handlerSubsystem, april)
                 // and return arm/wrist to travelling position 
-                .andThen(new TravelPosition(armSubsystem))
+                .andThen(new TravelPosition(armSubsystem)).
+                andThen(new InstantCommand(()-> armSubsystem.rearmArm()))
                 );
         new JoystickButton(mechJoytick2, Constants.OIConstants.shootButton).
                 whileTrue(new Amp(handlerSubsystem)
@@ -279,7 +289,8 @@ public class RobotContainer {
                 // return arm to travel position
                 );
         new JoystickButton(mechJoytick1, Constants.OIConstants.kArmSource).
-                onTrue(new ArmRun(armSubsystem, ArmConstants.kElbowSource, ArmConstants.kWristSource, 0.25));
+                onTrue(new ArmRun(armSubsystem, ArmConstants.kElbowSource, ArmConstants.kWristSource, 0.25).
+                andThen(new InstantCommand(()-> armSubsystem.rearmArm())));
         
         /**/
         new JoystickButton(mechJoytick1, OIConstants.kSwitch).

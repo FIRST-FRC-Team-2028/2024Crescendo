@@ -45,8 +45,8 @@ public class Speaker extends Command {
   @Override
   public void end(boolean interrupted) {
     handler.stop();
-    //timer.stop();
-    //timer.reset();
+    timer.stop();
+    timer.reset();
     handler.iDontHaveIt();
     handler.noteOff();
   }
@@ -54,6 +54,9 @@ public class Speaker extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return handler.getHighCurrent()>HandlerConstants.shotCurrent;
+     if(handler.getHighCurrent()>HandlerConstants.shotCurrent){
+      timer.start();
+     }
+     return timer.hasElapsed(Constants.HandlerConstants.HighSpinTime);
   }
 }
