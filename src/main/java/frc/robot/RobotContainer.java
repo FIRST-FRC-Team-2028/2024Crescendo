@@ -236,7 +236,7 @@ public class RobotContainer {
                         new JoystickButton(mechJoytick2, Constants.OIConstants.kShootSequenceButton ).
                                 onTrue(new Speaker(handlerSubsystem, april)
                                 // and return arm/wrist to travelling position 
-                                .andThen(new TravelPosition(armSubsystem))
+                                //.andThen(new TravelPosition(armSubsystem))
                         );
                 } else {
                         new JoystickButton(mechJoytick2, Constants.OIConstants.kShootSequenceButton ).
@@ -254,7 +254,7 @@ public class RobotContainer {
                 new JoystickButton(mechJoytick2, OIConstants.kIntake)
                         .onTrue(new InHandler(handlerSubsystem)
                         .andThen(new Spit_Back(handlerSubsystem))
-                        .andThen(new TravelPosition(armSubsystem).onlyIf(handlerSubsystem::doIHaveIt))
+                        //.andThen(new TravelPosition(armSubsystem).onlyIf(handlerSubsystem::doIHaveIt))
                         );
                 new JoystickButton(mechJoytick2, OIConstants.kIgnoreSensor)
                         .onTrue(new InstantCommand(() -> handlerSubsystem.useSensorFalse()) );
@@ -280,8 +280,8 @@ public class RobotContainer {
         new JoystickButton(mechJoytick2, Constants.OIConstants.kShootSequenceButton ).
                 onTrue(new Speaker(handlerSubsystem, april)
                 // and return arm/wrist to travelling position 
-                .andThen(new TravelPosition(armSubsystem)).
-                andThen(new InstantCommand(()-> armSubsystem.rearmArm()))
+                //.andThen(new TravelPosition(armSubsystem))
+                        //.andThen(new InstantCommand(()-> armSubsystem.rearmArm()))
                 );
         new JoystickButton(mechJoytick2, Constants.OIConstants.shootButton).
                 whileTrue(new Amp(handlerSubsystem)

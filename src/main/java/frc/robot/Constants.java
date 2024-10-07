@@ -226,7 +226,7 @@ public final class Constants {
 
     public static final class ArmConstants {
       //Elbow PID
-      public static final double kElbowP = 0.00975;//0.008;
+      public static final double kElbowP = 0.0098;//0.008; //.00975
       public static final double kElbowI = 0;
       public static final double kElbowD = 0;
       public static final double kElbowFF = 0.007;
@@ -242,15 +242,15 @@ public final class Constants {
       public static final double kElbowSpeaker = 51;
       public static final double kElbowAmp = 58; //80;
       public static final double kElbowPreFloow = 10;
-      public static final double kElbowFloor = -9;  //-5;
+      public static final double kElbowFloor = -10;  //-5;
       //Wrist Positions (in degrees from perpendicular to arm)
       public static final double kWristSource = 93;
       public static final double kWristHighSpeaker = -52;
       public static final double kWristGroundShoot = 0;
       public static final double kWristSpeaker = 3 ;  //22;
       public static final double kWristAmp = 19;  //41;
-      public static final double kWristPreFloor = 30;
-      public static final double kWristFloor = 56;  //68;
+      public static final double kWristPreFloor = 45;
+      public static final double kWristFloor = 60;  //68;
       public static final double kRetract = 85;
       // sweet spot where, when disabled, the arm and handler to not sag
       public static final double elbowSweetSpot = 77.;  
@@ -260,7 +260,7 @@ public final class Constants {
       public static final double wristDuck = 80;
       // arm and wrist position to drive under stage
       public static final double elbowTravel = 15;  //57.;  
-      public static final double wristTravel = 50;  //0;
+      public static final double wristTravel = 44;  //0;
       // arm and wrist position when getting hit
       public static final double elbowHitPosition = 68;
       public static final double wristHitPosition = -1;
@@ -270,12 +270,12 @@ public final class Constants {
       public static final double wristTolerance = .1;
       //Soft limits 
       public static final float kElbowForwardLimit = 90.f;
-      public static final float kElbowReverseLimit = -5f;
+      public static final float kElbowReverseLimit = -15f;
       public static final float kWristForwardLimit = 85.f;
       public static final float kWristReverseLimit = -66.f;
       //Encoders
       //public static final int ABSENCODERPORT = 0;
-      public static final int kAbsoluteEncoder = 2;
+      public static final int kAbsoluteEncoder = 2; //Left side field oreintation
       //public static final int kAbsoluteEncoder2 = 1;
       public static final double elbowEncoderFactor = (88.7-(-5.4))/(80.2-(-5.4));//(90./15.7); //90./(80.); 
       public static final int RelMin = 0; //0;     // 6;  //  upright
@@ -334,7 +334,7 @@ public final class Constants {
       public static final double TotalShootTime = 3.;
       public static final double kHighAmpSpeed = 0.5;
       public static final double kLowAmpSpeed = -.5;
-      public static final double kSpitBackWaitTime = .75;
+      public static final double kSpitBackWaitTime = .65;
     public static final double shotCurrent = 15;
       
     }
@@ -405,8 +405,8 @@ public final class Constants {
         public static final int kDriverYAxis                  = 0;
         public static final int kDriverXAxis                  = 1;
         public static final int kDriverRotAxis                = 2;
-        public static final int fineControlAxis               = 3;
-        public static final int fasterSpeedAxis               = 3;
+        public static final int fineControlAxis               = 8; // left trigger
+        public static final int fasterSpeedAxis               = 7; // right trigger
         public static final int kDriverResetGyroButtonIdx     = 1; // driverJoystick button A
         public static final int kArmDuck                      = 2; // driverJoystick B button
         public static final int kDriverResetOdometryButtonIdx = 3; // driverJoystick button X
